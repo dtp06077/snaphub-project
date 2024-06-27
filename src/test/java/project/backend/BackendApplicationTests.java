@@ -1,10 +1,10 @@
-package postproject.huiseong;
+package project.backend;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class HuiseongApplicationTests {
+class BackendApplicationTests {
 
 	@Test
 	void contextLoads() {

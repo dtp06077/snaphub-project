@@ -1,13 +1,13 @@
-package postproject.huiseong;
+package project.backend;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class HuiseongApplication {
+public class BackendApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(HuiseongApplication.class, args);
+		SpringApplication.run(BackendApplication.class, args);
 	}
 
 }
