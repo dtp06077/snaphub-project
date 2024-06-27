@@ -25,14 +25,14 @@ public class DataBaseTest {
     public void testUser() {
 
         User user = new User();
-        user.setUsername("userA");
+        user.setName("userA");
         Long saveId = userRepository.save(user);
 
         User findUser = userRepository.find(saveId);
 
         //영속성 컨텍스트로 저장된 유저와 조회된 유저의 값이 일치하는지 확인
         assertEquals(findUser.getId(), user.getId());
-        assertEquals(findUser.getUsername(), user.getUsername());
+        assertEquals(findUser.getName(), user.getName());
         assertEquals(findUser, user);
     }
 
