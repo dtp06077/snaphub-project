@@ -15,6 +15,7 @@ import java.util.List;
 public class User {
 
     @Id @GeneratedValue
+    @Column(name = "user_id") //기본키
     private Long id;
 
     //회원 이름 필수, 중복 허용 X
