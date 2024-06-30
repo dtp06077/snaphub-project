@@ -4,7 +4,6 @@ import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import project.backend.domain.Post;
-import project.backend.domain.User;
 
 import java.util.List;
 
