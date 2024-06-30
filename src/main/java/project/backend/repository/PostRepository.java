@@ -25,6 +25,10 @@ public class PostRepository {
         return post.getId();
     }
 
+    public Post findById(Long id) {
+        return em.find(Post.class, id);
+    }
+
     public List<Post> findByUserId(Long id) {
 //        User user = em.find(User.class, id);
 //        return user.getPosts();
