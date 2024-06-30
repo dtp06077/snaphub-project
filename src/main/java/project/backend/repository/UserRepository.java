@@ -10,8 +10,7 @@ import org.springframework.stereotype.Repository;
 @RequiredArgsConstructor
 public class UserRepository {
 
-    @PersistenceContext
-    EntityManager em;
+    private final EntityManager em;
 
     //사용자 저장
     public Long save(User user) {
