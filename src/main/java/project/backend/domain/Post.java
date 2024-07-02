@@ -15,12 +15,15 @@ public class Post {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")//외래키
+    //외래키
+    @JoinColumn(name = "user_id")
     private User author;
 
+    //증복 허용 X
     @Column(nullable = false, length = 20)
     private String title;
 
+    //중복 허용 X
     @Column(nullable = false)
     private String content;
 
@@ -28,9 +31,11 @@ public class Post {
 
     private LocalDateTime createdAt;
 
+    //게시글과 생명주기를 함께하므로 cascade
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();
 
+    //게시글과 생명주기를 함께하므로 cascade
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     private List<Emotion> emotions = new ArrayList<>();
 }
