@@ -36,8 +36,24 @@ public class UserService {
     /**
      * 사용자 로그인
      */
-//    @Transactional
-//    public User login(String loginId, String password) {
-//
-//    }
+    @Transactional
+    public User login(String loginId, String password) {
+        User user = userRepository.findByLoginId(loginId);
+        //로그인 비밀번호와 아이디 불일치시
+        if(user == null || !user.getPassword().equals(password)) {
+            throw new IllegalStateException("로그인 ID 또는 비밀번호가 잘못되었습니다.");
+        }
+        return user;
+    }
+    /**
+     * 사용자 프로필 업데이트
+     */
+    public void updateProfile(Long userId, String email, String profile) {
+        User user = userRepository.findById(userId);
+        if(user == null) {
+            throw new IllegalStateException("해당 사용자가 존재하지 않습니다.");
+        }
+        user.setEmail(email);
+        user.setProfile(profile);
+    }
 }
