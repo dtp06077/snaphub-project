@@ -48,6 +48,7 @@ public class UserService {
     /**
      * 사용자 프로필 업데이트
      */
+    @Transactional
     public void updateProfile(Long userId, String email, String profile) {
         User user = userRepository.findById(userId);
         if(user == null) {

@@ -18,6 +18,7 @@ public class PostService {
     /**
      * 게시글 저장
      */
+    @Transactional
     public Long savePost(Post post) {
         return postRepository.save(post);
     }
@@ -43,12 +44,14 @@ public class PostService {
     /**
      * 게시글 삭제
      */
+    @Transactional
     public void deletePost(Long id) {
         postRepository.delete(id);
     }
     /**
      * 게시글 수정
      */
+    @Transactional
     public void updatePost(Long id, String title, String content,
                            String imageUrl, LocalDateTime createdAt) {
         Post post = postRepository.findById(id);
