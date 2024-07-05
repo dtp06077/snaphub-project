@@ -4,9 +4,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 import project.backend.domain.User;
 import project.backend.repository.UserRepository;
@@ -14,7 +14,7 @@ import project.backend.repository.UserRepository;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 
-@ExtendWith(MockitoExtension.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest
 @Transactional
 public class UserServiceTest {
