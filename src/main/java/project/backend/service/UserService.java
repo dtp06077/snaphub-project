@@ -39,8 +39,12 @@ public class UserService {
     @Transactional
     public User login(String loginId, String password) {
         User user = userRepository.findByLoginId(loginId);
+        //해당 회원이 존재하지 않을시
+        if(user == null) {
+            throw new IllegalStateException("존재하지 않는 회원입니다.");
+        }
         //로그인 비밀번호와 아이디 불일치시
-        if(user == null || !user.getPassword().equals(password)) {
+        else if(!user.getPassword().equals(password)) {
             throw new IllegalStateException("로그인 ID 또는 비밀번호가 잘못되었습니다.");
         }
         return user;

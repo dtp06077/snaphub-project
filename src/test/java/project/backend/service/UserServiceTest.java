@@ -62,7 +62,7 @@ public class UserServiceTest {
     }
 
     @Test
-    @DisplayName("로그인 실패 테스트")
+    @DisplayName("로그인 실패 테스트 - 아이디")
     public void login_fail_wrongLoginId() {
         //Given
         Long userId = userService.register(user);
@@ -70,6 +70,23 @@ public class UserServiceTest {
         //When
         try {
             User findUser = userService.login("wrongId", "testPassword");
+        } catch (IllegalStateException e) {
+            return;
+        }
+
+        //Then
+        fail("로그인 실패 예외가 발생해야 한다.");
+    }
+
+    @Test
+    @DisplayName("로그인 실패 테스트 - 비밀번호")
+    public void login_fail_wrongPassword() {
+        //Given
+        Long userId = userService.register(user);
+
+        //When
+        try {
+            User findUser = userService.login("testLoginId", "wrongPassword");
         } catch (IllegalStateException e) {
             return;
         }
