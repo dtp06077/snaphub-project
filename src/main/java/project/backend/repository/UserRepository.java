@@ -24,10 +24,15 @@ public class UserRepository {
 
     //닉네임을 통한 사용자 검색 메서드
     public User findByName(String name) {
-        return em.createQuery("select u from User u where u.name = :name",
-                User.class)
-                .setParameter("name", name)
-                .getSingleResult();
+        try {
+            return em.createQuery("select u from User u where u.name = :name",
+                            User.class)
+                    .setParameter("name", name)
+                    .getSingleResult();
+        }
+        catch (NoResultException e) {
+            return null;
+        }
     }
 
     //로그인 아이디를 통한 사용자 검색 메서드
