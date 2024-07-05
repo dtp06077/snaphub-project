@@ -94,4 +94,33 @@ public class UserServiceTest {
         //Then
         fail("로그인 실패 예외가 발생해야 한다.");
     }
+
+    @Test
+    @DisplayName("프로필 업데이트 성공 테스트")
+    public void updateProfile_success() {
+        //Given
+        Long userId = userService.register(user);
+
+        //When
+        userService.updateProfile(userId, "abcd@email.com", "A#$!");
+
+        //Then
+        assertThat(user.getEmail()).isEqualTo("abcd@email.com");
+        assertThat(user.getProfile()).isEqualTo("A#$!");
+    }
+
+    @Test
+    @DisplayName("프로필 업데이트 실패 테스트")
+    public void updateProfile_fail() {
+        //Given
+
+        //When
+        try {
+            userService.updateProfile(0L, "abcd@email.com", "A#$!");
+        } catch (IllegalStateException e) {
+            return;
+        }
+        //Then
+        fail("프로필 업데이트 실패 예외가 발생해야 한다.");
+    }
 }
