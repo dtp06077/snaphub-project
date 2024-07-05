@@ -1,6 +1,7 @@
 package project.backend.service;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -11,6 +12,7 @@ import project.backend.domain.User;
 import project.backend.repository.UserRepository;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 
 @ExtendWith(MockitoExtension.class)
 @SpringBootTest
@@ -34,6 +36,7 @@ public class UserServiceTest {
     }
 
     @Test
+    @DisplayName("회원 가입 테스트")
     public void register_sucess() {
         //Given
         Long userId = userService.register(user);
@@ -46,6 +49,7 @@ public class UserServiceTest {
     }
 
     @Test
+    @DisplayName("로그인 성공 테스트")
     public void login_success() {
         //Given
         Long userId = userService.register(user);
@@ -55,5 +59,22 @@ public class UserServiceTest {
 
         //Then
         assertThat(userRepository.findById(userId)).isEqualTo(findUser);
+    }
+
+    @Test
+    @DisplayName("로그인 실패 테스트")
+    public void login_fail_wrongLoginId() {
+        //Given
+        Long userId = userService.register(user);
+
+        //When
+        try {
+            User findUser = userService.login("wrongId", "testPassword");
+        } catch (IllegalStateException e) {
+            return;
+        }
+
+        //Then
+        fail("로그인 실패 예외가 발생해야 한다.");
     }
 }
