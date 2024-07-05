@@ -45,4 +45,15 @@ public class UserServiceTest {
         assertThat(user).isEqualTo(findUser);
     }
 
+    @Test
+    public void login_success() {
+        //Given
+        Long userId = userService.register(user);
+
+        //When
+        User findUser = userService.login("testLoginId", "testPassword");
+
+        //Then
+        assertThat(userRepository.findById(userId)).isEqualTo(findUser);
+    }
 }
