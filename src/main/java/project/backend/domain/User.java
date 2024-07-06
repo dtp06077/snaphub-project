@@ -36,10 +36,12 @@ public class User {
 
     private LocalDateTime createdAt;
 
-    @OneToMany(mappedBy = "author")
+    //자식 엔티티 영속화
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Post> posts = new ArrayList<>();
 
-    @OneToMany(mappedBy = "author")
+    //자식 엔티티 영속화
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments = new ArrayList<>();
 
 
