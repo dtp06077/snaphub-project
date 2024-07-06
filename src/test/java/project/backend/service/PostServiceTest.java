@@ -16,6 +16,7 @@ import project.backend.repository.UserRepository;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -134,6 +135,19 @@ public class PostServiceTest {
         assertThat(allPosts.get(1)).isEqualTo(postRepository.findById(id2));
         assertThat(allPosts.get(2)).isEqualTo(postRepository.findById(id3));
         assertThat(allPosts.get(3)).isEqualTo(postRepository.findById(id4));
+    }
+
+    @Test
+    @DisplayName("게시글 삭제 성공 테스트")
+    public void deletePost_success() {
+        //Given
+        Long postId = postService.savePost(user1.getId(), post1);
+
+        //When
+        postService.deletePost(postId);
+
+        //Then
+        assertThat(postRepository.findById(postId)).isNull();
     }
 
 }
