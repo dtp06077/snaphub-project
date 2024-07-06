@@ -31,15 +31,15 @@ public class PostServiceTest {
     @Autowired
     private UserRepository userRepository;
 
-    private Post post;
-    private User user;
+    private Post post1;
+    private User user1;
 
     @BeforeEach
     void setUp() {
-        user = makeUser("huiseong", "1234", "1234");
-        userRepository.save(user);
+        user1 = makeUser("huiseong", "1234", "1234");
+        userRepository.save(user1);
 
-        post = makePost("title", "content");
+        post1 = makePost("title", "content");
     }
 
     //post 생성 메서드
@@ -64,31 +64,31 @@ public class PostServiceTest {
     @DisplayName("게시글 저장 성공 테스트")
     public void save_success() {
         //Given
-        Long postId = postService.savePost(user.getId(), post);
+        Long postId = postService.savePost(user1.getId(), post1);
 
         //When
-        User findUser = userRepository.findById(user.getId());
+        User findUser = userRepository.findById(user1.getId());
         List<Post> postList = findUser.getPosts();
         Post findPost = postRepository.findById(postId);
 
         //Then
         //사용자 게시글 리스트에 저장된 게시글이 동일한지
-        assertThat(postList.get(0)).isEqualTo(post);
+        assertThat(postList.get(0)).isEqualTo(post1);
         //게시글 리포지토리에 저장된 게시글이 동일한지
-        assertThat(findPost).isEqualTo(post);
+        assertThat(findPost).isEqualTo(post1);
     }
 
     @Test
     @DisplayName("게시글 검색 성공 테스트")
     public void getPost_success() {
         //Given
-        Long postId = postService.savePost(user.getId(), post);
+        Long postId = postService.savePost(user1.getId(), post1);
 
         //When
         Post findPost = postService.getPost(postId);
 
         //Then
-        assertThat(findPost).isEqualTo(post);
+        assertThat(findPost).isEqualTo(post1);
     }
 
     @Test
@@ -97,11 +97,11 @@ public class PostServiceTest {
         //Given
         Post post2 = makePost("title2", "content2");
 
-        Long postId = postService.savePost(user.getId(), post);
-        Long secPostId = postService.savePost(user.getId(), post2);
+        Long postId = postService.savePost(user1.getId(), post1);
+        Long secPostId = postService.savePost(user1.getId(), post2);
 
         //When
-        List<Post> posts = postService.getPostByUserId(user.getId());
+        List<Post> posts = postService.getPostByUserId(user1.getId());
 
         //Then
         assertThat(posts.get(0)).isEqualTo(postRepository.findById(postId));
@@ -112,23 +112,28 @@ public class PostServiceTest {
     @DisplayName("모든 게시글 검색 성공 테스트")
     public void getAllPosts_Success() {
         //Given
-        User user2 = new User();
-        user2.setName("gildong");
-        user2.setLoginId("5678");
-        user2.setPassword("5678");
+        User user2 = makeUser("gildong", "2345", "2345");
+        User user3 = makeUser("gilson", "3456", "3456");
         userRepository.save(user2);
+        userRepository.save(user3);
 
-        Post secPost = new Post();
-        secPost.setTitle("title2");
-        secPost.setContent("content2");
-        post.setAuthor(user);
-        secPost.setAuthor(user);
+        Post post2 = makePost("title2", "content2");
+        Post post3 = makePost("title3", "content3");
+        Post post4 = makePost("title4", "content4");
 
-
+        Long id1 = postService.savePost(user1.getId(), post1);
+        Long id2 = postService.savePost(user2.getId(), post2);
+        Long id3 = postService.savePost(user3.getId(), post3);
+        Long id4 = postService.savePost(user3.getId(), post4);
 
         //When
+        List<Post> allPosts = postService.getAllPosts();
 
         //Then
+        assertThat(allPosts.get(0)).isEqualTo(postRepository.findById(id1));
+        assertThat(allPosts.get(1)).isEqualTo(postRepository.findById(id2));
+        assertThat(allPosts.get(2)).isEqualTo(postRepository.findById(id3));
+        assertThat(allPosts.get(3)).isEqualTo(postRepository.findById(id4));
     }
 
 }
