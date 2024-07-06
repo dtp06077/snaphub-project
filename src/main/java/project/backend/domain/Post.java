@@ -19,11 +19,11 @@ public class Post {
     @JoinColumn(name = "user_id")
     private User author;
 
-    //증복 허용 X
+    //null 허용 X
     @Column(nullable = false, length = 20)
     private String title;
 
-    //중복 허용 X
+    //null 허용 X
     @Column(nullable = false)
     private String content;
 

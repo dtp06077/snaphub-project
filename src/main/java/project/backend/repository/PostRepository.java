@@ -35,8 +35,8 @@ public class PostRepository {
 //        User user = em.find(User.class, id);
 //        return user.getPosts();
 //        직관적이지만 성능에 영향을 줄 수 있기에 JPQL로 대체
-        return em.createQuery("select p from Post p where p.author.id = :userId", Post.class)
-                .setParameter("userId", id)
+        return em.createQuery("select p from Post p where p.author.id = :authorId", Post.class)
+                .setParameter("authorId", id)
                 .getResultList();
     }
 
