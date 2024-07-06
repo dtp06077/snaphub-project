@@ -17,6 +17,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -174,6 +175,25 @@ public class PostServiceTest {
         assertThat(findPost.getContent()).isEqualTo("newContent");
         assertThat(findPost.getImageUrl()).isEqualTo("image");
         assertThat(findPost.getCreatedAt()).isEqualTo(now);
+    }
+
+    @Test
+    @DisplayName("게시글 업데이트 실패 테스트")
+    public void updatePost_fail() {
+        //Given
+        postRepository.delete(postId1);
+        LocalDateTime now = LocalDateTime.now();
+
+        //When
+        try {
+            postService.updatePost(postId1, "newTitle", "newContent",
+                    "image", now);
+        } catch (IllegalStateException e) {
+            return;
+        }
+
+        //Then
+        fail("게시글 부재 예외 처리가 발생해야 한다.");
     }
 
 }
