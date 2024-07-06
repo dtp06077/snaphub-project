@@ -42,7 +42,7 @@ public class Post {
     //==연관관계 편의 메서드==//
 
     //다대일 관계인 사용자 엔티티를 지정하면 해당 사용자 게시글 리스트에 게시글 추가
-    public void setUser(User user) {
+    public void setAuthor(User user) {
         this.author = user;
         user.getPosts().add(this);
     }
