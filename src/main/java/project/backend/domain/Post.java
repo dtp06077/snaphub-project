@@ -31,12 +31,12 @@ public class Post {
 
     private LocalDateTime createdAt;
 
-    //게시글과 생명주기를 함께하므로 cascade
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    //게시글과 생명주기를 함께하므로 영속화
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments = new ArrayList<>();
 
-    //게시글과 생명주기를 함께하므로 cascade
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    //게시글과 생명주기를 함께하므로 영속화
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Emotion> emotions = new ArrayList<>();
 
     //==연관관계 편의 메서드==//
