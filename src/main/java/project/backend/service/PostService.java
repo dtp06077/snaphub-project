@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import project.backend.domain.Post;
 import project.backend.repository.PostRepository;
+import project.backend.repository.UserRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -15,11 +16,13 @@ import java.util.List;
 public class PostService {
 
     private final PostRepository postRepository;
+    private final UserRepository userRepository;
     /**
      * 게시글 저장
      */
     @Transactional
-    public Long savePost(Post post) {
+    public Long savePost(Long userId, Post post) {
+        post.setAuthor(userRepository.findById(userId));
         return postRepository.save(post);
     }
     /**
