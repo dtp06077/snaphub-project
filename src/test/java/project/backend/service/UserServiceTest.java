@@ -37,7 +37,7 @@ public class UserServiceTest {
 
     @Test
     @DisplayName("회원 가입 성공 테스트")
-    public void register_sucess() {
+    public void register_success() {
         //Given
         Long userId = userService.register(user);
 
