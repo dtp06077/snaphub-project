@@ -16,7 +16,6 @@ import project.backend.repository.UserRepository;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.fail;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -145,6 +144,19 @@ public class PostServiceTest {
 
         //When
         postService.deletePost(postId);
+
+        //Then
+        assertThat(postRepository.findById(postId)).isNull();
+    }
+
+    @Test
+    @DisplayName("사용자 삭제 시 게시글 연쇄 삭제 성공 테스트")
+    public void deleteUser_success() {
+        //Given
+        Long postId = postService.savePost(user1.getId(), post1);
+
+        //When
+        userRepository.delete(user1.getId());
 
         //Then
         assertThat(postRepository.findById(postId)).isNull();
