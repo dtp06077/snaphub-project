@@ -52,7 +52,8 @@ public class PostServiceTest {
         Long postId = postService.savePost(user.getId(), post);
 
         //When
-        List<Post> postList = user.getPosts();
+        User findUser = userRepository.findById(user.getId());
+        List<Post> postList = findUser.getPosts();
         Post findPost = postRepository.findById(postId);
 
         //Then
@@ -61,5 +62,6 @@ public class PostServiceTest {
         //게시글 리포지토리에 저장된 게시글이 동일한지
         assertThat(findPost).isEqualTo(post);
     }
+
 
 }
