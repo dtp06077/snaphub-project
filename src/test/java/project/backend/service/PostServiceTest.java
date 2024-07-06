@@ -37,6 +37,9 @@ public class PostServiceTest {
     @BeforeEach
     void setUp() {
         user = new User();
+        user.setName("huiseong");
+        user.setLoginId("1234");
+        user.setPassword("1234");
         userRepository.save(user);
 
         post = new Post();
@@ -61,6 +64,41 @@ public class PostServiceTest {
         assertThat(postList.get(0)).isEqualTo(post);
         //게시글 리포지토리에 저장된 게시글이 동일한지
         assertThat(findPost).isEqualTo(post);
+    }
+
+    @Test
+    @DisplayName("게시글 검색 성공 테스트")
+    public void getPost_success() {
+        //Given
+        post.setAuthor(user);
+        Long postId = postService.savePost(user.getId(), post);
+
+        //When
+        Post findPost = postService.getPost(postId);
+
+        //Then
+        assertThat(findPost).isEqualTo(post);
+    }
+
+    @Test
+    @DisplayName("특정 사용자의 게시글 검색 성공 테스트")
+    public void getPostByUser_success() {
+        //Given
+        Post secPost = new Post();
+        secPost.setTitle("title2");
+        secPost.setContent("content2");
+        post.setAuthor(user);
+        secPost.setAuthor(user);
+
+        Long postId = postService.savePost(user.getId(), post);
+        Long secPostId = postService.savePost(user.getId(), secPost);
+
+        //When
+        List<Post> posts = postService.getPostByUserId(user.getId());
+
+        //Then
+        assertThat(posts.get(0)).isEqualTo(postRepository.findById(postId));
+        assertThat(posts.get(1)).isEqualTo(postRepository.findById(secPostId));
     }
 
 
