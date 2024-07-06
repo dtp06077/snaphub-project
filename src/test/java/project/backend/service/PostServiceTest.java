@@ -36,22 +36,34 @@ public class PostServiceTest {
 
     @BeforeEach
     void setUp() {
-        user = new User();
-        user.setName("huiseong");
-        user.setLoginId("1234");
-        user.setPassword("1234");
+        user = makeUser("huiseong", "1234", "1234");
         userRepository.save(user);
 
-        post = new Post();
-        post.setTitle("title");
-        post.setContent("content");
+        post = makePost("title", "content");
     }
 
+    //post 생성 메서드
+    Post makePost(String title, String content) {
+        Post post = new Post();
+        post.setTitle(title);
+        post.setContent(content);
+
+        return post;
+    }
+
+    //user 생성 메서드
+    User makeUser(String name, String loginId, String password) {
+        User user = new User();
+        user.setName(name);
+        user.setLoginId(loginId);
+        user.setPassword(password);
+
+        return user;
+    }
     @Test
     @DisplayName("게시글 저장 성공 테스트")
     public void save_success() {
         //Given
-        post.setAuthor(user);
         Long postId = postService.savePost(user.getId(), post);
 
         //When
@@ -70,7 +82,6 @@ public class PostServiceTest {
     @DisplayName("게시글 검색 성공 테스트")
     public void getPost_success() {
         //Given
-        post.setAuthor(user);
         Long postId = postService.savePost(user.getId(), post);
 
         //When
@@ -84,14 +95,10 @@ public class PostServiceTest {
     @DisplayName("특정 사용자의 게시글 검색 성공 테스트")
     public void getPostByUser_success() {
         //Given
-        Post secPost = new Post();
-        secPost.setTitle("title2");
-        secPost.setContent("content2");
-        post.setAuthor(user);
-        secPost.setAuthor(user);
+        Post post2 = makePost("title2", "content2");
 
         Long postId = postService.savePost(user.getId(), post);
-        Long secPostId = postService.savePost(user.getId(), secPost);
+        Long secPostId = postService.savePost(user.getId(), post2);
 
         //When
         List<Post> posts = postService.getPostByUserId(user.getId());
@@ -101,5 +108,27 @@ public class PostServiceTest {
         assertThat(posts.get(1)).isEqualTo(postRepository.findById(secPostId));
     }
 
+    @Test
+    @DisplayName("모든 게시글 검색 성공 테스트")
+    public void getAllPosts_Success() {
+        //Given
+        User user2 = new User();
+        user2.setName("gildong");
+        user2.setLoginId("5678");
+        user2.setPassword("5678");
+        userRepository.save(user2);
+
+        Post secPost = new Post();
+        secPost.setTitle("title2");
+        secPost.setContent("content2");
+        post.setAuthor(user);
+        secPost.setAuthor(user);
+
+
+
+        //When
+
+        //Then
+    }
 
 }
