@@ -140,4 +140,18 @@ public class CommentServiceTest {
         assertThat(comments2.get(1)).isEqualTo(comment2);
         assertThat(comments3.get(0)).isEqualTo(comment4);
     }
+
+    @Test
+    @DisplayName("댓글 삭제 성공 테스트")
+    public void delete_success() {
+        //Given
+        Comment comment = makeComment("안녕하세요");
+        Long commentId = commentService.saveComment(userId, postId, comment);
+
+        //When
+        commentService.deleteComment(commentId);
+
+        //Then
+        assertThat(commentRepository.findById(commentId)).isNull();
+    }
 }
