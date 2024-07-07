@@ -169,5 +169,17 @@ public class CommentServiceTest {
         assertThat(commentRepository.findById(commentId)).isNull();
     }
 
+    @Test
+    @DisplayName("댓글 연쇄 삭제 성공 테스트 - 사용자")
+    public void deleteUser_success() {
+        //Given
+        Comment comment = makeComment("안녕하세요");
+        Long commentId = commentService.saveComment(userId, postId, comment);
 
+        //When
+        userService.deleteUser(userId);
+
+        //Then
+        assertThat(commentRepository.findById(commentId)).isNull();
+    }
 }
