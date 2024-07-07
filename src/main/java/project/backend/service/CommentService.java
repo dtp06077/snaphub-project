@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import project.backend.domain.Comment;
 import project.backend.repository.CommentRepository;
+import project.backend.repository.PostRepository;
+import project.backend.repository.UserRepository;
 
 import java.util.List;
 
@@ -14,12 +16,15 @@ import java.util.List;
 public class CommentService {
 
     private final CommentRepository commentRepository;
-
+    private final PostRepository postRepository;
+    private final UserRepository userRepository;
     /**
      * 댓글 저장
      */
     @Transactional
-    public Long saveComment(Comment comment) {
+    public Long saveComment(Long userId, Long postId, Comment comment) {
+        comment.setAuthor(userRepository.findById(userId));
+        comment.setPost(postRepository.findById(postId));
         return commentRepository.save(comment);
     }
 
