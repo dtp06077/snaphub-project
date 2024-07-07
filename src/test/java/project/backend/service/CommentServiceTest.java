@@ -107,4 +107,37 @@ public class CommentServiceTest {
         assertThat(findComment).isEqualTo(comment2);
         assertThat(findComment).isNotEqualTo(comment1);
     }
+
+    @Test
+    @DisplayName("특정 게시글 댓글 검색 성공 테스트")
+    public void byPostId_success() {
+        //Given
+        User user2 = makeUser("gildong", "2345", "2345");
+        Long userId2 = userService.register(user2);
+        Post post2 = makePost("title2", "content2");
+        Post post3 = makePost("title3", "content3");
+        Long postId2 = postService.savePost(userId2, post2);
+        Long postId3 = postService.savePost(userId, post3);
+
+        Comment comment1 = makeComment("안녕");
+        Comment comment2 = makeComment("하이");
+        Comment comment3 = makeComment("방가");
+        Comment comment4 = makeComment("헬로");
+
+        commentService.saveComment(userId, postId2, comment1);
+        commentService.saveComment(userId, postId2, comment2);
+        commentService.saveComment(userId2, postId, comment3);
+        commentService.saveComment(userId2, postId3, comment4);
+
+        //When
+        List<Comment> comments1 = commentService.getCommentsByPostId(postId);
+        List<Comment> comments2 = commentService.getCommentsByPostId(postId2);
+        List<Comment> comments3 = commentService.getCommentsByPostId(postId3);
+
+        //Then
+        assertThat(comments1.get(0)).isEqualTo(comment3);
+        assertThat(comments2.get(0)).isEqualTo(comment1);
+        assertThat(comments2.get(1)).isEqualTo(comment2);
+        assertThat(comments3.get(0)).isEqualTo(comment4);
+    }
 }
