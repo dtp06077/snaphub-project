@@ -90,4 +90,21 @@ public class CommentServiceTest {
         //댓글 리포지토리에 저장된 댓글이 동일한지
         assertThat(findComment).isEqualTo(comment);
     }
+
+    @Test
+    @DisplayName("댓글 검색 성공 테스트")
+    public void getComment_success() {
+        //Given
+        Comment comment1 = makeComment("안녕하세요.");
+        Comment comment2 = makeComment("반갑습니다.");
+        Long id1 = commentService.saveComment(userId, postId, comment1);
+        Long id2 = commentService.saveComment(userId, postId, comment2);
+
+        //When
+        Comment findComment = commentService.getComment(id2);
+
+        //Then
+        assertThat(findComment).isEqualTo(comment2);
+        assertThat(findComment).isNotEqualTo(comment1);
+    }
 }
