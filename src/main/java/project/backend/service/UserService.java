@@ -61,4 +61,12 @@ public class UserService {
         user.setEmail(email);
         user.setProfile(profile);
     }
+
+    /**
+     * 사용자 탈퇴
+     */
+    @Transactional
+    public void deleteUser(Long id) {
+        userRepository.delete(id);
+    }
 }
