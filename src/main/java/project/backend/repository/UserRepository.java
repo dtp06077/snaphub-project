@@ -49,6 +49,8 @@ public class UserRepository {
     //사용자 삭제 메서드
     public void delete(Long id) {
         User user = em.find(User.class, id);
-        em.remove(user);
+        if(user != null) {
+            em.remove(user);
+        }
     }
 }
