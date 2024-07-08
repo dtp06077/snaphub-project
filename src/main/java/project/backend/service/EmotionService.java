@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import project.backend.domain.Emotion;
 import project.backend.repository.EmotionRepository;
+import project.backend.repository.PostRepository;
+import project.backend.repository.UserRepository;
 
 import java.util.List;
 
@@ -14,12 +16,16 @@ import java.util.List;
 public class EmotionService {
 
     private final EmotionRepository emotionRepository;
+    private final UserRepository userRepository;
+    private final PostRepository postRepository;
 
     /**
      * 감정표현 저장
      */
     @Transactional
-    public Long saveEmotion(Emotion emotion) {
+    public Long saveEmotion(Long userId, Long postId, Emotion emotion) {
+        emotion.setUser(userRepository.findById(userId));
+        emotion.setPost(postRepository.findById(postId));
         return emotionRepository.save(emotion);
     }
 
