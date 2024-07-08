@@ -31,6 +31,18 @@ public class Post {
 
     private LocalDateTime createdAt;
 
+    //감정표현 카운트 파라미터
+    private int happyEmoCnt;
+    private int sadEmoCnt;
+    private int angryEmoCnt;
+
+    //생성 시 감정표현 카운트 초기화
+    public Post() {
+        this.happyEmoCnt = 0;
+        this.sadEmoCnt = 0;
+        this.angryEmoCnt = 0;
+    }
+
     //게시글과 생명주기를 함께하므로 영속화
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments = new ArrayList<>();
