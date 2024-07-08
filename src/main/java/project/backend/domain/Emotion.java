@@ -28,20 +28,10 @@ public class Emotion {
     //일대다 관계인 게시글 엔티티를 지정하면 해당 게시글 감정표현 리스트에 감정표현 추가
     public void setPost(Post post) {
         this.post = post;
-        int i;
         switch (this.status) {
-            case ANGRY -> {
-                i = post.getAngryEmoCnt();
-                post.setAngryEmoCnt(i++);
-            }
-            case HAPPY -> {
-                i = post.getHappyEmoCnt();
-                post.setHappyEmoCnt(i++);
-            }
-            case SAD -> {
-                i = post.getSadEmoCnt();
-                post.setSadEmoCnt(i++);
-            }
+            case ANGRY -> post.setAngryEmoCnt(post.getAngryEmoCnt()+1);
+            case HAPPY -> post.setHappyEmoCnt(post.getHappyEmoCnt()+1);
+            case SAD -> post.setSadEmoCnt(post.getSadEmoCnt()+1);
         }
         post.getEmotions().add(this);
     }
