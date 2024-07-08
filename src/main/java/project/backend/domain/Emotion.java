@@ -16,6 +16,10 @@ public class Emotion {
     @JoinColumn(name = "post_id")
     private Post post;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+
     @Enumerated(EnumType.STRING)
     private EmotionStatus status;
 
@@ -25,5 +29,10 @@ public class Emotion {
     public void setPost(Post post) {
         this.post = post;
         post.getEmotions().add(this);
+    }
+    //감정표현한 사용자의 감정표현 리스트에 감정표현 추가
+    public void setUser(User user) {
+        this.user = user;
+        user.getEmotions().add(this);
     }
 }
