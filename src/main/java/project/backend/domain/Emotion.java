@@ -21,6 +21,7 @@ public class Emotion {
     private User user;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private EmotionStatus status;
 
     //==연관관계 편의 메서드==//
