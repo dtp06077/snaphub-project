@@ -113,4 +113,32 @@ public class EmotionServiceTest {
         assertThat(post.getHappyEmoCnt()).isEqualTo(1);
         assertThat(post.getSadEmoCnt()).isEqualTo(0);
     }
+
+    @Test
+    @DisplayName("게시글의 감정표현 검색 성공 테스트")
+    public void byPostId_success() {
+        //Given
+        User user2 = makeUser("gildong", "2345", "2345");
+        userService.register(user2);
+        User user3 = makeUser("gapsu", "3456", "3456");
+        userService.register(user3);
+
+        Emotion emotion1 = makeEmotion(EmotionStatus.ANGRY);
+        Long id1 = emotionService.saveEmotion(user2.getId(), postId, emotion1);
+
+        Emotion emotion2 = makeEmotion(EmotionStatus.ANGRY);
+        Long id2 = emotionService.saveEmotion(user3.getId(), postId, emotion2);
+
+        Emotion emotion3 = makeEmotion(EmotionStatus.HAPPY);
+        Long id3 = emotionService.saveEmotion(user3.getId(), postId, emotion3);
+
+        //When
+        List<Emotion> emotions = emotionService.getEmosByPostId(postId);
+
+        //Then
+        assertThat(emotions).isEqualTo(post.getEmotions());
+    }
+
+    @Test
+    @DisplayName()
 }
