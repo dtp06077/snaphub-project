@@ -140,5 +140,36 @@ public class EmotionServiceTest {
     }
 
     @Test
-    @DisplayName()
+    @DisplayName("감정표현 삭제 성공 테스트")
+    public void delete_success() {
+        //Given
+        User user2 = makeUser("gildong", "2345", "2345");
+        userService.register(user2);
+
+        Emotion emotion1 = makeEmotion(EmotionStatus.ANGRY);
+        Long id1 = emotionService.saveEmotion(user2.getId(), postId, emotion1);
+
+        //When
+        emotionService.deleteEmotion(id1);
+
+        //Then
+        assertThat(emotionRepository.findById(id1)).isNull();
+    }
+
+    @Test
+    @DisplayName("감정표현 연쇄 삭제 성공 테스트 - 게시글")
+    public void deletePost_success() {
+        //Given
+        User user2 = makeUser("gildong", "2345", "2345");
+        userService.register(user2);
+
+        Emotion emotion1 = makeEmotion(EmotionStatus.ANGRY);
+        Long id1 = emotionService.saveEmotion(user2.getId(), postId, emotion1);
+
+        //When
+        postService.deletePost(postId);
+
+        //Then
+        assertThat(emotionRepository.findById(id1)).isNull();
+    }
 }
