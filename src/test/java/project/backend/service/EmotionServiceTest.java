@@ -172,4 +172,21 @@ public class EmotionServiceTest {
         //Then
         assertThat(emotionRepository.findById(id1)).isNull();
     }
+
+    @Test
+    @DisplayName("감정표현 연쇄 삭제 성공 테스트 - 사용자")
+    public void deleteUser_success() {
+        //Given
+        User user2 = makeUser("gildong", "2345", "2345");
+        userService.register(user2);
+
+        Emotion emotion1 = makeEmotion(EmotionStatus.ANGRY);
+        Long id1 = emotionService.saveEmotion(user2.getId(), postId, emotion1);
+
+        //When
+        userService.deleteUser(userId);
+
+        //Then
+        assertThat(emotionRepository.findById(id1)).isNull();
+    }
 }
