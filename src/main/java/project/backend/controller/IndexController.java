@@ -23,6 +23,7 @@ public class IndexController {
     }
 
     //스프링 시큐리티가 login 주소를 가져감.
+    //SecurityConfig 생성 후 주소 접근 가능
     @GetMapping("/login")
     public @ResponseBody String login() {
         return "login";
