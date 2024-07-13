@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
@@ -17,16 +18,16 @@ public class SecurityConfig {
      */
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http
-            .csrf(CsrfConfigurer<HttpSecurity>::disable)
-            .authorizeHttpRequests((authz) -> authz
-                //인증되지 않은 사용자가 접근하면 403 status code 발생
-                .requestMatchers("/user/**").authenticated()
-                .requestMatchers("/admin/**").hasRole("ADMIN")
-                .anyRequest().permitAll()
-            )
-            .formLogin(form -> form
-                    .loginPage("/login"));
+        // 폼 기반 로그인 비활성화
+        http.formLogin( (login) -> login.disable());
+        // HTTP 기본 인증 비활성화
+        http.httpBasic( (basic) -> basic.disable());
+        // CSRF 공격 방어 기능 비활성화
+        http.csrf((csrf) -> csrf.disable());
+        //세션 관리 정책 설정
+        //세션 인증을 사용하지 않고, JWT 를 사용하여 인증하기 때문에 세션 불필요
+        http.sessionManagement( (management) -> management
+                                            .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         return http.build();
     }
