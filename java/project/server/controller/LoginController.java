@@ -1,4 +1,4 @@
-package project.backend.controller;
+package project.server.controller;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
@@ -9,9 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import project.backend.constants.SecurityConstants;
-import project.backend.domain.AuthenticationRequest;
-import project.backend.prop.JwtProp;
+import project.server.constants.SecurityConstants;
+import project.server.domain.AuthenticationRequest;
+import project.server.prop.JwtProp;
 
 import java.util.ArrayList;
 import java.util.Date;

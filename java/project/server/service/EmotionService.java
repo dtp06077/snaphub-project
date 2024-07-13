@@ -1,12 +1,12 @@
-package project.backend.service;
+package project.server.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import project.backend.domain.Emotion;
-import project.backend.repository.EmotionRepository;
-import project.backend.repository.PostRepository;
-import project.backend.repository.UserRepository;
+import project.server.domain.Emotion;
+import project.server.repository.EmotionRepository;
+import project.server.repository.PostRepository;
+import project.server.repository.UserRepository;
 
 import java.util.List;
 

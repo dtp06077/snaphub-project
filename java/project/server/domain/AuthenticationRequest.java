@@ -1,4 +1,4 @@
-package project.backend.domain;
+package project.server.domain;
 
 import lombok.Data;
 

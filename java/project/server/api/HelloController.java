@@ -1,4 +1,4 @@
-package project.backend.api;
+package project.server.api;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;

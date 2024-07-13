@@ -1,4 +1,4 @@
-package project.backend.prop;
+package project.server.prop;
 
 import lombok.Getter;
 import lombok.Setter;

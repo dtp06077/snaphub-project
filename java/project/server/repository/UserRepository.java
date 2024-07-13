@@ -1,8 +1,8 @@
-package project.backend.repository;
+package project.server.repository;
 
 import jakarta.persistence.NoResultException;
 import lombok.RequiredArgsConstructor;
-import project.backend.domain.User;
+import project.server.domain.User;
 import jakarta.persistence.EntityManager;
 import org.springframework.stereotype.Repository;
 

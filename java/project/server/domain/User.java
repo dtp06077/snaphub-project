@@ -1,4 +1,4 @@
-package project.backend.domain;
+package project.server.domain;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -17,6 +17,10 @@ public class User {
     @Id @GeneratedValue
     @Column(name = "user_id") //기본키
     private Long id;
+
+    @Column(nullable = false)
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "user")
+    private String role;
 
     //회원 이름 필수, 중복 허용 X
     @Column(nullable = false, length = 20, unique = true)

@@ -1,12 +1,12 @@
-package project.backend.service;
+package project.server.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import project.backend.domain.Comment;
-import project.backend.repository.CommentRepository;
-import project.backend.repository.PostRepository;
-import project.backend.repository.UserRepository;
+import project.server.domain.Comment;
+import project.server.repository.CommentRepository;
+import project.server.repository.PostRepository;
+import project.server.repository.UserRepository;
 
 import java.util.List;
 

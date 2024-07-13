@@ -1,9 +1,9 @@
-package project.backend.repository;
+package project.server.repository;
 
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
-import project.backend.domain.Comment;
+import project.server.domain.Comment;
 
 import java.util.List;
 

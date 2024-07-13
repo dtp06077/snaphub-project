@@ -1,4 +1,4 @@
-package project.backend.constants;
+package project.server.constants;
 
 //Security 및 JWT 관련된 상수를 관리하는 클래스
 
