@@ -1,4 +1,4 @@
-package project.backend.service;
+package project.server.service;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -8,11 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
-import project.backend.domain.Emotion;
-import project.backend.domain.EmotionStatus;
-import project.backend.domain.Post;
-import project.backend.domain.User;
-import project.backend.repository.EmotionRepository;
+import project.server.domain.Emotion;
+import project.server.domain.EmotionStatus;
+import project.server.domain.Post;
+import project.server.domain.User;
+import project.server.repository.EmotionRepository;
 
 import java.util.List;
 
