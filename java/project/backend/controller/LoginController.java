@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import project.backend.constants.SecurityConstants;
-import project.backend.domain.User;
+import project.backend.domain.AuthenticationRequest;
 import project.backend.prop.JwtProp;
 
 import java.util.ArrayList;
@@ -26,11 +26,11 @@ public class LoginController {
     private JwtProp jwtProp;
 
     @PostMapping("login")
-    public ResponseEntity<?> login(@RequestBody User user) {
-        String loginId = user.getLoginId();
-        String password = user.getPassword();
+    public ResponseEntity<?> login(@RequestBody AuthenticationRequest request) {
+        String username = request.getUsername();
+        String password = request.getPassword();
 
-        log.info("loginId : " + loginId);
+        log.info("username : " + username);
         log.info("password : " + password);
 
         //사용자 권한
@@ -49,7 +49,7 @@ public class LoginController {
                             .add("type", SecurityConstants.TOKEN_TYPE)
                         .and()
                         .expiration(new Date( System.currentTimeMillis() + 1000*60*60*24*5 ))
-                        .claim("id", loginId)
+                        .claim("uid", username)
                         .claim("rol", roles)
                         .compact();
 
