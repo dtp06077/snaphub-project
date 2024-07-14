@@ -14,9 +14,10 @@ public class Auth {
     @Column(name = "auth_id")
     private Long id;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "role")
-    private String user;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 
+    @Column(nullable = false)
     private String auth;
 }

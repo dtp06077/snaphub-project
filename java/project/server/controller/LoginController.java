@@ -10,7 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import project.server.constants.SecurityConstants;
-import project.server.domain.AuthenticationRequest;
+import project.server.dto.AuthenticationRequest;
 import project.server.prop.JwtProp;
 
 import java.util.ArrayList;

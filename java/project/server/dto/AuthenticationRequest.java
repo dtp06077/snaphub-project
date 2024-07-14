@@ -1,4 +1,4 @@
-package project.server.domain;
+package project.server.dto;
 
 import lombok.Data;
 
