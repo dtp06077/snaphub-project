@@ -27,7 +27,7 @@ public class EmotionServiceTest {
 
     @Autowired private EmotionRepository emotionRepository;
 
-    @Autowired private UserService userService;
+    @Autowired private UserServiceImpl userServiceImpl;
 
     @Autowired private PostService postService;
 
@@ -39,7 +39,7 @@ public class EmotionServiceTest {
     @BeforeEach
     void setUp() {
         user = makeUser("huiseong", "1234", "1234");
-        userId = userService.register(user);
+        userId = userServiceImpl.register(user);
         post = makePost("title", "content");
         postId = postService.savePost(userId, post);
     }
@@ -76,9 +76,9 @@ public class EmotionServiceTest {
     public void save_success() {
         //Given
         User user2 = makeUser("gildong", "2345", "2345");
-        userService.register(user2);
+        userServiceImpl.register(user2);
         User user3 = makeUser("gapsu", "3456", "3456");
-        userService.register(user3);
+        userServiceImpl.register(user3);
 
         Emotion emotion1 = makeEmotion(EmotionStatus.ANGRY);
         Long id1 = emotionService.saveEmotion(user2.getId(), postId, emotion1);
@@ -119,9 +119,9 @@ public class EmotionServiceTest {
     public void byPostId_success() {
         //Given
         User user2 = makeUser("gildong", "2345", "2345");
-        userService.register(user2);
+        userServiceImpl.register(user2);
         User user3 = makeUser("gapsu", "3456", "3456");
-        userService.register(user3);
+        userServiceImpl.register(user3);
 
         Emotion emotion1 = makeEmotion(EmotionStatus.ANGRY);
         Long id1 = emotionService.saveEmotion(user2.getId(), postId, emotion1);
@@ -144,7 +144,7 @@ public class EmotionServiceTest {
     public void delete_success() {
         //Given
         User user2 = makeUser("gildong", "2345", "2345");
-        userService.register(user2);
+        userServiceImpl.register(user2);
 
         Emotion emotion1 = makeEmotion(EmotionStatus.ANGRY);
         Long id1 = emotionService.saveEmotion(user2.getId(), postId, emotion1);
@@ -161,7 +161,7 @@ public class EmotionServiceTest {
     public void deletePost_success() {
         //Given
         User user2 = makeUser("gildong", "2345", "2345");
-        userService.register(user2);
+        userServiceImpl.register(user2);
 
         Emotion emotion1 = makeEmotion(EmotionStatus.ANGRY);
         Long id1 = emotionService.saveEmotion(user2.getId(), postId, emotion1);
@@ -178,13 +178,13 @@ public class EmotionServiceTest {
     public void deleteUser_success() {
         //Given
         User user2 = makeUser("gildong", "2345", "2345");
-        userService.register(user2);
+        userServiceImpl.register(user2);
 
         Emotion emotion1 = makeEmotion(EmotionStatus.ANGRY);
         Long id1 = emotionService.saveEmotion(user2.getId(), postId, emotion1);
 
         //When
-        userService.deleteUser(userId);
+        userServiceImpl.deleteUser(userId);
 
         //Then
         assertThat(emotionRepository.findById(id1)).isNull();

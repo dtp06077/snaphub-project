@@ -17,10 +17,10 @@ import static org.assertj.core.api.Assertions.fail;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 @Transactional
-public class UserServiceTest {
+public class UserServiceImplTest {
 
     @Autowired
-    private UserService userService;
+    private UserServiceImpl userServiceImpl;
 
     @Autowired
     private UserRepository userRepository;
@@ -39,7 +39,7 @@ public class UserServiceTest {
     @DisplayName("회원 가입 성공 테스트")
     public void register_success() {
         //Given
-        Long userId = userService.register(user);
+        Long userId = userServiceImpl.register(user);
 
         //When
         User findUser = userRepository.findById(userId);
@@ -52,10 +52,10 @@ public class UserServiceTest {
     @DisplayName("로그인 성공 테스트")
     public void login_success() {
         //Given
-        Long userId = userService.register(user);
+        Long userId = userServiceImpl.register(user);
 
         //When
-        User findUser = userService.login("testLoginId", "testPassword");
+        User findUser = userServiceImpl.login("testLoginId", "testPassword");
 
         //Then
         assertThat(userRepository.findById(userId)).isEqualTo(findUser);
@@ -65,11 +65,11 @@ public class UserServiceTest {
     @DisplayName("로그인 실패 테스트 - 아이디")
     public void login_fail_wrongLoginId() {
         //Given
-        Long userId = userService.register(user);
+        Long userId = userServiceImpl.register(user);
 
         //When
         try {
-            User findUser = userService.login("wrongId", "testPassword");
+            User findUser = userServiceImpl.login("wrongId", "testPassword");
         } catch (IllegalStateException e) {
             return;
         }
@@ -82,11 +82,11 @@ public class UserServiceTest {
     @DisplayName("로그인 실패 테스트 - 비밀번호")
     public void login_fail_wrongPassword() {
         //Given
-        Long userId = userService.register(user);
+        Long userId = userServiceImpl.register(user);
 
         //When
         try {
-            User findUser = userService.login("testLoginId", "wrongPassword");
+            User findUser = userServiceImpl.login("testLoginId", "wrongPassword");
         } catch (IllegalStateException e) {
             return;
         }
@@ -99,10 +99,10 @@ public class UserServiceTest {
     @DisplayName("프로필 업데이트 성공 테스트")
     public void updateProfile_success() {
         //Given
-        Long userId = userService.register(user);
+        Long userId = userServiceImpl.register(user);
 
         //When
-        userService.updateProfile(userId, "abcd@email.com", "A#$!");
+        userServiceImpl.updateProfile(userId, "abcd@email.com", "A#$!");
 
         //Then
         assertThat(user.getEmail()).isEqualTo("abcd@email.com");
@@ -116,7 +116,7 @@ public class UserServiceTest {
 
         //When
         try {
-            userService.updateProfile(0L, "abcd@email.com", "A#$!");
+            userServiceImpl.updateProfile(0L, "abcd@email.com", "A#$!");
         } catch (IllegalStateException e) {
             return;
         }
