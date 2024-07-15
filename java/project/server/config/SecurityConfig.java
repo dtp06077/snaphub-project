@@ -23,7 +23,7 @@ public class SecurityConfig {
      */
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        log.info("시쿠리티 설정");
+        log.info("시큐리티 설정");
 
         // 폼 기반 로그인 비활성화
         http.formLogin( (login) -> login.disable());
@@ -48,6 +48,16 @@ public class SecurityConfig {
                                             .requestMatchers("/user/**").hasAnyRole("USER", "ADMIN")
                                             .requestMatchers("/admin/**").hasRole("ADMIN")
                                             .anyRequest().authenticated());
+
+        /**
+         * 인증 방식 설정
+         * 인메모리 방식
+         * JDBC 방식
+         * 커스텀 방식 * -> userDetailService
+         */
+        http.userDetailsService(null);
+
+
         return http.build();
     }
     //PasswordEncoder 빈 등록
