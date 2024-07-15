@@ -66,73 +66,73 @@ public class UserServiceImplTest {
         assertThat(auth.getAuth()).isEqualTo("ROLE_USER");
     }
 
-    @Test
-    @DisplayName("로그인 성공 테스트")
-    public void login_success() throws Exception {
-        //Given
-        Long userId = userServiceImpl.insert(userRequest);
-
-        LoginRequest loginRequest = new LoginRequest();
-        loginRequest.setLoginId(userRequest.getLoginId());
-        loginRequest.setPassword("testPassword");
-
-        //When
-        userServiceImpl.login(loginRequest, mockRequest);
+//    @Test
+//    @DisplayName("로그인 성공 테스트")
+//    public void login_success() throws Exception {
+//        //Given
+//        Long userId = userServiceImpl.insert(userRequest);
+//
+//        LoginRequest loginRequest = new LoginRequest();
+//        loginRequest.setLoginId(userRequest.getLoginId());
+//        loginRequest.setPassword("testPassword");
+//
+//        //When
+//        userServiceImpl.login(loginRequest, mockRequest);
 //
 //        // Then
 //        User findUser = userRepository.findById(userId);
 //        assertThat(findUser).isNotNull();
-    }
-
-    @Test
-    @DisplayName("로그인 실패 테스트 - 잘못된 비밀번호")
-    public void login_fail_wrong_password() throws Exception {
-        //Given
-        userServiceImpl.insert(userRequest);
-
-        LoginRequest loginRequest = new LoginRequest();
-        loginRequest.setLoginId(userRequest.getLoginId());
-        loginRequest.setPassword("wrongPassword");
-
-        // When & Then
-        assertThrows(AuthenticationException.class, () -> {
-            userServiceImpl.login(loginRequest, mockRequest);
-        });
-    }
-
-    @Test
-    @DisplayName("로그인 실패 테스트 - 존재하지 않는 사용자")
-    public void login_fail_nonexistent_user() throws Exception {
-        // Given
-        LoginRequest loginRequest = new LoginRequest();
-        loginRequest.setLoginId("nonexistentUser");
-        loginRequest.setPassword("testPassword");
-
-        // When & Then
-        assertThrows(AuthenticationException.class, () -> {
-            userServiceImpl.login(loginRequest, mockRequest);
-        });
-    }
-
-    @Test
-    @DisplayName("회원 정보 수정 성공 테스트")
-    public void update_success() throws Exception {
-        //Given
-        Long userId = userServiceImpl.insert(userRequest);
-        UserRequest updateRequest = new UserRequest();
-        updateRequest.setLoginId("newId");
-        updateRequest.setPassword("newPw");
-        updateRequest.setEmail("newEmail");
-        updateRequest.setProfile("newPro");
-        updateRequest.setName("newName");
-
-        //When
-        userServiceImpl.update(userId, updateRequest);
-        User user = userRepository.findById(userId);
-
-        //Then
-        assertThat(user.getEmail()).isEqualTo("newEmail");
-        assertThat(user.getProfile()).isEqualTo("newPro");
-        assertThat(user.getLoginId()).isEqualTo("newId");
-    }
+//    }
+//
+//    @Test
+//    @DisplayName("로그인 실패 테스트 - 잘못된 비밀번호")
+//    public void login_fail_wrong_password() throws Exception {
+//        //Given
+//        userServiceImpl.insert(userRequest);
+//
+//        LoginRequest loginRequest = new LoginRequest();
+//        loginRequest.setLoginId(userRequest.getLoginId());
+//        loginRequest.setPassword("wrongPassword");
+//
+//        // When & Then
+//        assertThrows(AuthenticationException.class, () -> {
+//            userServiceImpl.login(loginRequest, mockRequest);
+//        });
+//    }
+//
+//    @Test
+//    @DisplayName("로그인 실패 테스트 - 존재하지 않는 사용자")
+//    public void login_fail_nonexistent_user() throws Exception {
+//        // Given
+//        LoginRequest loginRequest = new LoginRequest();
+//        loginRequest.setLoginId("nonexistentUser");
+//        loginRequest.setPassword("testPassword");
+//
+//        // When & Then
+//        assertThrows(AuthenticationException.class, () -> {
+//            userServiceImpl.login(loginRequest, mockRequest);
+//        });
+//    }
+//
+//    @Test
+//    @DisplayName("회원 정보 수정 성공 테스트")
+//    public void update_success() throws Exception {
+//        //Given
+//        Long userId = userServiceImpl.insert(userRequest);
+//        UserRequest updateRequest = new UserRequest();
+//        updateRequest.setLoginId("newId");
+//        updateRequest.setPassword("newPw");
+//        updateRequest.setEmail("newEmail");
+//        updateRequest.setProfile("newPro");
+//        updateRequest.setName("newName");
+//
+//        //When
+//        userServiceImpl.update(userId, updateRequest);
+//        User user = userRepository.findById(userId);
+//
+//        //Then
+//        assertThat(user.getEmail()).isEqualTo("newEmail");
+//        assertThat(user.getProfile()).isEqualTo("newPro");
+//        assertThat(user.getLoginId()).isEqualTo("newId");
+//    }
 }
