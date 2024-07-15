@@ -36,11 +36,12 @@ public class PostServiceTest {
     private Post post1;
     private User user1;
     private Long postId1;
+    private Long userId1;
 
     @BeforeEach
     void setUp() {
         user1 = makeUser("huiseong", "1234", "1234");
-        userRepository.userSave(user1);
+        userId1 = userRepository.userSave(user1);
 
         post1 = makePost("title", "content");
         postId1 = postService.savePost(user1.getId(), post1);
@@ -70,7 +71,7 @@ public class PostServiceTest {
         //Given
 
         //When
-        User findUser = userRepository.findById(user1.getId());
+        User findUser = userRepository.findById(userId1);
         List<Post> postList = findUser.getPosts();
         Post findPost = postRepository.findById(postId1);
 

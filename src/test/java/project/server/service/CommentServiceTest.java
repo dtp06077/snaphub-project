@@ -12,6 +12,8 @@ import project.server.domain.Comment;
 import project.server.domain.Post;
 import project.server.domain.User;
 import project.server.repository.CommentRepository;
+import project.server.repository.PostRepository;
+import project.server.repository.UserRepository;
 
 import java.util.List;
 
@@ -26,7 +28,7 @@ public class CommentServiceTest {
 
     @Autowired private CommentRepository commentRepository;
 
-    @Autowired private UserServiceImpl userServiceImpl;
+    @Autowired private UserRepository userRepository;
 
     @Autowired private PostService postService;
 
@@ -38,7 +40,7 @@ public class CommentServiceTest {
     @BeforeEach
     void setUp() {
         user = makeUser("huiseong", "1234", "1234");
-        userId = userServiceImpl.register(user);
+        userId = userRepository.userSave(user);
         post = makePost("title", "content");
         postId = postService.savePost(userId, post);
     }
@@ -113,7 +115,7 @@ public class CommentServiceTest {
     public void byPostId_success() {
         //Given
         User user2 = makeUser("gildong", "2345", "2345");
-        Long userId2 = userServiceImpl.register(user2);
+        Long userId2 = userRepository.userSave(user2);
         Post post2 = makePost("title2", "content2");
         Post post3 = makePost("title3", "content3");
         Long postId2 = postService.savePost(userId2, post2);
@@ -177,7 +179,7 @@ public class CommentServiceTest {
         Long commentId = commentService.saveComment(userId, postId, comment);
 
         //When
-        userServiceImpl.deleteUser(userId);
+        userRepository.delete(userId);
 
         //Then
         assertThat(commentRepository.findById(commentId)).isNull();
