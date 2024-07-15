@@ -24,8 +24,9 @@ import project.server.repository.UserRepository;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    // 비밀번호 암호와 객체
     private final PasswordEncoder passwordEncoder;
-    //인증 관리자 객체
+    // 인증 관리자 객체
     private final AuthenticationManager authenticationManager;
 
     /**
