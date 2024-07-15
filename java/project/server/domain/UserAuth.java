@@ -7,7 +7,7 @@ import lombok.Setter;
 @Entity
 @Table(name = "users_auth")
 @Getter @Setter
-public class Auth {
+public class UserAuth {
 
     @Id
     @GeneratedValue

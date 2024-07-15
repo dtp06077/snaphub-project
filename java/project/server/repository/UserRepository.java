@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import project.server.domain.User;
 import jakarta.persistence.EntityManager;
 import org.springframework.stereotype.Repository;
+import project.server.domain.UserAuth;
 
 @Repository
 @RequiredArgsConstructor
@@ -13,10 +14,17 @@ public class UserRepository {
     private final EntityManager em;
 
     //사용자 저장
-    public Long save(User user) {
+    public Long userSave(User user) {
         em.persist(user);
         return user.getId();
     }
+
+    //권한 저장
+    public Long authSave(UserAuth userAuth) {
+        em.persist(userAuth);
+        return userAuth.getId();
+    }
+
     //사용자 검색 메서드
     public User findById(Long id) {
         return em.find(User.class, id);

@@ -20,7 +20,7 @@ public class User {
 
     @Column(nullable = false)
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Auth> auths = new ArrayList<>();
+    private List<UserAuth> auths = new ArrayList<>();
 
     //회원 이름 필수, 중복 허용 X
     @Column(nullable = false, length = 20, unique = true)
