@@ -101,18 +101,16 @@ public class UserServiceImpl implements UserService {
         // 시큐리티 컨텍스트에 인증 사용자 등록
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }
+
     /**
-     * 사용자 프로필 업데이트
+     * 회원정보 수정
      */
     @Transactional
     @Override
-    public void update(Long userId, String email, String profile) {
-        User user = userRepository.findById(userId);
-        if(user == null) {
-            throw new IllegalStateException("해당 사용자가 존재하지 않습니다.");
-        }
-        user.setEmail(email);
-        user.setProfile(profile);
+    public Long update(User user) throws Exception {
+        // 비밀번호 암호화
+        String password = user.getPassword();
+        String encodedPw = passwordEncoder.encode(password);
     }
 
     /**
