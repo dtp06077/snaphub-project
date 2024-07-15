@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import project.server.domain.UserAuth;
 import project.server.domain.User;
+import project.server.dto.LoginRequest;
+import project.server.dto.UserRequest;
 import project.server.repository.UserRepository;
 
 @Service
@@ -34,13 +36,19 @@ public class UserServiceImpl implements UserService {
      */
     @Transactional
     @Override
-    public Long insert(User user) throws Exception {
+    public Long insert(UserRequest userRequest) throws Exception {
         //비밀번호 암호화
-        String password = user.getPassword();
+        String password = userRequest.getPassword();
         String encodePw = passwordEncoder.encode(password);
-        user.setPassword(encodePw);
+        userRequest.setPassword(encodePw);
 
         //회원 등록
+        User user = new User();
+        user.setName(userRequest.getName());
+        user.setEmail(userRequest.getEmail());
+        user.setLoginId(userRequest.getLoginId());
+        user.setPassword(userRequest.getPassword());
+        user.setProfile(userRequest.getProfile());
         Long userId = userRepository.userSave(user);
 
         //권한 등록
@@ -75,9 +83,9 @@ public class UserServiceImpl implements UserService {
      */
     @Transactional
     @Override
-    public void login(User user, HttpServletRequest request) {
-        String loginId = user.getLoginId();
-        String password = user.getPassword();
+    public void login(LoginRequest loginRequest, HttpServletRequest request) {
+        String loginId = loginRequest.getLoginId();
+        String password = loginRequest.getPassword();
         log.info("loginId : " + loginId);
         log.info("password : " + password);
 
@@ -107,14 +115,25 @@ public class UserServiceImpl implements UserService {
      */
     @Transactional
     @Override
-    public Long update(User user) throws Exception {
+    public Long update(Long id, UserRequest userRequest) throws Exception {
         // 비밀번호 암호화
-        String password = user.getPassword();
+        String password = userRequest.getPassword();
         String encodedPw = passwordEncoder.encode(password);
+        userRequest.setPassword(encodedPw);
+
+        //변경 감지
+        User user = userRepository.findById(id);
+        user.setLoginId(userRequest.getLoginId());
+        user.setPassword(userRequest.getPassword());
+        user.setName(userRequest.getName());
+        user.setEmail(userRequest.getEmail());
+        user.setProfile(userRequest.getProfile());
+
+        return id;
     }
 
     /**
-     * 사용자 삭제
+     * 회원 삭제
      */
     @Transactional
     @Override
