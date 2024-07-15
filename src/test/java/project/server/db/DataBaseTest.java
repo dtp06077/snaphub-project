@@ -26,7 +26,7 @@ public class DataBaseTest {
 
         User user = new User();
         user.setName("userA");
-        Long saveId = userRepository.save(user);
+        Long saveId = userRepository.userSave(user);
 
         User findUser = userRepository.findById(saveId);
 
