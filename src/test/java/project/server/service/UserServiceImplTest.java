@@ -113,33 +113,27 @@ public class UserServiceImplTest {
         assertThrows(AuthenticationException.class, () -> {
             userServiceImpl.login(loginRequest, mockRequest);
         });
-
-    @Test
-    @DisplayName("프로필 업데이트 성공 테스트")
-    public void updateProfile_success() throws Exception {
-        //Given
-        Long userId = userServiceImpl.insert(user);
-
-        //When
-        userServiceImpl.updateProfile(userId, "abcd@email.com", "A#$!");
-
-        //Then
-        assertThat(user.getEmail()).isEqualTo("abcd@email.com");
-        assertThat(user.getProfile()).isEqualTo("A#$!");
     }
 
     @Test
-    @DisplayName("프로필 업데이트 실패 테스트")
-    public void updateProfile_fail() throws Exception {
+    @DisplayName("회원 정보 수정 성공 테스트")
+    public void update_success() throws Exception {
         //Given
+        Long userId = userServiceImpl.insert(userRequest);
+        UserRequest updateRequest = new UserRequest();
+        updateRequest.setLoginId("newId");
+        updateRequest.setPassword("newPw");
+        updateRequest.setEmail("newEmail");
+        updateRequest.setProfile("newPro");
+        updateRequest.setName("newName");
 
         //When
-        try {
-            userServiceImpl.updateProfile(0L, "abcd@email.com", "A#$!");
-        } catch (IllegalStateException e) {
-            return;
-        }
+        userServiceImpl.update(userId, updateRequest);
+        User user = userRepository.findById(userId);
+
         //Then
-        fail("프로필 업데이트 실패 예외가 발생해야 한다.");
+        assertThat(user.getEmail()).isEqualTo("newEmail");
+        assertThat(user.getProfile()).isEqualTo("newPro");
+        assertThat(user.getLoginId()).isEqualTo("newId");
     }
 }
