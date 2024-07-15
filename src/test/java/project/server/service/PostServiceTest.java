@@ -40,7 +40,7 @@ public class PostServiceTest {
     @BeforeEach
     void setUp() {
         user1 = makeUser("huiseong", "1234", "1234");
-        userRepository.save(user1);
+        userRepository.userSave(user1);
 
         post1 = makePost("title", "content");
         postId1 = postService.savePost(user1.getId(), post1);
@@ -114,8 +114,8 @@ public class PostServiceTest {
         //Given
         User user2 = makeUser("gildong", "2345", "2345");
         User user3 = makeUser("gilson", "3456", "3456");
-        userRepository.save(user2);
-        userRepository.save(user3);
+        userRepository.userSave(user2);
+        userRepository.userSave(user3);
 
         Post post2 = makePost("title2", "content2");
         Post post3 = makePost("title3", "content3");
