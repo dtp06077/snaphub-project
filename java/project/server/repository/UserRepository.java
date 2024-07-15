@@ -25,12 +25,12 @@ public class UserRepository {
         return userAuth.getId();
     }
 
-    //사용자 검색 메서드
+    //회원 조회 메서드
     public User findById(Long id) {
         return em.find(User.class, id);
     }
 
-    //닉네임을 통한 사용자 검색 메서드
+    //닉네임을 통한 회원 조회 메서드
     public User findByName(String name) {
         try {
             return em.createQuery("select u from User u where u.name = :name",

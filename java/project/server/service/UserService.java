@@ -8,7 +8,7 @@ public interface UserService {
     public Long insert(User user) throws Exception;
 
     //회원 조회
-    public User select(long userId) throws Exception;
+    public User select(Long userId) throws Exception;
 
     //로그인
     public void login(User user, HttpServletRequest request) throws Exception;
