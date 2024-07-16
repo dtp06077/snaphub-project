@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import project.server.constants.SecurityConstants;
 import project.server.dto.AuthenticationRequest;
 import project.server.prop.JwtProp;
+import project.server.security.constants.JwtConstants;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -45,7 +46,7 @@ public class LoginController {
                         // .signWith( 시크릿키 , 알고리즘 )
                         .signWith(Keys.hmacShaKeyFor(signingKey), Jwts.SIG.HS512 )  // 시그니처 사용할 비밀키, 알고리즘 설정
                         .header()                                                   // 헤더 설정
-                            .add("type", SecurityConstants.TOKEN_TYPE)           // type : JWT
+                            .add("type", JwtConstants.TOKEN_TYPE)           // type : JWT
                         .and()
                         .expiration(new Date( System.currentTimeMillis() + 1000*60*60*24*5 )) // 토큰 만료 시간 설정 (5일)
                         .claim("uid", username)                                  //PAYLOAD - uid : user   (사용자 아이디)
@@ -65,7 +66,7 @@ public class LoginController {
         log.info("Authorization : " + header);
 
         // Authorization : Bearer ${jwt}
-        String jwt = header.replace(SecurityConstants.TOKEN_PREFIX, "");
+        String jwt = header.replace(JwtConstants.TOKEN_PREFIX, "");
 
         byte[] signingKey = jwtProp.getSecret().getBytes();
 
