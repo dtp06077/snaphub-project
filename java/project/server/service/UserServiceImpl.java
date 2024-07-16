@@ -17,6 +17,8 @@ import project.server.dto.LoginRequest;
 import project.server.dto.UserRequest;
 import project.server.repository.UserRepository;
 
+import java.time.LocalDateTime;
+
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -50,6 +52,7 @@ public class UserServiceImpl implements UserService {
         user.setLoginId(userRequest.getLoginId());
         user.setPassword(userRequest.getPassword());
         user.setProfile(userRequest.getProfile());
+        user.setCreatedAt(LocalDateTime.now());
         Long userId = userRepository.userSave(user);
 
         //권한 등록
