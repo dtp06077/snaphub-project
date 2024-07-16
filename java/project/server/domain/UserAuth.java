@@ -20,4 +20,9 @@ public class UserAuth {
 
     @Column(nullable = false)
     private String auth;
+
+    //연관관계 메서드
+    public String getUserLoginId() {
+        return this.user.getLoginId();
+    }
 }
