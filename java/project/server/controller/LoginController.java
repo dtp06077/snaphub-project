@@ -10,7 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import project.server.dto.AuthenticationRequest;
-import project.server.prop.JwtProp;
+import project.server.prop.JwtProps;
 import project.server.security.constants.JwtConstants;
 
 import java.util.ArrayList;
@@ -22,7 +22,7 @@ import java.util.List;
 public class LoginController {
 
     @Autowired
-    private JwtProp jwtProp;
+    private JwtProps jwtProp;
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody AuthenticationRequest request) {
@@ -38,7 +38,7 @@ public class LoginController {
         roles.add("ROLE_ADMIN");
 
         //시크릿키 -> 바이트
-        byte[] signingKey = jwtProp.getSecret().getBytes();
+        byte[] signingKey = jwtProp.getSecretKey().getBytes();
 
         //토큰 생성
         String jwt = Jwts.builder()
@@ -67,7 +67,7 @@ public class LoginController {
         // Authorization : Bearer ${jwt}
         String jwt = header.replace(JwtConstants.TOKEN_PREFIX, "");
 
-        byte[] signingKey = jwtProp.getSecret().getBytes();
+        byte[] signingKey = jwtProp.getSecretKey().getBytes();
 
         Jws<Claims> parsedToken = Jwts.parser()
                                     .verifyWith(Keys.hmacShaKeyFor(signingKey))
