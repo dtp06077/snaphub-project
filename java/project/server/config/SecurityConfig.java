@@ -1,21 +1,26 @@
 package project.server.config;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.authentication.AuthenticationManager;
+import project.server.security.custom.CustomUserDetailService;
 
 @Slf4j
 @Configuration
 @EnableWebSecurity //스프링 시큐리티 필터가 스프링 필터체인에 등록
 public class SecurityConfig {
+
+    @Autowired
+    private CustomUserDetailService customUserDetailService;
 
     /**
      *  deprecated된 기존 WebSecurityConfigurerAdapter 방식 대신
@@ -55,20 +60,26 @@ public class SecurityConfig {
          * JDBC 방식
          * 커스텀 방식 * -> userDetailService
          */
-        http.userDetailsService(null);
+        http.userDetailsService(customUserDetailService);
 
 
         return http.build();
     }
     //PasswordEncoder 빈 등록
+    //암호화 알고리즘 방식: Bcrypt
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
     //AuthenticationManager 빈 등록
+    private AuthenticationManager authenticationManager;
+
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
-        return authenticationConfiguration.getAuthenticationManager();
+    public AuthenticationManager authenticationManager
+                    (AuthenticationConfiguration authenticationConfiguration) throws Exception {
+
+        this.authenticationManager = authenticationConfiguration.getAuthenticationManager();
+        return authenticationManager;
     }
 }
