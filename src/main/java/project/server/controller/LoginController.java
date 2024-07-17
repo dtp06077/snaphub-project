@@ -11,7 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import project.server.dto.AuthenticationRequest;
 import project.server.prop.JwtProps;
-import project.server.security.constants.JwtConstants;
+import project.server.security.jwt.constants.JwtConstants;
 
 import java.util.ArrayList;
 import java.util.Date;

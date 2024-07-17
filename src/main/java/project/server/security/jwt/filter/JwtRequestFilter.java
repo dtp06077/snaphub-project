@@ -9,7 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
-import project.server.security.constants.JwtConstants;
+import project.server.security.jwt.constants.JwtConstants;
 import project.server.security.jwt.provider.JwtTokenProvider;
 
 import java.io.IOException;

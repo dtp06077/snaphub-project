@@ -1,4 +1,4 @@
-package project.server.security.constants;
+package project.server.security.jwt.constants;
 
 /** 지정해야 할 것
  * - 로그인 필터 경로

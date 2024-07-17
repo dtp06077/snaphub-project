@@ -12,7 +12,7 @@ import project.server.domain.User;
 import project.server.repository.UserRepository;
 import project.server.security.domain.CustomUser;
 import project.server.prop.JwtProps;
-import project.server.security.constants.JwtConstants;
+import project.server.security.jwt.constants.JwtConstants;
 
 import javax.crypto.SecretKey;
 import java.util.Date;
