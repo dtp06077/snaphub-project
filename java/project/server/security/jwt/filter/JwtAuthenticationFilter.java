@@ -10,17 +10,34 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import project.server.security.constants.JwtConstants;
+import project.server.security.domain.CustomUser;
+import project.server.security.jwt.provider.JwtTokenProvider;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.stream.Collectors;
 
+/**
+ *  client -> filter -> server
+ *           (/login)
+ * loginId, password로 인증 시도 -> attemptAuthentication
+ *
+ * 1. 인증 성공 시 -> successfulAuthentication -> JWT 생성
+ *    생성된 JWT -> response-header-authorization 에 담김
+ *
+ * 2. 인증 실패 시 -> response-status -> 401 (UNAUTHORIZED)
+ */
 @Slf4j
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private final AuthenticationManager authenticationManager;
+    private final JwtTokenProvider jwtTokenProvider;
 
-    //생성자에서 AuthenticationManager 설정
-    public JwtAuthenticationFilter(AuthenticationManager authenticationManager) {
+    //생성자에서 AuthenticationManager, JwtTokenProvider 설정
+    public JwtAuthenticationFilter(AuthenticationManager authenticationManager, JwtTokenProvider jwtTokenProvider) {
         this.authenticationManager = authenticationManager;
+        this.jwtTokenProvider = jwtTokenProvider;
         // 필터 URL 경로 설정 : /login
         setFilterProcessesUrl("/login");
     }
@@ -55,8 +72,32 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         return authentication;
     }
 
+    /**
+     * 인증 성공 메서드
+     * - JWT 토큰 발급
+     * - JWT 응답 헤더에 설정
+     */
     @Override
-    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
-        super.successfulAuthentication(request, response, chain, authResult);
+    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
+                                            Authentication authentication) throws IOException, ServletException {
+
+        log.info("인증 성공");
+
+        CustomUser user = (CustomUser) authentication.getPrincipal();
+        //회원 정보
+        Long userId = user.getUser().getId();
+        String loginId = user.getUser().getLoginId();
+    
+        //회원 권한
+        List<String> roles = user.getUser().getAuths().stream()
+                .map( (auth) -> auth.getAuth())
+                .collect(Collectors.toList());
+
+        // jwt 토큰 발급
+        String jwt = jwtTokenProvider.createToken(userId, loginId, roles);
+
+        // jwt 응답 헤더에 설정
+        response.addHeader(JwtConstants.TOKEN_HEADER, JwtConstants.TOKEN_PREFIX+ jwt);
+        response.setStatus(200);
     }
 }
