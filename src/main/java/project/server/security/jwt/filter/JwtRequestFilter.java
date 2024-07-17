@@ -32,7 +32,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         String header = request.getHeader(JwtConstants.TOKEN_HEADER);
         log.info("authorization : " + header);
 
-        // jwt 토큰이 없음ㄴ 다음 필터로 이동
+        // jwt 토큰이 없음 다음 필터로 이동
         //Bearer + (jwt) 체크
         if(header == null || header.length() == 0 || !header.startsWith(JwtConstants.TOKEN_PREFIX)) {
             filterChain.doFilter(request, response);
