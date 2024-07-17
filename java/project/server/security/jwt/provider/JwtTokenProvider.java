@@ -42,7 +42,7 @@ public class JwtTokenProvider {
      */
     public String createToken(Long userId, String loginId, List<String> roles) {
 
-        //토큰 생성
+        //jwt 토큰 생성
         String jwt = Jwts.builder()
                 // .signWith( 시크릿키 , 알고리즘 )
                 .signWith(getShaKey(), Jwts.SIG.HS512)                      // 서명에 사용할 키와 알고리즘 설정
@@ -72,21 +72,21 @@ public class JwtTokenProvider {
 
         try {
 
-            //jwt 추출
+            //jwt 추출 (Bearer + {jwt}) -> {jwt}
             String jwt = authHeader.replace("Bearer ", "");
 
             //jwt 파싱
             Jws<Claims> parsedToken = Jwts.parser()
-                    .verifyWith(getShaKey())
-                    .build()
-                    .parseSignedClaims(jwt);
+                                            .verifyWith(getShaKey())
+                                            .build()
+                                            .parseSignedClaims(jwt);
 
             log.info("parsedToken : " + parsedToken);
 
             //인증된 회원 PK
-            Long userId = (Long) parsedToken.getPayload().get("uid");
-            userId = (userId == null) ? 0 : userId;
-            log.info("userId : " + userId);
+            String id = parsedToken.getPayload().get("uid").toString();
+            Long userId = (id == null) ? 0 : Long.parseLong(id);
+            log.info("userId : " + id);
 
             //인증된 회원 아이디
             String loginId = parsedToken.getPayload().get("lid").toString();
@@ -142,6 +142,35 @@ public class JwtTokenProvider {
         return null;
     }
 
+    /**
+     * 토큰 유효성 검사 - 만료기간이 넘었는지
+     * @param jwt
+     * @return
+     * true : 유효
+     * false : 만료
+     */
+    public boolean validateToken(String jwt) {
+        try {
+            //jwt 파싱
+            Jws<Claims> parsedToken = Jwts.parser()
+                    .verifyWith(getShaKey())
+                    .build()
+                    .parseSignedClaims(jwt);
+
+            return !parsedToken.getPayload().getExpiration().before(new Date());
+        } catch (ExpiredJwtException exception) {
+            log.error("Token Expired");
+            return false;
+        } catch (JwtException exception) {
+            log.error("Token Tampered");
+            return false;
+        } catch (NullPointerException exception) {
+            log.error("Token is null");
+            return false;
+        } catch (Exception e) {
+            return false;
+        }
+    }
 
     //secretKey -> signingKey
     private byte[] getSigningKey() {
