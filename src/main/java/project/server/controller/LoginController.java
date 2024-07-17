@@ -38,7 +38,7 @@ public class LoginController {
         roles.add("ROLE_ADMIN");
 
         //시크릿키 -> 바이트
-        byte[] signingKey = jwtProp.getSecretKey().getBytes();
+        byte[] signingKey = jwtProp.getSecret().getBytes();
 
         //토큰 생성
         String jwt = Jwts.builder()
@@ -67,7 +67,7 @@ public class LoginController {
         // Authorization : Bearer ${jwt}
         String jwt = header.replace(JwtConstants.TOKEN_PREFIX, "");
 
-        byte[] signingKey = jwtProp.getSecretKey().getBytes();
+        byte[] signingKey = jwtProp.getSecret().getBytes();
 
         Jws<Claims> parsedToken = Jwts.parser()
                                     .verifyWith(Keys.hmacShaKeyFor(signingKey))
