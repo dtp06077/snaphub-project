@@ -39,7 +39,7 @@ public class UserServiceImpl implements UserService {
      */
     @Transactional
     @Override
-    public Long insert(UserRequest userRequest) throws Exception {
+    public Long insert(UserRequest userRequest) {
         //비밀번호 암호화
         String password = userRequest.getPassword();
         String encodePw = passwordEncoder.encode(password);
