@@ -7,7 +7,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import project.server.domain.User;
-import project.server.dto.CustomUser;
+import project.server.security.domain.CustomUser;
 import project.server.repository.UserRepository;
 
 //사용자 인증 방식을 세팅해주기 위한 객체

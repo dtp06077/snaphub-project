@@ -1,4 +1,4 @@
-package project.server.dto;
+package project.server.security.domain;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
