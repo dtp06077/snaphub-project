@@ -33,7 +33,7 @@ public class User {
     private String loginId;
 
     //로그인 비밀번호 필수
-    @Column(nullable = false, length = 50)
+    @Column(nullable = false, length = 200)
     private String password;
 
     private String profile;
