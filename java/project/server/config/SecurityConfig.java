@@ -13,11 +13,16 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import project.server.security.custom.CustomUserDetailService;
+import project.server.security.jwt.filter.JwtAuthenticationFilter;
+import project.server.security.jwt.provider.JwtTokenProvider;
 
 @Slf4j
 @Configuration
 @EnableWebSecurity //스프링 시큐리티 필터가 스프링 필터체인에 등록
 public class SecurityConfig {
+
+    @Autowired
+    private JwtTokenProvider jwtTokenProvider;
 
     @Autowired
     private CustomUserDetailService customUserDetailService;
@@ -42,6 +47,9 @@ public class SecurityConfig {
 //                                            .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         //필터 설정
+        http.addFilterAt(new JwtAuthenticationFilter(authenticationManager, jwtTokenProvider), null)
+            .addFilterBefore(null, null)
+            ;
 
         //인가 설정
         http.authorizeHttpRequests( authorizeRequests ->
