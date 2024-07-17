@@ -38,7 +38,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         this.authenticationManager = authenticationManager;
         this.jwtTokenProvider = jwtTokenProvider;
         // 필터 URL 경로 설정 : /login
-        setFilterProcessesUrl("/login");
+        setFilterProcessesUrl(JwtConstants.AUTH_LOGIN_URL); // /login
     }
 
     /**
@@ -92,10 +92,10 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 .map( (auth) -> auth.getAuth())
                 .collect(Collectors.toList());
 
-        // jwt 토큰 발급
+        // jwt 토큰 발급 요청
         String jwt = jwtTokenProvider.createToken(userId, loginId, roles);
 
-        // jwt 응답 헤더에 설정
+        // jwt 응답 헤더에 설정 { Authorization : Bearer + {jwt} }
         response.addHeader(JwtConstants.TOKEN_HEADER, JwtConstants.TOKEN_PREFIX+ jwt);
         response.setStatus(200);
     }
