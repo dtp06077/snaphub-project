@@ -174,7 +174,7 @@ public class JwtTokenProvider {
 
     //secretKey -> signingKey
     private byte[] getSigningKey() {
-        return jwtProps.getSecretKey().getBytes();
+        return jwtProps.getSecret().getBytes();
     }
 
     //secretKey -> HMAC-SHA 알고리즘 -> signingKey

@@ -10,6 +10,6 @@ import org.springframework.stereotype.Component;
 public class JwtProps {
 
     // 시크릿 키 : JWT 시크니처 암호화를 위한 정보
-    private String secretKey;
+    private String secret;
 
 }
