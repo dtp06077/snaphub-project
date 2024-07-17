@@ -159,13 +159,13 @@ public class JwtTokenProvider {
 
             return !parsedToken.getPayload().getExpiration().before(new Date());
         } catch (ExpiredJwtException exception) {
-            log.error("Token Expired");
+            log.error("Token Expired"); //토큰 만료
             return false;
         } catch (JwtException exception) {
-            log.error("Token Tampered");
+            log.error("Token Tampered"); //토큰 손상
             return false;
         } catch (NullPointerException exception) {
-            log.error("Token is null");
+            log.error("Token is null"); //토큰 부재
             return false;
         } catch (Exception e) {
             return false;
