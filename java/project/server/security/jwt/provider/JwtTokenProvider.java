@@ -1,16 +1,23 @@
 package project.server.security.jwt.provider;
 
-import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+import project.server.domain.User;
+import project.server.repository.UserRepository;
+import project.server.security.domain.CustomUser;
 import project.server.prop.JwtProps;
 import project.server.security.constants.JwtConstants;
 
 import javax.crypto.SecretKey;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * JWT 토큰 관련 기능을 제공해주는 클래스
@@ -26,6 +33,9 @@ public class JwtTokenProvider {
     //시크릿키 정보를 담는 객체 의존 주입
     @Autowired
     private JwtProps jwtProps;
+
+    @Autowired
+    private UserRepository userRepository;
 
     /**
      * 토큰 생성
@@ -48,6 +58,88 @@ public class JwtTokenProvider {
         log.info("jwt : " +jwt);
 
         return jwt;
+    }
+
+    /**
+     * 토큰 해석
+     * Authorization : Bearer + {jwt}  (authHeader)
+     * -> jwt 추출
+     * -> UsernamePasswordAuthenticationToken
+     */
+    public UsernamePasswordAuthenticationToken getAuthentication(String authHeader) {
+
+        if(authHeader == null || authHeader.length() == 0 ) return null;
+
+        try {
+
+            //jwt 추출
+            String jwt = authHeader.replace("Bearer ", "");
+
+            //jwt 파싱
+            Jws<Claims> parsedToken = Jwts.parser()
+                    .verifyWith(getShaKey())
+                    .build()
+                    .parseSignedClaims(jwt);
+
+            log.info("parsedToken : " + parsedToken);
+
+            //인증된 회원 PK
+            Long userId = (Long) parsedToken.getPayload().get("uid");
+            userId = (userId == null) ? 0 : userId;
+            log.info("userId : " + userId);
+
+            //인증된 회원 아이디
+            String loginId = parsedToken.getPayload().get("lid").toString();
+            log.info("loginId : " + loginId);
+
+            //인증된 회원 권한
+            Claims claims = parsedToken.getPayload();
+            Object roles = claims.get("role");
+            log.info("roles : " + roles);
+
+            //토큰에 userId 있는지 확인
+            if( loginId == null || loginId.length() ==0 ) return null;
+
+            //TODO : User 객체에 PK와 아이디 담기
+            User user = new User();
+            user.setId(userId);
+            user.setLoginId(loginId);
+
+            //TODO : User 객체에 권한 담기
+            List<SimpleGrantedAuthority> authorities = ((List<?>) roles )
+                    .stream()
+                    .map(auth -> new SimpleGrantedAuthority( (String) auth ))
+                    .collect( Collectors.toList() );
+
+            //토큰 유효하면
+            //name ,email, profile 도 담아주기
+            try {
+                User userInfo = userRepository.findById(userId);
+                user.setName(userInfo.getName());
+                user.setEmail(userInfo.getEmail());
+                user.setProfile(userInfo.getProfile());
+            } catch (Exception e) {
+                log.error(e.getMessage());
+                log.error("토큰 유효 -> DB 추가 정보 조회시 에러 발생");
+            }
+
+            UserDetails userDetails = new CustomUser(user);
+
+            // OK
+            // new UsernamePasswordAuthenticationToken( 사용자정보객체, 비밀번호, 사용자의 권한목록 );
+            return new UsernamePasswordAuthenticationToken(userDetails, null, authorities);
+        }
+        catch (ExpiredJwtException exception) {
+            log.warn("Request to parse expired JWT : {} failed : {}", authHeader, exception.getMessage());
+        } catch (UnsupportedJwtException exception) {
+            log.warn("Request to parse unsupported JWT : {} failed : {}", authHeader, exception.getMessage());
+        } catch (MalformedJwtException exception) {
+            log.warn("Request to parse invalid JWT : {} failed : {}", authHeader, exception.getMessage());
+        } catch (IllegalArgumentException exception) {
+            log.warn("Request to parse empty or null JWT : {} failed : {}", authHeader, exception.getMessage());
+        }
+
+        return null;
     }
 
 
