@@ -7,7 +7,7 @@ const Header = () => {
     <header>
         <div className='logo'>
             <Link to="/">
-                <image src="" alt="logo" className='logo'/>
+                <image src="https://i.imgur.com/fzADqJo.png" alt="logo" className='logo'/>
             </Link>
         </div>
 
@@ -20,7 +20,7 @@ const Header = () => {
             </ul>
             {/* 로그인 시*/}
             <ul>
-                <li><Link to = "/login">마이페이지</Link></li>
+                <li><Link to = "/user">마이페이지</Link></li>
                 <li><button className='link'>로그아웃</button></li>
             </ul>
         </div>
