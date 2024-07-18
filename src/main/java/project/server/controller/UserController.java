@@ -77,4 +77,25 @@ public class UserController {
             return new ResponseEntity<>("FAIL", HttpStatus.BAD_REQUEST);
         }
     }
+
+    /**
+     * 회원 삭제
+     */
+    @Secured("ROLE_ADMIN")
+    @DeleteMapping("/{loginId}")
+    public ResponseEntity<?> destroy(@PathVariable("loginId") String loginId) throws Exception {
+        log.info("[DELETE] - /users/{userId}");
+
+        Long result = userService.delete(loginId);
+
+        if( result >= 0 ) {
+            log.info("회원삭제 성공! - SUCCESS");
+            return new ResponseEntity<>("SUCCESS", HttpStatus.OK);
+        }
+        else {
+            log.info("회원삭제 실패! - FAIL");
+            return new ResponseEntity<>("FAIL", HttpStatus.BAD_REQUEST);
+        }
+
+    }
 }
