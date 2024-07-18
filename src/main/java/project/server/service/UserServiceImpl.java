@@ -15,6 +15,7 @@ import project.server.domain.UserAuth;
 import project.server.domain.User;
 import project.server.dto.UserLoginRequest;
 import project.server.dto.UserJoinRequest;
+import project.server.dto.UserUpdateRequest;
 import project.server.repository.UserRepository;
 
 import java.time.LocalDateTime;
@@ -39,19 +40,19 @@ public class UserServiceImpl implements UserService {
      */
     @Transactional
     @Override
-    public Long insert(UserJoinRequest userRequest) {
+    public Long insert(UserJoinRequest request) {
         //비밀번호 암호화
-        String password = userRequest.getPassword();
+        String password = request.getPassword();
         String encodePw = passwordEncoder.encode(password);
-        userRequest.setPassword(encodePw);
+        request.setPassword(encodePw);
 
         //회원 등록
         User user = new User();
-        user.setName(userRequest.getName());
-        user.setEmail(userRequest.getEmail());
-        user.setLoginId(userRequest.getLoginId());
-        user.setPassword(userRequest.getPassword());
-        user.setProfile(userRequest.getProfile());
+        user.setName(request.getName());
+        user.setEmail(request.getEmail());
+        user.setLoginId(request.getLoginId());
+        user.setPassword(request.getPassword());
+        user.setProfile(request.getProfile());
         user.setCreatedAt(LocalDateTime.now());
         Long userId = userRepository.userSave(user);
 
@@ -119,21 +120,21 @@ public class UserServiceImpl implements UserService {
      */
     @Transactional
     @Override
-    public Long update(Long id, UserJoinRequest userRequest) throws Exception {
+    public Long update(UserUpdateRequest request) throws Exception {
         // 비밀번호 암호화
-        String password = userRequest.getPassword();
+        String password = request.getPassword();
         String encodedPw = passwordEncoder.encode(password);
-        userRequest.setPassword(encodedPw);
+        request.setPassword(encodedPw);
 
         //변경 감지
-        User user = userRepository.findById(id);
-        user.setLoginId(userRequest.getLoginId());
-        user.setPassword(userRequest.getPassword());
-        user.setName(userRequest.getName());
-        user.setEmail(userRequest.getEmail());
-        user.setProfile(userRequest.getProfile());
+        User user = userRepository.findById(request.getId());
+        user.setLoginId(request.getLoginId());
+        user.setPassword(request.getPassword());
+        user.setName(request.getName());
+        user.setEmail(request.getEmail());
+        user.setProfile(request.getProfile());
 
-        return id;
+        return request.getId();
     }
 
     /**
