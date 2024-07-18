@@ -8,7 +8,7 @@ import project.server.dto.UserUpdateRequest;
 
 public interface UserService {
     //회원 등록
-    public Long insert(UserJoinRequest userRequest);
+    public Long insert(UserJoinRequest userRequest) throws Exception;
 
     //회원 조회
     public User select(Long userId) throws Exception;
