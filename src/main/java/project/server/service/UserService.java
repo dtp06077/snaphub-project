@@ -20,5 +20,5 @@ public interface UserService {
     public Long update(UserUpdateRequest request) throws Exception;
 
     //회원 삭제
-    public void delete(String loginId) throws Exception;
+    public Long delete(String loginId) throws Exception;
 }

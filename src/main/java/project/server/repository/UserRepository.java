@@ -55,10 +55,13 @@ public class UserRepository {
     }
 
     //사용자 삭제 메서드
-    public void delete(String loginId) {
+    public Long delete(String loginId) {
         User user = findByLoginId(loginId);
+        Long id = user.getId();
+
         if(user != null) {
             em.remove(user);
         }
+        return id;
     }
 }

@@ -142,7 +142,8 @@ public class UserServiceImpl implements UserService {
      */
     @Transactional
     @Override
-    public void delete(String loginId) {
-        userRepository.delete(loginId);
+    public Long delete(String loginId) {
+
+        return userRepository.delete(loginId);
     }
 }
