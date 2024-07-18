@@ -19,7 +19,7 @@ public class User {
     private Long id;
 
     @Column(nullable = false)
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UserAuth> auths = new ArrayList<>();
 
     //회원 이름 필수, 중복 허용 X
