@@ -12,7 +12,6 @@ import project.server.domain.Emotion;
 import project.server.domain.EmotionStatus;
 import project.server.domain.Post;
 import project.server.domain.User;
-import project.server.dto.UserRequest;
 import project.server.repository.EmotionRepository;
 import project.server.repository.UserRepository;
 

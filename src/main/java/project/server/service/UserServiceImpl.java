@@ -13,8 +13,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import project.server.domain.UserAuth;
 import project.server.domain.User;
-import project.server.dto.LoginRequest;
-import project.server.dto.UserRequest;
+import project.server.dto.UserLoginRequest;
+import project.server.dto.UserJoinRequest;
 import project.server.repository.UserRepository;
 
 import java.time.LocalDateTime;
@@ -39,7 +39,7 @@ public class UserServiceImpl implements UserService {
      */
     @Transactional
     @Override
-    public Long insert(UserRequest userRequest) {
+    public Long insert(UserJoinRequest userRequest) {
         //비밀번호 암호화
         String password = userRequest.getPassword();
         String encodePw = passwordEncoder.encode(password);
@@ -87,7 +87,7 @@ public class UserServiceImpl implements UserService {
      */
     @Transactional
     @Override
-    public void login(LoginRequest loginRequest, HttpServletRequest request) {
+    public void login(UserLoginRequest loginRequest, HttpServletRequest request) {
         String loginId = loginRequest.getLoginId();
         String password = loginRequest.getPassword();
         log.info("loginId : " + loginId);
@@ -119,7 +119,7 @@ public class UserServiceImpl implements UserService {
      */
     @Transactional
     @Override
-    public Long update(Long id, UserRequest userRequest) throws Exception {
+    public Long update(Long id, UserJoinRequest userRequest) throws Exception {
         // 비밀번호 암호화
         String password = userRequest.getPassword();
         String encodedPw = passwordEncoder.encode(password);

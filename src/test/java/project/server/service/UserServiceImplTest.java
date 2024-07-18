@@ -8,14 +8,12 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 import project.server.domain.User;
 import project.server.domain.UserAuth;
-import project.server.dto.LoginRequest;
-import project.server.dto.UserRequest;
+import project.server.dto.UserJoinRequest;
 import project.server.repository.UserRepository;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -38,11 +36,11 @@ public class UserServiceImplTest {
     @Mock
     private HttpServletRequest mockRequest;
 
-    private UserRequest userRequest;
+    private UserJoinRequest userRequest;
 
     @BeforeEach
     void setUp() {
-        userRequest = new UserRequest();
+        userRequest = new UserJoinRequest();
         userRequest.setName("HuiSeong");
         userRequest.setLoginId("testLoginId");
         userRequest.setPassword("testPassword");
