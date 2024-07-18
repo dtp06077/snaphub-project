@@ -55,8 +55,8 @@ public class UserRepository {
     }
 
     //사용자 삭제 메서드
-    public void delete(Long id) {
-        User user = em.find(User.class, id);
+    public void delete(String loginId) {
+        User user = findByLoginId(loginId);
         if(user != null) {
             em.remove(user);
         }
