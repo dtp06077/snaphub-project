@@ -6,7 +6,7 @@ header {
     border-bottom: 1px solid #000 ;
 }
 
-.logo { width: 100px; }
+.logo { width: 80px; }
 
 .util ul {
     display: flex;
