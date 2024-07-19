@@ -1,19 +1,22 @@
-import React, {useEffect, useState} from 'react';
-import axios from 'axios';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import './App.css';
+import Home from './pages/Home';
+import Login from './pages/Login';
+import Join from './pages/Join';
+import User from './pages/User';
+import About from './pages/About';
 
 function App() {
-   const [hello, setHello] = useState('')
-
-    useEffect(() => {
-        axios.get('/api/hello')
-        .then(response => setHello(response.data))
-        .catch(error => console.log(error))
-    }, []);
-
     return (
-        <div>
-            백엔드에서 가져온 데이터입니다 : {hello}
-        </div>
+        <BrowserRouter>
+        <Routes>
+            <Route path="/" elemen={ <Home />}></Route>
+            <Route path="/login" elemen={ <Login />}></Route>
+            <Route path="/join" elemen={ <Join />}></Route>
+            <Route path="/user" elemen={ <User />}></Route>
+            <Route path="/about" elemen={ <About />}></Route>
+        </Routes>
+        </BrowserRouter>
     );
 }
 
