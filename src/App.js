@@ -5,10 +5,12 @@ import Login from './pages/Login';
 import Join from './pages/Join';
 import User from './pages/User';
 import About from './pages/About';
+import LoginContextProvider from './contexts/LoginContextProvider';
 
 function App() {
     return (
         <BrowserRouter>
+        <LoginContextProvider>
         <Routes>
             <Route path="/" element={ <Home />}></Route>
             <Route path="/login" element={ <Login />}></Route>
@@ -16,6 +18,7 @@ function App() {
             <Route path="/user" element={ <User />}></Route>
             <Route path="/about" element={ <About />}></Route>
         </Routes>
+        </LoginContextProvider>
         </BrowserRouter>
     );
 }
