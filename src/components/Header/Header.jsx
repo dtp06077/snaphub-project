@@ -31,7 +31,7 @@ const Header = () => {
                         //로그인 시
                         <ul>
                             <li><Link to="/user">마이페이지</Link></li>
-                            <li><button className='link' onClick={ () => logout} >로그아웃</button></li>
+                            <li><button className='link' onClick={ () => logout() } >로그아웃</button></li>
                         </ul>
                 }
             </div>
