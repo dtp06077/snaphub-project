@@ -1,5 +1,6 @@
 import React from 'react'
 import Header from '../components/Header/Header'
+import LoginContextConsumer from '../contexts/LoginContextConsumer'
 
 const User = () => {
     return (
@@ -9,6 +10,7 @@ const User = () => {
                 <h1>User</h1>
                 <hr />
                 <h2>마이 페이지</h2>
+                <LoginContextConsumer/>
             </div>
         </>
     )
