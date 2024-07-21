@@ -11,12 +11,6 @@ const LoginContextProvider = ({children}) => {
         setLogin(false)
     }
 
-    useEffect( () => {
-        setTimeout( () => {
-            setLogin(true)
-        }, 3000)
-    })
-
     return (
             <LoginContext.Provider value={{isLogin, logout}}>
                 {children}
