@@ -1,4 +1,5 @@
 import React from 'react'
+import './LoginForm.css'
 
 const LoginForm = () => {
 
@@ -19,6 +20,7 @@ const LoginForm = () => {
                         name='loginId'
                         autoComplete='loginId'
                         required
+                        //TODO: 아이디 저장 기능 구현 후 추가
                         // defaultValue={}   
 
                     />
@@ -36,6 +38,10 @@ const LoginForm = () => {
 
                     />
                 </div>
+
+                <button className='btn btn--form btn-login'>
+                    Login
+                </button>
             </form>
         </div>
 
