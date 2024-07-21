@@ -1,4 +1,4 @@
-import React, { createContext, useState } from 'react'
+import React, { createContext, useEffect, useState } from 'react'
 
 export const LoginContext = createContext();
 LoginContext.displayName = 'LoginContextName';
@@ -10,6 +10,12 @@ const LoginContextProvider = ({children}) => {
     const logout = () => {
         setLogin(false)
     }
+
+    useEffect( () => {
+        setTimeout( () => {
+            setLogin(true)
+        }, 3000)
+    })
 
     return (
             <LoginContext.Provider value={{isLogin, logout}}>
