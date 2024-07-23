@@ -5,7 +5,7 @@ import api from "./api"
 export const login = (loginId, password) => api.post('/login?loginId=${loginId}&password=${password}')
 
 //사용자 정보
-export const info = () => api.get('/users/${userId}') 
+export const info = () => api.get('/users/info') 
 
 //회원 가입
 export const join = (data) => api.post("/users", data)
