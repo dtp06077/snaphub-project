@@ -1,9 +1,15 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import './LoginForm.css'
+import { LoginContext } from '../../contexts/LoginContextProvider';
 
 const LoginForm = () => {
 
+    const { login } = useContext(LoginContext);
+
     const onLogin = () => {
+        //데이터 셋팅
+
+        login();
 
     }
 

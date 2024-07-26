@@ -41,7 +41,7 @@ const LoginContextProvider = ({ children }) => {
 
         //
         const accessToken = Cookies.get("accessToken");
-        console.log("accessToken : ${accessToken}");
+        console.log(`accessToken : ${accessToken}`);
 
         let response
         let data
@@ -49,7 +49,7 @@ const LoginContextProvider = ({ children }) => {
         response = await auth.info();
 
         data = response.data;
-        console.log('data : ${data}');
+        console.log(`data : ${data}`);
 
         //인증 성공
         //로그인 세팅
@@ -60,8 +60,8 @@ const LoginContextProvider = ({ children }) => {
     // 로그인
     const login = async (loginId, password) => {
 
-        console.log("loginId : ${loginId}");
-        console.log("password : ${password}");
+        console.log(`loginId : ${loginId}`);
+        console.log(`password : ${password}`);
 
         const response = await auth.login(loginId, password);
         const data = response.data;
@@ -70,13 +70,13 @@ const LoginContextProvider = ({ children }) => {
         const authroization = headers.authroization;
         const accessToken = authroization.replace("Bearer ", ""); //JWT
 
-        console.log("data : ${data}");
-        console.log("headers : ${headers}");
-        console.log("status : ${status}");
-        console.log("jwt : ${jwt}");
+        console.log(`data : ${data}`);
+        console.log(`headers : ${headers}`);
+        console.log(`status : ${status}`);
+        console.log(`jwt : ${accessToken}`);
 
         // 로그인 성공
-        if (status == 200) {
+        if (status ==- 200) {
             //쿠키에 accessToken(jwt) 저장
             Cookies.set("accessToken", accessToken);
 
@@ -94,13 +94,13 @@ const LoginContextProvider = ({ children }) => {
         const { userId, loginId, authList } = userData
         const roleList = authList.map((auth) => auth.auth)
 
-        console.log("userId : ${userId}");
-        console.log("loginId : ${loginId}");
-        console.log("authList : ${authList}");
-        console.log("roleList : ${roleList}");
+        console.log(`userId : ${userId}`);
+        console.log(`loginId : ${loginId}`);
+        console.log(`authList : ${authList}`);
+        console.log(`roleList : ${roleList}`);
 
         //axios 객체의 헤더(Authorization : 'Bearer ${accessToken}')
-        api.defaults.headers.common.Authorization = 'Bearer ${accessToken}';
+        api.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
 
         //로그인 여부 : true
         setLogin(true);
@@ -143,7 +143,7 @@ const LoginContextProvider = ({ children }) => {
     }
 
     return (
-        <LoginContext.Provider value={{ isLogin, logout }}>
+        <LoginContext.Provider value={{ isLogin, userInfo, roles, login, logout }}>
             {children}
         </LoginContext.Provider>
     )
