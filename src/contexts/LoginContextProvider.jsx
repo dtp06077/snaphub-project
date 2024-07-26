@@ -53,7 +53,7 @@ const LoginContextProvider = ({ children }) => {
         // accessToken (jwt) 이 존재
 
         // header에 jwt 담기
-        api.defaults.headers.common.Authorization = `Beader ${accessToken}`;
+        api.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
 
         // 사용자 정보 요청
         let response
@@ -80,8 +80,8 @@ const LoginContextProvider = ({ children }) => {
         const data = response.data;
         const status = response.status;
         const headers = response.headers;
-        const authroization = headers.authroization;
-        const accessToken = authroization.replace("Bearer ", ""); //JWT
+        const authorization = headers.authorization;
+        const accessToken = authorization.replace("Bearer ", ""); //JWT
 
         console.log(`data : ${data}`);
         console.log(`headers : ${headers}`);
@@ -89,7 +89,7 @@ const LoginContextProvider = ({ children }) => {
         console.log(`jwt : ${accessToken}`);
 
         // 로그인 성공
-        if (status ==- 200) {
+        if (status === 200) {
             //쿠키에 accessToken(jwt) 저장
             Cookies.set("accessToken", accessToken);
 

@@ -12,8 +12,8 @@ const LoginForm = () => {
         e.preventDefault();
 
         const form = e.target;
-        const loginId = form.loginId;
-        const password = form.password;
+        const loginId = form.loginId.value;
+        const password = form.password.value;
 
         login(loginId, password);
 
