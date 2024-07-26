@@ -8,6 +8,7 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import project.server.domain.User;
+import project.server.dto.UserInfoRequest;
 import project.server.dto.UserJoinRequest;
 import project.server.dto.UserUpdateRequest;
 import project.server.security.domain.CustomUser;
@@ -35,7 +36,10 @@ public class UserController {
         log.info("user : " + user.getName());
 
         //인증된 회원 정보
-        if (user != null) return new ResponseEntity<>(user, HttpStatus.OK);
+        if (user != null) {
+            UserInfoRequest userInfo = userService.select(user);
+            return new ResponseEntity<>(userInfo, HttpStatus.OK);
+        }
 
         //인증 되지 않음
         return new ResponseEntity<>("UNAUTHORIZED", HttpStatus.UNAUTHORIZED);

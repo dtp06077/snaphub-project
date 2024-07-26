@@ -2,6 +2,7 @@ package project.server.service;
 
 import jakarta.servlet.http.HttpServletRequest;
 import project.server.domain.User;
+import project.server.dto.UserInfoRequest;
 import project.server.dto.UserLoginRequest;
 import project.server.dto.UserJoinRequest;
 import project.server.dto.UserUpdateRequest;
@@ -11,7 +12,7 @@ public interface UserService {
     public Long insert(UserJoinRequest userRequest) throws Exception;
 
     //회원 조회
-    public User select(Long userId) throws Exception;
+    public UserInfoRequest select(User user);
 
     //로그인
     public void login(UserLoginRequest loginRequest, HttpServletRequest request) throws Exception;

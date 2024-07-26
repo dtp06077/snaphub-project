@@ -12,5 +12,4 @@ public class UserInfoRequest {
     private String password;
     private String profile;
     private String createdAt;
-    private String auth;
 }

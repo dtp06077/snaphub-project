@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import project.server.domain.UserAuth;
 import project.server.domain.User;
+import project.server.dto.UserInfoRequest;
 import project.server.dto.UserLoginRequest;
 import project.server.dto.UserJoinRequest;
 import project.server.dto.UserUpdateRequest;
@@ -53,7 +54,7 @@ public class UserServiceImpl implements UserService {
         user.setLoginId(request.getLoginId());
         user.setPassword(request.getPassword());
         user.setProfile(request.getProfile());
-        user.setCreatedAt(LocalDateTime.now());
+        user.setCreatedAt(LocalDateTime.now().toString());
         Long userId = userRepository.userSave(user);
 
         //권한 등록
@@ -72,8 +73,15 @@ public class UserServiceImpl implements UserService {
      * PK를 활용한 회원 조회
      */
     @Override
-    public User select(Long id) throws Exception {
-        return userRepository.findById(id);
+    public UserInfoRequest select(User user) {
+        UserInfoRequest userInfo = new UserInfoRequest();
+        userInfo.setLoginId(user.getLoginId());
+        userInfo.setPassword(user.getPassword());
+        userInfo.setProfile(user.getProfile());
+        userInfo.setName(user.getName());
+        userInfo.setEmail(user.getEmail());
+        userInfo.setCreatedAt(user.getCreatedAt());
+        return userInfo;
     }
 
     /**

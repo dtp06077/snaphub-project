@@ -112,12 +112,15 @@ public class JwtTokenProvider {
                     .collect( Collectors.toList() );
 
             //토큰 유효하면
-            //name ,email, profile 도 담아주기
+            //name ,email, profile, password, createdAt 도 담아주기
             try {
                 User userInfo = userRepository.findById(userId);
                 user.setName(userInfo.getName());
                 user.setEmail(userInfo.getEmail());
                 user.setProfile(userInfo.getProfile());
+                user.setPassword(userInfo.getPassword());
+                user.setCreatedAt(userInfo.getCreatedAt());
+
             } catch (Exception e) {
                 log.error(e.getMessage());
                 log.error("토큰 유효 -> DB 추가 정보 조회시 에러 발생");
