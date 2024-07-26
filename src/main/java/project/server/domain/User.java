@@ -38,7 +38,8 @@ public class User {
 
     private String profile;
 
-    private LocalDateTime createdAt;
+    //String 으로 변경
+    private String createdAt;
 
     //자식 엔티티 영속화
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -51,4 +52,16 @@ public class User {
     //자식 엔티티 영속화
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Emotion> emotions = new ArrayList<>();
+
+    //연관관계 메서드
+
+    //권한 가져오기
+    public String getAuth() {
+        return this.auths.get(auths.size()-1).getAuth();
+    }
+
+    //게시글 갯수 가져오기
+    public int getPostCnt() {
+        return this.posts.size();
+    }
 }
