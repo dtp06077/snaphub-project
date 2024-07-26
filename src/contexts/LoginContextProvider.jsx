@@ -39,10 +39,23 @@ const LoginContextProvider = ({ children }) => {
     */
     const loginCheck = async () => {
 
-        //
+        // 쿠키에서 jwt 토큰 가져오기
         const accessToken = Cookies.get("accessToken");
-        console.log(`accessToken : ${accessToken}`);
+        console.log(`accessToken : ${accessToken}`); 
 
+        // accessToken (jwt) 이 부재
+        if (!accessToken) {
+            console.log(`쿠키에 jwt가 없음`)
+            logoutSetting();
+            return
+        }
+
+        // accessToken (jwt) 이 존재
+
+        // header에 jwt 담기
+        api.defaults.headers.common.Authorization = `Beader ${accessToken}`;
+
+        // 사용자 정보 요청
         let response
         let data
 

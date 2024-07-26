@@ -6,10 +6,16 @@ const LoginForm = () => {
 
     const { login } = useContext(LoginContext);
 
-    const onLogin = () => {
+    const onLogin = (e) => {
         //데이터 셋팅
 
-        login();
+        e.preventDefault();
+
+        const form = e.target;
+        const loginId = form.loginId;
+        const password = form.password;
+
+        login(loginId, password);
 
     }
 
@@ -17,7 +23,7 @@ const LoginForm = () => {
         <div className='form'>
             <h2 className="login-title">Login</h2>
 
-            <form className='login-form' onSubmit={(e) => onLogin}>
+            <form className='login-form' onSubmit={(e) => onLogin(e)}>
                 <div>
                     <label htmlFor="loginId">loginId</label>
                     <input type="text"
@@ -34,7 +40,7 @@ const LoginForm = () => {
 
                 <div>
                     <label htmlFor="password">password</label>
-                    <input type="text"
+                    <input type="password"
                         id='password'
                         placeholder='password'
                         name='password'
