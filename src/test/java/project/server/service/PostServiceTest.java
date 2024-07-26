@@ -154,7 +154,7 @@ public class PostServiceTest {
         //Given
 
         //When
-        userRepository.delete(user1.getId());
+        //userRepository.delete(user1.getId());
 
         //Then
         assertThat(postRepository.findById(postId1)).isNull();

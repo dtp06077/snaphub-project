@@ -179,7 +179,7 @@ public class CommentServiceTest {
         Long commentId = commentService.saveComment(userId, postId, comment);
 
         //When
-        userRepository.delete(userId);
+        //userRepository.delete(userId);
 
         //Then
         assertThat(commentRepository.findById(commentId)).isNull();

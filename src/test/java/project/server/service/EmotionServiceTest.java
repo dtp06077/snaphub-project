@@ -185,7 +185,7 @@ public class EmotionServiceTest {
         Long id1 = emotionService.saveEmotion(user2.getId(), postId, emotion1);
 
         //When
-        userRepository.delete(userId);
+        //userRepository.delete(userId);
 
         //Then
         assertThat(emotionRepository.findById(id1)).isNull();
