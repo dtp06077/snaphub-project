@@ -75,12 +75,20 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserInfoRequest select(User user) {
         UserInfoRequest userInfo = new UserInfoRequest();
-        userInfo.setLoginId(user.getLoginId());
-        userInfo.setPassword(user.getPassword());
-        userInfo.setProfile(user.getProfile());
-        userInfo.setName(user.getName());
-        userInfo.setEmail(user.getEmail());
-        userInfo.setCreatedAt(user.getCreatedAt());
+        User findUser = userRepository.findById(user.getId());
+
+        //CustomUser 객체의 User 값을 그대로 전달받는게 아닌
+        //CustomUser 객체에서 받은 User 의 id 값을 영속성 컨텍스트에서 탐색한 값을 사용
+        //CustomUser의 User != DB에 저장된 User 이기 때문.
+        userInfo.setLoginId(findUser.getLoginId());
+        userInfo.setPassword(findUser.getPassword());
+        userInfo.setProfile(findUser.getProfile());
+        userInfo.setName(findUser.getName());
+        userInfo.setEmail(findUser.getEmail());
+        userInfo.setCreatedAt(findUser.getCreatedAt());
+        userInfo.setAuths(findUser.getRoles());
+        userInfo.setPostCnt(findUser.getPostCnt());
+
         return userInfo;
     }
 

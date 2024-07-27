@@ -3,6 +3,7 @@ package project.server.dto;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 public class UserInfoRequest {
@@ -12,4 +13,6 @@ public class UserInfoRequest {
     private String password;
     private String profile;
     private String createdAt;
+    private List<String> auths;
+    private int postCnt;
 }

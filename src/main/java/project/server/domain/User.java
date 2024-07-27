@@ -56,8 +56,12 @@ public class User {
     //연관관계 메서드
 
     //권한 가져오기
-    public String getAuth() {
-        return this.auths.get(auths.size()-1).getAuth();
+    public List<String> getRoles() {
+        List<String> roles = new ArrayList<>();
+        for (UserAuth a : this.auths) {
+            roles.add(a.getAuth());
+        }
+        return roles;
     }
 
     //게시글 갯수 가져오기

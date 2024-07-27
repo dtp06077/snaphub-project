@@ -9,6 +9,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import project.server.domain.User;
+import project.server.domain.UserAuth;
 import project.server.repository.UserRepository;
 import project.server.security.domain.CustomUser;
 import project.server.prop.JwtProps;
@@ -105,21 +106,16 @@ public class JwtTokenProvider {
             user.setId(userId);
             user.setLoginId(loginId);
 
-            //TODO : User 객체에 권한 담기
+            //TODO : CustomUser 객체에 권한 담기
             List<SimpleGrantedAuthority> authorities = ((List<?>) roles )
                     .stream()
                     .map(auth -> new SimpleGrantedAuthority( (String) auth ))
                     .collect( Collectors.toList() );
 
-            //토큰 유효하면
-            //name ,email, profile, password, createdAt 도 담아주기
+            //토큰 유효하면 password 도  담아주기
             try {
                 User userInfo = userRepository.findById(userId);
-                user.setName(userInfo.getName());
-                user.setEmail(userInfo.getEmail());
-                user.setProfile(userInfo.getProfile());
                 user.setPassword(userInfo.getPassword());
-                user.setCreatedAt(userInfo.getCreatedAt());
 
             } catch (Exception e) {
                 log.error(e.getMessage());
