@@ -104,13 +104,12 @@ const LoginContextProvider = ({ children }) => {
     // userData, accessToken (jwt)
     const loginSetting = (userData, accessToken) => {
 
-        const { userId, loginId, authList } = userData
-        const roleList = authList.map((auth) => auth.auth)
+        const { userId, loginId, auths } = userData
 
         console.log(`userId : ${userId}`);
         console.log(`loginId : ${loginId}`);
-        console.log(`authList : ${authList}`);
-        console.log(`roleList : ${roleList}`);
+        console.log(`auths : ${auths}`);
+
 
         //axios 객체의 헤더(Authorization : 'Bearer ${accessToken}')
         api.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
@@ -119,13 +118,13 @@ const LoginContextProvider = ({ children }) => {
         setLogin(true);
 
         //유저정보
-        const updateUserInfo = { userId, loginId, roleList };
+        const updateUserInfo = { userId, loginId, auths };
         setUserInfo(updateUserInfo);
 
         //권한정보
         const updatedRoles = { isUser: false, isAdmin: false }
 
-        roleList.forEach((role) => {
+        auths.forEach((role) => {
             if (role == 'ROLE_USER') updatedRoles.isUser = true;
             if (role == 'ROLE_ADMIN') updatedRoles.isAdmin = true;
         });
