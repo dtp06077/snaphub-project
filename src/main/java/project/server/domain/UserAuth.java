@@ -22,13 +22,6 @@ public class UserAuth {
     @Column(nullable = false)
     private String auth;
 
-    public UserAuth(String auth) {
-        this.auth = auth;
-    }
-
-    public UserAuth() {
-    }
-
     //연관관계 메서드
     public String getUserLoginId() {
         return this.user.getLoginId();

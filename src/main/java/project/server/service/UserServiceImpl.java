@@ -80,6 +80,7 @@ public class UserServiceImpl implements UserService {
         //CustomUser 객체의 User 값을 그대로 전달받는게 아닌
         //CustomUser 객체에서 받은 User 의 id 값을 영속성 컨텍스트에서 탐색한 값을 사용
         //CustomUser의 User != DB에 저장된 User 이기 때문.
+        userInfo.setUserId(findUser.getId());
         userInfo.setLoginId(findUser.getLoginId());
         userInfo.setPassword(findUser.getPassword());
         userInfo.setProfile(findUser.getProfile());
