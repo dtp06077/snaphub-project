@@ -25,6 +25,5 @@ logging:
 # HS512 알고리즘의 시크릿키 : 512비트 (64바이트) 이상
 # https://passwords-generator.org/kr/
 # 사이트에서 길이:64 로 생성함.
-# |+<T%0h;[G97|I$5Lr?h]}`8rUX.7;0gw@bF<R/|\"'-U0n:_6j={'.T'GHs~<AxU9
 jwt:
   secret: "s2<L-0b;[}9j|I$5Lr?h]}`a2Ug.y'0gt@bFvR/<\"'-Upn:)1j={',T'AHd~<McT0"
