@@ -24,22 +24,25 @@ const Header = () => {
             <Nav className="ml-auto">
               {!isLogin ? (
                 <>
-                 <Nav.Link className='custom-nav-link'>
-                로그인
-              </Nav.Link>
-              <Nav.Link className='custom-nav-link'>
-                회원가입
-              </Nav.Link>
-              <Nav.Link className='custom-nav-link'>
-                소개
-              </Nav.Link>
-                </>
-              ):(
-                <>
-                 <Nav.Link className='custom-nav-link'>
-                    마이페이지
+                  <Nav.Link className='custom-nav-link'>
+                    로그인
+                  </Nav.Link>
+                  <Nav.Link className='custom-nav-link'
+                    onClick={() => setJoinModalOn(true)}>
+                    회원가입
                   </Nav.Link>
                   <Nav.Link className='custom-nav-link'>
+                    소개
+                  </Nav.Link>
+                </>
+              ) : (
+                <>
+                  <Nav.Link className='custom-nav-link'>
+                    마이페이지
+                  </Nav.Link>
+                  <Nav.Link className='custom-nav-link'
+                    onClick={() => logout()}
+                  >
                     로그아웃
                   </Nav.Link>
                 </>
