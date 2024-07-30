@@ -1,17 +1,21 @@
 import React from 'react'
-import Header from '../components/Header/Header'
 import LoginContextConsumer from '../contexts/LoginContextConsumer'
+import Layout from '../components/layouts/Layout'
+import { Container } from 'react-bootstrap'
 
 const Home = () => {
     return (
         <>
-            <Header />
-            <div className='container'>
-                <h1>Home</h1>
-                <hr />
-                <h2>메인 페이지</h2>
-                <LoginContextConsumer/>
-            </div>
+            <Layout>
+                <Container>
+                    <div className='container'>
+                        <h1>Home</h1>
+                        <hr />
+                        <h2>메인 페이지</h2>
+                        <LoginContextConsumer />
+                    </div>
+                </Container>
+            </Layout>
         </>
     )
 }

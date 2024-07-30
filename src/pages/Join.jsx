@@ -1,5 +1,5 @@
 import React from 'react'
-import Header from '../components/Header/Header'
+import Header from '../components/layouts/Header/Header'
 import LoginContextConsumer from '../contexts/LoginContextConsumer'
 import JoinForm from '../components/Join/JoinForm'
 
