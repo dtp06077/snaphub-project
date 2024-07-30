@@ -7,7 +7,7 @@ const Login = () => {
         <>
             <Header />
             <div className='container'>
-                <LoginForm/>
+            <LoginForm/>
             </div>
         </>
     )

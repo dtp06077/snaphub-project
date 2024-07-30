@@ -1,4 +1,4 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useEffect, useState } from 'react';
 import api from '../apis/api';
 import Cookies from 'js-cookie';
 import * as auth from '../apis/auth';
@@ -191,6 +191,10 @@ const LoginContextProvider = ({ children }) => {
         setRoles(null);
     }
 
+    useEffect( () => {
+        // 로그인 체크
+        loginCheck()
+    }, [])
     return (
         <LoginContext.Provider value={{ isLogin, userInfo, roles, login, logout }}>
             {children}
