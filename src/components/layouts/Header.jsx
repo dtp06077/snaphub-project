@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react'
 import { LoginContext } from '../../contexts/LoginContextProvider'
 import JoinModal from '../../modals/JoinModal'
+import LoginModal from '../../modals/LoginModal'
 import { Button, Container, Nav, Navbar } from 'react-bootstrap'
 import './Header.css';
 
@@ -10,9 +11,14 @@ const Header = () => {
   //logout() : 로그아웃 함수 -> setLogin(false)
   const { isLogin, login, logout } = useContext(LoginContext);
   const [JoinModalOn, setJoinModalOn] = useState(false);
+  const [LoginModalOn, setLoginModalOn] = useState(false);
 
   return (
     <>
+      <LoginModal
+        show={LoginModalOn}
+        onHide={() => setLoginModalOn(false)}
+      />
       <JoinModal
         show={JoinModalOn}
         onHide={() => setJoinModalOn(false)}
@@ -24,7 +30,8 @@ const Header = () => {
             <Nav className="ml-auto">
               {!isLogin ? (
                 <>
-                  <Nav.Link className='custom-nav-link'>
+                  <Nav.Link className='custom-nav-link'
+                  onClick={() => setLoginModalOn(true)}>
                     로그인
                   </Nav.Link>
                   <Nav.Link className='custom-nav-link'
