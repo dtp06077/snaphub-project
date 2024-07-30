@@ -38,7 +38,7 @@ const LoginContextProvider = ({ children }) => {
     const navigate = useNavigate();
 
     // 로그인
-    const login = async (loginId, password) => {
+    const login = async (loginId, password, onHide) => {
 
         console.log(`loginId : ${loginId}`);
         console.log(`password : ${password}`);
@@ -66,8 +66,8 @@ const LoginContextProvider = ({ children }) => {
 
                 alert("로그인 성공");
 
-                // 메인 페이지로 이동
-                navigate("/");
+                // 모달창 닫기
+                onHide();
             }
         } catch (error) {
             // 로그인 실패

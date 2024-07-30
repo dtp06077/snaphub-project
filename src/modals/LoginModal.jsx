@@ -1,32 +1,89 @@
-import React from 'react'
-import { Modal, Button } from 'react-bootstrap'
+import React, { useContext, useState } from 'react'
+import { Modal, Button, Form } from 'react-bootstrap'
+import { LoginContext } from '../contexts/LoginContextProvider'
+import JoinModal from './JoinModal';
 
 const LoginModal = ({ show, onHide }) => {
+
+    const { login } = useContext(LoginContext);
+    const [JoinModalOn, setJoinModalOn] = useState(false);
+
+    const onLogin = (e) => {
+        //데이터 셋팅
+
+        e.preventDefault();
+
+        const form = e.target;
+        const loginId = form.loginId.value;
+        const password = form.password.value;
+
+        // 로그인 함수 호출 후 성공 여부를 확인
+        login(loginId, password, onHide);
+
+    }
+
     return (
-        <Modal
-            show={show}
-            onHide={onHide}
-            size="lg"
-            aria-labelledby="contained-modal-title-vcenter"
-            centered
-        >
-            <Modal.Header closeButton>
-                <Modal.Title id="contained-modal-title-vcenter">
-                    Modal heading
-                </Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-                <h4>Centered Modal</h4>
-                <p>
-                    Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
-                    dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac
-                    consectetur ac, vestibulum at eros.
-                </p>
-            </Modal.Body>
-            <Modal.Footer>
-                <Button onClick={onHide}>Close</Button>
-            </Modal.Footer>
-        </Modal>
+        <>
+            <JoinModal
+                show={JoinModalOn}
+                onHide={() => setJoinModalOn(false)}
+            />
+            <Modal
+                show={show}
+                onHide={onHide}
+                size="lg"
+                aria-labelledby="contained-modal-title-vcenter"
+                centered
+            >
+                <Modal.Header closeButton>
+                    <Modal.Title id="contained-modal-title-vcenter">
+                        Login
+                    </Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <Form className='login-form' onSubmit={(e) => onLogin(e)}>
+                        <Form.Group className="mb-3" controlId="formBasicLoginId">
+                            <Form.Label>Login ID</Form.Label>
+                            <Form.Control
+                                type="text"
+                                placeholder="Enter login ID"
+                                name="loginId"
+                                required
+                                autoComplete="loginId"
+                            // defaultValue={} // 필요시 추가
+                            />
+                        </Form.Group>
+
+                        <Form.Group className="mb-3" controlId="formBasicPassword">
+                            <Form.Label>Password</Form.Label>
+                            <Form.Control
+                                type="password"
+                                placeholder="Enter password"
+                                name="password"
+                                required
+                                autoComplete="password"
+                            // defaultValue={} // 필요시 추가
+                            />
+                        </Form.Group>
+                        <Button variant="primary" type="submit">
+                            Login
+                        </Button>
+                    </Form>
+                </Modal.Body>
+                <Modal.Footer>
+                    <div style={{
+                        textAlign: "center", textDecoration: "underline",
+                        marginRight: "10px", fontWeight: "bold"
+                    }}>
+                        아직 회원이 아니십니까?
+                    </div>
+                    <Button onClick={() => {
+                        onHide();
+                        setJoinModalOn(true);
+                        }}>Join</Button>
+                </Modal.Footer>
+            </Modal>
+        </>
     )
 }
 
