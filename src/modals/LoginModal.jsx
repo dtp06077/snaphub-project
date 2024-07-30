@@ -2,6 +2,7 @@ import React, { useContext, useState } from 'react'
 import { Modal, Button, Form } from 'react-bootstrap'
 import { LoginContext } from '../contexts/LoginContextProvider'
 import JoinModal from './JoinModal';
+import './Modal.css';
 
 const LoginModal = ({ show, onHide }) => {
 
@@ -41,12 +42,12 @@ const LoginModal = ({ show, onHide }) => {
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <Form className='login-form' onSubmit={(e) => onLogin(e)}>
+                    <Form onSubmit={(e) => onLogin(e)}>
                         <Form.Group className="mb-3" controlId="formBasicLoginId">
-                            <Form.Label>Login ID</Form.Label>
+                            <Form.Label>아이디</Form.Label>
                             <Form.Control
                                 type="text"
-                                placeholder="Enter login ID"
+                                placeholder="Enter your login ID"
                                 name="loginId"
                                 required
                                 autoComplete="loginId"
@@ -55,17 +56,17 @@ const LoginModal = ({ show, onHide }) => {
                         </Form.Group>
 
                         <Form.Group className="mb-3" controlId="formBasicPassword">
-                            <Form.Label>Password</Form.Label>
+                            <Form.Label>비밀번호</Form.Label>
                             <Form.Control
                                 type="password"
-                                placeholder="Enter password"
+                                placeholder="Enter your password"
                                 name="password"
                                 required
                                 autoComplete="password"
                             // defaultValue={} // 필요시 추가
                             />
                         </Form.Group>
-                        <Button variant="primary" type="submit">
+                        <Button className='custom-button' variant="primary" type="submit">
                             Login
                         </Button>
                     </Form>
@@ -77,10 +78,10 @@ const LoginModal = ({ show, onHide }) => {
                     }}>
                         아직 회원이 아니십니까?
                     </div>
-                    <Button onClick={() => {
+                    <Button className='custom-button' onClick={() => {
                         onHide();
                         setJoinModalOn(true);
-                        }}>Join</Button>
+                        }}>sign up</Button>
                 </Modal.Footer>
             </Modal>
         </>

@@ -1,14 +1,13 @@
 .custom-nav-brand {
-    font-size: 30px;
+    font-size: 35px;
     color: aliceblue;
 }
 
 .custom-nav-link {
     font-size: 18px; /* 글씨 크기 조정 */
     color: rgb(138, 138, 138); /* 글씨 색상 */
-    padding: 10px 15px; /* 패딩 조정 */
     transition: color 0.3s; /* 마우스 오버시 효과 */
-}
+}   
 
 .custom-nav-link:hover {
     color: #e7e6e6; /* 마우스 오버시 색상 변경 */

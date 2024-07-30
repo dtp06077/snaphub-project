@@ -1,6 +1,5 @@
 import React, { useContext, useState } from 'react'
 import { LoginContext } from '../../contexts/LoginContextProvider'
-import JoinModal from '../../modals/JoinModal'
 import LoginModal from '../../modals/LoginModal'
 import { Button, Container, Nav, Navbar } from 'react-bootstrap'
 import './Header.css';
@@ -10,7 +9,6 @@ const Header = () => {
   //isLogin : 로그인 여부 - 로그인(true), 비로그인(false)
   //logout() : 로그아웃 함수 -> setLogin(false)
   const { isLogin, login, logout } = useContext(LoginContext);
-  const [JoinModalOn, setJoinModalOn] = useState(false);
   const [LoginModalOn, setLoginModalOn] = useState(false);
 
   return (
@@ -18,10 +16,6 @@ const Header = () => {
       <LoginModal
         show={LoginModalOn}
         onHide={() => setLoginModalOn(false)}
-      />
-      <JoinModal
-        show={JoinModalOn}
-        onHide={() => setJoinModalOn(false)}
       />
       <header>
         <Navbar style={{ height: '100px', padding: '10px 0' }} bg="dark" data-bs-theme="dark">
@@ -31,26 +25,25 @@ const Header = () => {
               {!isLogin ? (
                 <>
                   <Nav.Link className='custom-nav-link'
-                  onClick={() => setLoginModalOn(true)}>
-                    로그인
-                  </Nav.Link>
-                  <Nav.Link className='custom-nav-link'
-                    onClick={() => setJoinModalOn(true)}>
-                    회원가입
+                    onClick={() => setLoginModalOn(true)}>
+                    login
                   </Nav.Link>
                   <Nav.Link className='custom-nav-link'>
-                    소개
+                    search
                   </Nav.Link>
                 </>
               ) : (
                 <>
                   <Nav.Link className='custom-nav-link'>
-                    마이페이지
+                    mypage
+                  </Nav.Link>
+                  <Nav.Link className='custom-nav-link'>
+                    search
                   </Nav.Link>
                   <Nav.Link className='custom-nav-link'
                     onClick={() => logout()}
                   >
-                    로그아웃
+                    logout
                   </Nav.Link>
                 </>
               )}

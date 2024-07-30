@@ -1,5 +1,5 @@
 import React from 'react'
-import { Modal, Button } from 'react-bootstrap'
+import { Modal, Button, Form } from 'react-bootstrap'
 
 const JoinModal = ({ show, onHide }) => {
   return (
@@ -12,19 +12,68 @@ const JoinModal = ({ show, onHide }) => {
     >
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-vcenter">
-          Modal heading
+          join
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <h4>Centered Modal</h4>
-        <p>
-          Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
-          dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac
-          consectetur ac, vestibulum at eros.
-        </p>
+      <Form>
+      <Form.Group className="mb-3" controlId="formBasicLoginId">
+        <Form.Label>아이디</Form.Label>
+        <Form.Control 
+        type="text" 
+        placeholder="Enter login ID"
+        name="loginId"
+        />
+        <Form.Text className="text-muted">
+          아이디 중복확인을 해주세요.
+        </Form.Text>
+      </Form.Group>
+
+      <Form.Group className="mb-3" controlId="formBasicPassword">
+        <Form.Label>비밀번호</Form.Label>
+        <Form.Control 
+        type="password" 
+        placeholder="Enter Password"
+        name="password"
+        />
+      </Form.Group>
+      
+      <Form.Group className="mb-3" controlId="formBasicPasswordCheck">
+        <Form.Label>비밀번호 확인</Form.Label>
+        <Form.Control 
+        type="password" 
+        placeholder="Enter Password" 
+        name="passwordCheck"
+        />
+      </Form.Group>
+
+      <Form.Group className="mb-3" controlId="formBasicEmail">
+        <Form.Label>이메일 주소</Form.Label>
+        <Form.Control 
+        type="email" 
+        placeholder="Enter email"
+        name="email"
+        />
+      </Form.Group>
+
+      <Form.Group className="mb-3" controlId="formBasicName">
+        <Form.Label>닉네임</Form.Label>
+        <Form.Control 
+        type="text" 
+        placeholder="Enter name"
+        name="name"
+        />
+        <Form.Text className="text-muted">
+          닉네임 중복확인을 해주세요.
+        </Form.Text>
+      </Form.Group>
+
+      <Button variant="primary" type="submit">
+        Submit
+      </Button>
+    </Form>
       </Modal.Body>
       <Modal.Footer>
-        <Button onClick={onHide}>Close</Button>
       </Modal.Footer>
     </Modal>
   )
