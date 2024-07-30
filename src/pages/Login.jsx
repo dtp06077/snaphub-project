@@ -1,5 +1,5 @@
 import React from 'react'
-import Header from '../components/layouts/Header/Header'
+import Header from '../components/layouts/Header'
 import LoginForm from '../components/Login/LoginForm'
 
 const Login = () => {

@@ -7,7 +7,7 @@ const Home = () => {
     return (
         <>
             <Layout>
-                <Container>
+                <Container style={{minHeight: '75vh'}}>
                     <div className='container'>
                         <h1>Home</h1>
                         <hr />

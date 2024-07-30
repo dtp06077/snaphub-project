@@ -1,9 +1,16 @@
 import React from 'react'
+import { Container } from 'react-bootstrap'
 
 const Footer = () => {
   return (
-    <div>Footer</div>
-  )
-}
+    <footer>
+        <Container>
+            <div style={ {textAlign: "center"}}>
+            &copy; 2024 SnapHub. All Rights Reserved.
+            </div>
+        </Container>
+    </footer>
+  );
+};
 
 export default Footer
