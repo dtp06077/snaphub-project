@@ -52,9 +52,11 @@ public class UserController {
         User user = userService.selectByLoginId(loginId);
 
         if(user == null) {
+            log.info(loginId + " 는 존재하지 않는 아이디입니다.");
             return new ResponseEntity<>("사용 가능한 아이디입니다.", HttpStatus.OK);
         }
-        return new ResponseEntity<>("이미 사용중인 아이디입니다.", HttpStatus.BAD_REQUEST);
+        log.info(loginId + " 는 존재하는 아이디입니다.");
+        return new ResponseEntity<>("이미 사용중인 아이디입니다.", HttpStatus.OK);
     }
 
     /**
