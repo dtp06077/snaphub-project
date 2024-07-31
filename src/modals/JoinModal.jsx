@@ -1,19 +1,30 @@
 import React, { useState } from 'react'
-import { Modal, Button, Form } from 'react-bootstrap'
+import { Modal, Button, Form, InputGroup } from 'react-bootstrap'
+import { checkLoginId } from '../apis/auth';
 
 const JoinModal = ({ show, onHide }) => {
 
+  const [loginId, setLoginId] = useState('');
   const [password, setPassword] = useState('');
   const [passwordCheck, setPasswordCheck] = useState('');
-  const [error, setError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+  const [loginIdError, setLoginIdError] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (password !== passwordCheck) {
-      setError(`비밀번호가 일치하지 않습니다.`);
+      setPasswordError(`비밀번호가 일치하지 않습니다.`);
     } else {
-      setError(``);
+      setPasswordError(``);
     }
+  }
+
+  const idCheck = async () => {
+    const response = await checkLoginId(loginId);
+    const status = response.status;
+    const message = await response.data;
+
+    setLoginIdError(message);
   }
 
   return (
@@ -33,14 +44,24 @@ const JoinModal = ({ show, onHide }) => {
         <Form onSubmit={handleSubmit}>
           <Form.Group className="mb-3" controlId="formBasicLoginId">
             <Form.Label>아이디</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="Enter login ID"
-              name="loginId"
-            />
-            <Form.Text className="text-muted">
-              아이디 중복확인을 해주세요.
-            </Form.Text>
+            <InputGroup>
+              <Form.Control
+                type="text"
+                placeholder="Enter login ID"
+                name="loginId"
+                value={loginId}
+                onChange={(e) => setLoginId(e.target.value)} // 아이디 상태 업데이트
+              />
+              <Button variant="outline-secondary" id="button-addon2" size='sm' onClick={idCheck}>
+                중복 확인
+              </Button>
+            </InputGroup>
+            {loginIdError && <Form.Text className='text-danger'>{loginIdError}</Form.Text>}
+            {!loginIdError && (
+              <Form.Text className="text-muted">
+                아이디 중복확인을 해주세요.
+              </Form.Text>
+            )}
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formBasicPassword">
@@ -61,9 +82,9 @@ const JoinModal = ({ show, onHide }) => {
               placeholder="Enter Password"
               name="passwordCheck"
               value={passwordCheck}
-              onChange={(e)=>setPasswordCheck(e.target.value)} //비밀번호 확인 상태 업데이트
+              onChange={(e) => setPasswordCheck(e.target.value)} //비밀번호 확인 상태 업데이트
             />
-            {error && <Form.Text className='text-danger'>{error}</Form.Text>}
+            {passwordError && <Form.Text className='text-danger'>{passwordError}</Form.Text>}
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formBasicEmail">
