@@ -30,14 +30,12 @@ public class CustomUserDetailService implements UserDetailsService {
             throw new UsernameNotFoundException("회원 아이디를 찾을 수 없습니다 : " + loginId);
         }
 
-        log.info("user : ");
-        log.info(user.getName());
+        log.info("user : " + user.getName());
 
         // User -> CustomUser
         CustomUser customUser = new CustomUser(user);
 
-        log.info("customUser : ");
-        log.info(customUser.getUsername());
+        log.info("customUser : " + customUser.getUsername());
 
         return customUser;
     }

@@ -17,18 +17,11 @@ public class LoginController {
      "password" : "123456"
      }
      */
-    @PostMapping("login")
-    public void login(@RequestBody UserLoginRequest request) {
-        //사용자로부터 전달받은 인증 정보
-        String loginId = request.getLoginId();
-        String password = request.getPassword();
-    }
+//    @PostMapping("login")
+//    public void login(@RequestBody UserLoginRequest request) {
+//        //사용자로부터 전달받은 인증 정보
+//        String loginId = request.getLoginId();
+//        String password = request.getPassword();
+//    }
 
-    @GetMapping("/user/info")
-    public void userInfo(@RequestHeader(name="Authorization") String header) {
-
-        log.info("===== header =====");
-        log.info("Authorization : " + header);
-
-    }
 }
