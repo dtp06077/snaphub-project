@@ -14,6 +14,12 @@ public interface UserService {
     //회원 조회
     public UserInfoRequest select(User user);
 
+    //로그인 아이디로 회원 조회
+    public User selectByLoginId(String loginId);
+
+    //회원 이름으로 회원 조회
+    public User selectByName(String name);
+
     //로그인
     public void login(UserLoginRequest loginRequest, HttpServletRequest request) throws Exception;
 

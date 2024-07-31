@@ -1,4 +1,4 @@
-package project.server.controller;
+package project.server.api.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +43,18 @@ public class UserController {
 
         //인증 되지 않음
         return new ResponseEntity<>("UNAUTHORIZED", HttpStatus.UNAUTHORIZED);
+    }
+    /**
+     * 중복 로그인 조회
+     */
+    @GetMapping("/check-loginId")
+    public ResponseEntity<?> checkLoginId(@RequestParam String loginId) {
+        User user = userService.selectByLoginId(loginId);
+
+        if(user == null) {
+            return new ResponseEntity<>("사용 가능한 아이디입니다.", HttpStatus.OK);
+        }
+        return new ResponseEntity<>("이미 사용중인 아이디입니다.", HttpStatus.BAD_REQUEST);
     }
 
     /**

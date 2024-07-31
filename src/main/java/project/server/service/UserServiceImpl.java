@@ -94,9 +94,19 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
+     * 로그인 아이디를 활용한 회원 조회
+     *
+     */
+    @Override
+    public User selectByLoginId(String loginId) {
+        return userRepository.findByLoginId(loginId);
+    }
+
+    /**
      * 닉네임을 활용한 회원 조회
      */
-    public User selectByName(String name) throws Exception {
+    @Override
+    public User selectByName(String name) {
         return userRepository.findByName(name);
     }
 
