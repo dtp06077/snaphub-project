@@ -79,7 +79,6 @@ const LoginModal = ({ show, onHide }) => {
                         아직 회원이 아니십니까?
                     </div>
                     <Button className='custom-button' onClick={() => {
-                        onHide();
                         setJoinModalOn(true);
                         }}>sign up</Button>
                 </Modal.Footer>

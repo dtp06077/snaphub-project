@@ -69,6 +69,7 @@ const JoinModal = ({ show, onHide }) => {
     if (status === 200) {
       console.log(`회원가입 성공!`);
       alert(`회원가입에 성공하였습니다.`);
+       handleClose(); // 회원가입 모달 닫기
     }
     else {
       console.log(`회원가입 실패`);
