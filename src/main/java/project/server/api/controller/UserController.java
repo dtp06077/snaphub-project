@@ -66,6 +66,27 @@ public class UserController {
     }
 
     /**
+     * 중복 로그인 조회
+     */
+    @GetMapping("/check-name")
+    public ResponseEntity<?> checkName(@RequestParam String name) {
+
+        if(name=="") {
+            log.info("닉네임을 입력하세요");
+            return new ResponseEntity<>("닉네임을 입력하세요.", HttpStatus.BAD_REQUEST);
+        }
+
+        User user = userService.selectByName(name);
+
+        if (user == null) {
+            log.info(name + " 는 존재하지 않는 닉네임입니다.");
+            return new ResponseEntity<>("사용 가능한 닉네임입니다.", HttpStatus.OK);
+        }
+        log.info(name + " 는 존재하는 닉네임입니다.");
+        return new ResponseEntity<>("이미 사용중인 닉네임입니다.", HttpStatus.BAD_REQUEST);
+    }
+
+    /**
      *  회원 가입
      */
     @PostMapping("")
@@ -75,15 +96,18 @@ public class UserController {
             throw new IllegalArgumentException("비밀번호가 비어있습니다."); // 예외 처리
         }
 
-        Long result = userService.insert(request);
-
-        if( result >= 0) {
-            log.info("회원가입 성공! - SUCCESS");
-            return new ResponseEntity<>("SUCCESS", HttpStatus.OK);
-        }
-        else {
-            log.info("회원가입 실패! - FAIL");
-            return new ResponseEntity<>("FAIL", HttpStatus.BAD_REQUEST);
+        try {
+            Long result = userService.insert(request);
+            if( result >= 0) {
+                log.info("회원가입 성공! - SUCCESS");
+                return new ResponseEntity<>("SUCCESS", HttpStatus.OK);
+            }
+            else {
+                log.info("회원가입 실패! - FAIL");
+                return new ResponseEntity<>("FAIL", HttpStatus.BAD_REQUEST);
+            }
+        }catch (Exception e) {
+            return new ResponseEntity<>("중복 확인을 해주시길 바랍니다.", HttpStatus.BAD_REQUEST);
         }
     }
 
