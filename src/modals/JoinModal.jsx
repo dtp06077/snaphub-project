@@ -77,11 +77,28 @@ const JoinModal = ({ show, onHide }) => {
   }
 
   const idCheck = async () => {
-    const response = await checkLoginId(loginId);
-    const message = await response.data;
-
-    setLoginIdError(message);
-    setIsLoginIdChecked(message === '사용 가능한 아이디입니다.'); // 중복 확인 성공 여부 설정
+    
+    let response;
+    let message;
+    try {
+      response = await checkLoginId(loginId);
+        message = await response.data;
+        setLoginIdError(message);
+        setIsLoginIdChecked(message === '사용 가능한 아이디입니다.'); // 중복 확인 성공 여부 설정
+    } catch (error) {
+      if (error.response) {
+        // 서버가 응답한 경우
+        message = error.response.data;
+        setLoginIdError(message);
+    } else if (error.request) {
+        // 요청이 이루어졌으나 응답이 없는 경우
+        setLoginIdError('서버에 연결할 수 없습니다.');
+    } else {
+        // 다른 오류
+        setLoginIdError('알 수 없는 오류가 발생했습니다.');
+    
+      }
+    }
   }
 
   const resetForm = () => {
