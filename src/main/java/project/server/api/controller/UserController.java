@@ -49,14 +49,20 @@ public class UserController {
      */
     @GetMapping("/check-loginId")
     public ResponseEntity<?> checkLoginId(@RequestParam String loginId) {
+
+        if(loginId=="") {
+            log.info("아이디를 입력하세요");
+           return new ResponseEntity<>("아이디를 입력하세요.", HttpStatus.BAD_REQUEST);
+        }
+
         User user = userService.selectByLoginId(loginId);
 
-        if(user == null) {
+        if (user == null) {
             log.info(loginId + " 는 존재하지 않는 아이디입니다.");
             return new ResponseEntity<>("사용 가능한 아이디입니다.", HttpStatus.OK);
         }
         log.info(loginId + " 는 존재하는 아이디입니다.");
-        return new ResponseEntity<>("이미 사용중인 아이디입니다.", HttpStatus.OK);
+        return new ResponseEntity<>("이미 사용중인 아이디입니다.", HttpStatus.BAD_REQUEST);
     }
 
     /**
