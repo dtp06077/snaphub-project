@@ -57,10 +57,23 @@ const JoinModal = ({ show, onHide }) => {
     setLoginIdError(message);
   }
 
+  const resetForm = () => {
+    setLoginId('');
+    setPassword('');
+    setPasswordCheck('');
+    setPasswordError('');
+    setLoginIdError('');
+  };
+
+  const handleClose = () => {
+    resetForm(); // 모달 닫힐 때 상태 초기화
+    onHide(); // 모달 숨기기
+  };
+
   return (
     <Modal
       show={show}
-      onHide={onHide}
+      onHide={handleClose}
       size="lg"
       aria-labelledby="contained-modal-title-vcenter"
       centered
