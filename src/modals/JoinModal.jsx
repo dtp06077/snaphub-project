@@ -1,15 +1,18 @@
 import React, { useState } from 'react'
 import { Modal, Button, Form, InputGroup } from 'react-bootstrap'
-import { checkLoginId, join } from '../apis/auth';
+import { checkName, checkLoginId, join } from '../apis/auth';
 
-const JoinModal = ({ show, onHide }) => {
+const JoinModal = ({ show, onHide, onJoinComplete }) => {
 
   const [loginId, setLoginId] = useState('');
   const [password, setPassword] = useState('');
+  const [name, setName] = useState('');
   const [passwordCheck, setPasswordCheck] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [loginIdError, setLoginIdError] = useState('');
+  const [nameError, setNameError] = useState('');
   const [isLoginIdChecked, setIsLoginIdChecked] = useState(false);
+  const [isNameChecked, setIsNameChecked] = useState(false);
 
   const onJoin = async (e) => {
     e.preventDefault();
@@ -20,8 +23,8 @@ const JoinModal = ({ show, onHide }) => {
       return;
     }
 
-     // 아이디 중복 확인 체크
-     else if (!isLoginIdChecked) {
+    // 아이디 중복 확인 체크
+    else if (!isLoginIdChecked) {
       alert('아이디 중복 확인을 해주세요.');
       return;
     }
@@ -43,9 +46,20 @@ const JoinModal = ({ show, onHide }) => {
       setPasswordError(`비밀번호가 일치하지 않습니다.`);
       return;
     }
-  
+
+    // 닉네임 입력 체크
+    else if (!name) {
+      alert('닉네임을 입력하세요.');
+      return;
+    }
+
+    // 닉네임 중복 확인 체크
+    else if (!isNameChecked) {
+      alert('닉네임 중복 확인을 해주세요.');
+      return;
+    }
+
     const form = e.target;
-    const name = form.name.value;
     const email = form.email.value;
 
     console.log(name, email, loginId, password);
@@ -69,7 +83,8 @@ const JoinModal = ({ show, onHide }) => {
     if (status === 200) {
       console.log(`회원가입 성공!`);
       alert(`회원가입에 성공하였습니다.`);
-       handleClose(); // 회원가입 모달 닫기
+      onJoinComplete();
+      handleClose(); // 회원가입 모달 닫기
     }
     else {
       console.log(`회원가입 실패`);
@@ -78,26 +93,50 @@ const JoinModal = ({ show, onHide }) => {
   }
 
   const idCheck = async () => {
-    
+
     let response;
     let message;
+
     try {
       response = await checkLoginId(loginId);
-        message = await response.data;
-        setLoginIdError(message);
-        setIsLoginIdChecked(message === '사용 가능한 아이디입니다.'); // 중복 확인 성공 여부 설정
+      message = await response.data;
+      setLoginIdError(message);
+      setIsLoginIdChecked(message === '사용 가능한 아이디입니다.'); // 중복 확인 성공 여부 설정
     } catch (error) {
       if (error.response) {
         // 서버가 응답한 경우
         message = error.response.data;
         setLoginIdError(message);
-    } else if (error.request) {
+      } else if (error.request) {
         // 요청이 이루어졌으나 응답이 없는 경우
         setLoginIdError('서버에 연결할 수 없습니다.');
-    } else {
+      } else {
         // 다른 오류
         setLoginIdError('알 수 없는 오류가 발생했습니다.');
+
+      }
+    }
+  }
+
+  const nameCheck = async () => {
+
+    let response;
+    let message;
     
+    try {
+      response = await checkName(name);
+      message = await response.data;
+      setNameError(message);
+      setIsNameChecked(message === '사용 가능한 닉네임입니다.'); // 중복 확인 성공 여부 설정
+    } catch (error) {
+      if (error.response) {
+        message = error.response.data;
+        setNameError(message);
+      } else if (error.request) {
+        setNameError('서버에 연결할 수 없습니다.');
+      } else {
+        setNameError('알 수 없는 오류가 발생했습니다.');
+
       }
     }
   }
@@ -109,6 +148,9 @@ const JoinModal = ({ show, onHide }) => {
     setPasswordError('');
     setLoginIdError('');
     setIsLoginIdChecked(false);
+    setName('');
+    setIsNameChecked(false);
+    setNameError('');
   };
 
   const handleClose = () => {
@@ -153,6 +195,28 @@ const JoinModal = ({ show, onHide }) => {
             )}
           </Form.Group>
 
+          <Form.Group className="mb-3" controlId="formBasicName">
+            <Form.Label>닉네임</Form.Label>
+            <InputGroup>
+            <Form.Control
+              type="text"
+              placeholder="Enter name"
+              name="name"
+              value={name}
+                onChange={(e) => setName(e.target.value)} // 아이디 상태 업데이트
+              />
+              <Button variant="outline-secondary" id="button-addon2" size='sm' onClick={nameCheck}>
+                중복 확인
+              </Button>
+            </InputGroup>
+            {nameError && <Form.Text className='text-danger'>{nameError}</Form.Text>}
+            {!nameError && (
+              <Form.Text className="text-muted">
+                닉네임 중복확인을 해주세요.
+              </Form.Text>
+            )}
+          </Form.Group>
+
           <Form.Group className="mb-3" controlId="formBasicPassword">
             <Form.Label>비밀번호</Form.Label>
             <Form.Control
@@ -183,18 +247,6 @@ const JoinModal = ({ show, onHide }) => {
               placeholder="Enter email"
               name="email"
             />
-          </Form.Group>
-
-          <Form.Group className="mb-3" controlId="formBasicName">
-            <Form.Label>닉네임</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="Enter name"
-              name="name"
-            />
-            <Form.Text className="text-muted">
-              닉네임 중복확인을 해주세요.
-            </Form.Text>
           </Form.Group>
 
           <Button variant="primary" type="submit">

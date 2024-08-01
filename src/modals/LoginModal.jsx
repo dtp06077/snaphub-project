@@ -8,19 +8,22 @@ const LoginModal = ({ show, onHide }) => {
 
     const { login } = useContext(LoginContext);
     const [JoinModalOn, setJoinModalOn] = useState(false);
+    const [loginId, setLoginId] = useState('');
+    const [password, setPassword] = useState('');
 
     const onLogin = (e) => {
         //데이터 셋팅
 
         e.preventDefault();
 
-        const form = e.target;
-        const loginId = form.loginId.value;
-        const password = form.password.value;
-
         // 로그인 함수 호출 후 성공 여부를 확인
-        login(loginId, password, onHide);
+        login(loginId, password, onHide, resetForm);
 
+    }
+
+    const resetForm = () => {
+        setLoginId('');
+        setPassword('');
     }
 
     return (
@@ -49,6 +52,8 @@ const LoginModal = ({ show, onHide }) => {
                                 type="text"
                                 placeholder="Enter your login ID"
                                 name="loginId"
+                                value={loginId}
+                                onChange={(e) => setLoginId(e.target.value)} // onChange 핸들러 추가
                                 required
                                 autoComplete="loginId"
                             // defaultValue={} // 필요시 추가
@@ -61,6 +66,8 @@ const LoginModal = ({ show, onHide }) => {
                                 type="password"
                                 placeholder="Enter your password"
                                 name="password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)} // onChange 핸들러 추가
                                 required
                                 autoComplete="password"
                             // defaultValue={} // 필요시 추가
@@ -79,6 +86,8 @@ const LoginModal = ({ show, onHide }) => {
                         아직 회원이 아니십니까?
                     </div>
                     <Button className='custom-button' onClick={() => {
+                        onHide();
+                        resetForm();
                         setJoinModalOn(true);
                         }}>sign up</Button>
                 </Modal.Footer>
