@@ -9,18 +9,44 @@ const JoinModal = ({ show, onHide }) => {
   const [passwordCheck, setPasswordCheck] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [loginIdError, setLoginIdError] = useState('');
+  const [isLoginIdChecked, setIsLoginIdChecked] = useState(false);
 
   const onJoin = async (e) => {
     e.preventDefault();
-    if (password !== passwordCheck) {
-      setPasswordError(`비밀번호가 일치하지 않습니다.`);
+
+    // 아이디 입력 체크
+    if (!loginId) {
+      alert('아이디를 입력하세요.');
       return;
     }
 
+     // 아이디 중복 확인 체크
+     else if (!isLoginIdChecked) {
+      alert('아이디 중복 확인을 해주세요.');
+      return;
+    }
+
+    // 비밀번호 일치 여부 체크
+    else if (!password) {
+      alert(`비밀번호를 입력하세요.`);
+      return;
+    }
+
+    // 비밀번호 확인 입력 체크
+    else if (!passwordCheck) {
+      alert(`비밀번호 확인을 입력하세요.`);
+      return;
+    }
+
+    // 비밀번호 일치 여부 체크
+    else if (password !== passwordCheck) {
+      setPasswordError(`비밀번호가 일치하지 않습니다.`);
+      return;
+    }
+  
     const form = e.target;
     const name = form.name.value;
     const email = form.email.value;
-    const loginId = form.loginId.value;
 
     console.log(name, email, loginId, password);
 
@@ -55,6 +81,7 @@ const JoinModal = ({ show, onHide }) => {
     const message = await response.data;
 
     setLoginIdError(message);
+    setIsLoginIdChecked(message === '사용 가능한 아이디입니다.'); // 중복 확인 성공 여부 설정
   }
 
   const resetForm = () => {
@@ -63,6 +90,7 @@ const JoinModal = ({ show, onHide }) => {
     setPasswordCheck('');
     setPasswordError('');
     setLoginIdError('');
+    setIsLoginIdChecked(false);
   };
 
   const handleClose = () => {
