@@ -16,6 +16,7 @@ const Header = () => {
       <LoginModal
         show={LoginModalOn}
         onHide={() => setLoginModalOn(false)}
+        handleJoinComplete={() => setLoginModalOn(true)}
       />
       <header>
         <Navbar style={{ height: '100px', padding: '10px 0' }} bg="dark" data-bs-theme="dark">

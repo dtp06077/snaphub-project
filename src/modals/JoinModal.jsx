@@ -71,6 +71,7 @@ const JoinModal = ({ show, onHide, onJoinComplete }) => {
       response = await join({ name, email, loginId, password });
     } catch (error) {
       console.error(`${error}`);
+      alert(`${error}`);
       console.error(`회원가입 요청 중 에러가 발생하였습니다.`);
       return
     }

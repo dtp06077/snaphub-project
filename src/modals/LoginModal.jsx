@@ -4,7 +4,7 @@ import { LoginContext } from '../contexts/LoginContextProvider'
 import JoinModal from './JoinModal';
 import './Modal.css';
 
-const LoginModal = ({ show, onHide }) => {
+const LoginModal = ({ show, onHide, handleJoinComplete }) => {
 
     const { login } = useContext(LoginContext);
     const [JoinModalOn, setJoinModalOn] = useState(false);
@@ -26,11 +26,13 @@ const LoginModal = ({ show, onHide }) => {
         setPassword('');
     }
 
+
     return (
         <>
             <JoinModal
                 show={JoinModalOn}
                 onHide={() => setJoinModalOn(false)}
+                onJoinComplete={handleJoinComplete}
             />
             <Modal
                 show={show}
