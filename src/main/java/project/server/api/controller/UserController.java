@@ -65,6 +65,10 @@ public class UserController {
     @PostMapping("")
     public ResponseEntity<?> join(@RequestBody UserJoinRequest request) throws Exception {
         log.info("[POST] - /users");
+        if (request.getPassword() == null || request.getPassword().isEmpty()) {
+            throw new IllegalArgumentException("비밀번호가 비어있습니다."); // 예외 처리
+        }
+
         Long result = userService.insert(request);
 
         if( result >= 0) {
