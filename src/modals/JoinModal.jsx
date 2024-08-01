@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Modal, Button, Form, InputGroup } from 'react-bootstrap'
-import { checkLoginId } from '../apis/auth';
+import { checkLoginId, join } from '../apis/auth';
 
 const JoinModal = ({ show, onHide }) => {
 
@@ -10,18 +10,48 @@ const JoinModal = ({ show, onHide }) => {
   const [passwordError, setPasswordError] = useState('');
   const [loginIdError, setLoginIdError] = useState('');
 
-  const handleSubmit = (e) => {
+  const onJoin = async (e) => {
     e.preventDefault();
     if (password !== passwordCheck) {
       setPasswordError(`비밀번호가 일치하지 않습니다.`);
-    } else {
-      setPasswordError(``);
+      return;
+    }
+
+    const form = e.target;
+    const name = form.name.value;
+    const email = form.email.value;
+    const loginId = form.loginId.value;
+
+    console.log(name, email, loginId, password);
+
+    let response;
+    let data;
+
+    try {
+      response = await join({ name, email, loginId, password });
+    } catch (error) {
+      console.error(`${error}`);
+      console.error(`회원가입 요청 중 에러가 발생하였습니다.`);
+      return
+    }
+
+    data = response.data;
+    const status = response.status;
+    console.log(`data : ${data}`);
+    console.log(`status : ${status}`);
+
+    if (status === 200) {
+      console.log(`회원가입 성공!`);
+      alert(`회원가입에 성공하였습니다.`);
+    }
+    else {
+      console.log(`회원가입 실패`);
+      alert(`회원가입에 실패하였습니다.`);
     }
   }
 
   const idCheck = async () => {
     const response = await checkLoginId(loginId);
-    const status = response.status;
     const message = await response.data;
 
     setLoginIdError(message);
@@ -41,7 +71,7 @@ const JoinModal = ({ show, onHide }) => {
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <Form onSubmit={handleSubmit}>
+        <Form onSubmit={(e) => onJoin(e)}>
           <Form.Group className="mb-3" controlId="formBasicLoginId">
             <Form.Label>아이디</Form.Label>
             <InputGroup>
