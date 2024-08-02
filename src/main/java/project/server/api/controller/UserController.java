@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import project.server.domain.User;
 import project.server.dto.UserInfoRequest;
 import project.server.dto.UserJoinRequest;
@@ -90,15 +91,26 @@ public class UserController {
      *  회원 가입
      */
     @PostMapping("")
-    public ResponseEntity<?> join(@RequestBody UserJoinRequest request) throws Exception {
+    public ResponseEntity<?> join(@RequestParam("name") String name,
+                                  @RequestParam("email") String email,
+                                  @RequestParam("loginId") String loginId,
+                                  @RequestParam("password") String password,
+                                  @RequestParam("profile") MultipartFile profile) throws Exception {
         log.info("[POST] - /users");
-        if (request.getPassword() == null || request.getPassword().isEmpty()) {
+        if (password == null || password.isEmpty()) {
             throw new IllegalArgumentException("비밀번호가 비어있습니다."); // 예외 처리
         }
 
         try {
+            UserJoinRequest request = new UserJoinRequest();
+            request.setName(name);
+            request.setEmail(email);
+            request.setProfile(profile);
+            request.setPassword(password);
+            request.setLoginId(loginId);
             Long result = userService.insert(request);
-            if( result >= 0) {
+
+            if( result >= 1) {
                 log.info("회원가입 성공! - SUCCESS");
                 return new ResponseEntity<>("SUCCESS", HttpStatus.OK);
             }
