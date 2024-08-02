@@ -47,13 +47,18 @@ public class UserServiceImpl implements UserService {
         String encodePw = passwordEncoder.encode(password);
         request.setPassword(encodePw);
 
-        //회원 등록
         User user = new User();
+
+        if(request.getProfile()!=null && !request.getProfile().isEmpty()) {
+            // MultipartFile을 byte[]로 변환
+            byte[] profileImageBytes = request.getProfile().getBytes();
+            user.setProfile(profileImageBytes);
+        }
+        //회원 등록
         user.setName(request.getName());
         user.setEmail(request.getEmail());
         user.setLoginId(request.getLoginId());
         user.setPassword(request.getPassword());
-        user.setProfile(request.getProfile());
         user.setCreatedAt(LocalDateTime.now().toString());
         Long userId = userRepository.userSave(user);
 
@@ -83,7 +88,7 @@ public class UserServiceImpl implements UserService {
         userInfo.setUserId(findUser.getId());
         userInfo.setLoginId(findUser.getLoginId());
         userInfo.setPassword(findUser.getPassword());
-        userInfo.setProfile(findUser.getProfile());
+        //userInfo.setProfile(findUser.getProfile());
         userInfo.setName(findUser.getName());
         userInfo.setEmail(findUser.getEmail());
         userInfo.setCreatedAt(findUser.getCreatedAt());
@@ -159,7 +164,7 @@ public class UserServiceImpl implements UserService {
         user.setPassword(request.getPassword());
         user.setName(request.getName());
         user.setEmail(request.getEmail());
-        user.setProfile(request.getProfile());
+        //user.setProfile(request.getProfile());
 
         return request.getId();
     }

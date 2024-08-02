@@ -34,7 +34,8 @@ public class User {
     @Column(nullable = false, length = 200)
     private String password;
 
-    private String profile;
+    @Lob
+    private byte[] profile;
 
     //String 으로 변경
     private String createdAt;
