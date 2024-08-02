@@ -8,7 +8,7 @@ const Header = () => {
 
   //isLogin : 로그인 여부 - 로그인(true), 비로그인(false)
   //logout() : 로그아웃 함수 -> setLogin(false)
-  const { isLogin, login, logout } = useContext(LoginContext);
+  const { isLogin, logout } = useContext(LoginContext);
   const [LoginModalOn, setLoginModalOn] = useState(false);
 
   return (

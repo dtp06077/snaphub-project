@@ -30,6 +30,9 @@ const LoginContextProvider = ({ children }) => {
     // 권한 정보
     const [roles, setRoles] = useState({ isUser: false, isAdmin: false });
 
+    //유저 프로필 이미지
+    const [profileImage, setProfileImage] = useState('https://reactjs.org/logo-og.png');
+
     // 아이디 저장
     const [rememberUserId, setRememberUserId] = useState();
     /*==============*/
@@ -197,7 +200,7 @@ const LoginContextProvider = ({ children }) => {
         loginCheck()
     }, [])
     return (
-        <LoginContext.Provider value={{ isLogin, userInfo, roles, login, logout }}>
+        <LoginContext.Provider value={{ profileImage, setProfileImage, isLogin, userInfo, roles, login, logout }}>
             {children}
         </LoginContext.Provider>
     )

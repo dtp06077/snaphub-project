@@ -1,6 +1,7 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { Modal, Button, Form, InputGroup } from 'react-bootstrap'
 import { checkName, checkLoginId, join } from '../apis/auth';
+import { LoginContext } from '../contexts/LoginContextProvider';
 
 const JoinModal = ({ show, onHide, onJoinComplete }) => {
 
@@ -14,6 +15,9 @@ const JoinModal = ({ show, onHide, onJoinComplete }) => {
   const [isLoginIdChecked, setIsLoginIdChecked] = useState(false);
   const [isNameChecked, setIsNameChecked] = useState(false);
 
+  const { profileImage, setProfileImage } = useContext(LoginContext);
+  const [preview, setPreview] = useState('https://reactjs.org/logo-og.png');
+
   const onJoin = async (e) => {
     e.preventDefault();
 
@@ -26,6 +30,18 @@ const JoinModal = ({ show, onHide, onJoinComplete }) => {
     // 아이디 중복 확인 체크
     else if (!isLoginIdChecked) {
       alert('아이디 중복 확인을 해주세요.');
+      return;
+    }
+
+    // 닉네임 입력 체크
+    else if (!name) {
+      alert('닉네임을 입력하세요.');
+      return;
+    }
+
+    // 닉네임 중복 확인 체크
+    else if (!isNameChecked) {
+      alert('닉네임 중복 확인을 해주세요.');
       return;
     }
 
@@ -44,18 +60,6 @@ const JoinModal = ({ show, onHide, onJoinComplete }) => {
     // 비밀번호 일치 여부 체크
     else if (password !== passwordCheck) {
       setPasswordError(`비밀번호가 일치하지 않습니다.`);
-      return;
-    }
-
-    // 닉네임 입력 체크
-    else if (!name) {
-      alert('닉네임을 입력하세요.');
-      return;
-    }
-
-    // 닉네임 중복 확인 체크
-    else if (!isNameChecked) {
-      alert('닉네임 중복 확인을 해주세요.');
       return;
     }
 
@@ -93,6 +97,7 @@ const JoinModal = ({ show, onHide, onJoinComplete }) => {
     }
   }
 
+  //아이디 중복 확인
   const idCheck = async () => {
 
     let response;
@@ -119,11 +124,12 @@ const JoinModal = ({ show, onHide, onJoinComplete }) => {
     }
   }
 
+  //닉네임 중복 확인
   const nameCheck = async () => {
 
     let response;
     let message;
-    
+
     try {
       response = await checkName(name);
       message = await response.data;
@@ -142,6 +148,21 @@ const JoinModal = ({ show, onHide, onJoinComplete }) => {
     }
   }
 
+  //프로필 이미지 변경
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setProfileImage(file);
+      const filePreviewUrl = URL.createObjectURL(file);
+      setPreview(filePreviewUrl);
+    }
+  };
+  //프로필 이미지 삭제
+  const handleRemoveImage = () => {
+    setPreview('https://reactjs.org/logo-og.png');
+  };
+
+  //정보 입력란 초기화
   const resetForm = () => {
     setLoginId('');
     setPassword('');
@@ -199,11 +220,11 @@ const JoinModal = ({ show, onHide, onJoinComplete }) => {
           <Form.Group className="mb-3" controlId="formBasicName">
             <Form.Label>닉네임</Form.Label>
             <InputGroup>
-            <Form.Control
-              type="text"
-              placeholder="Enter name"
-              name="name"
-              value={name}
+              <Form.Control
+                type="text"
+                placeholder="Enter name"
+                name="name"
+                value={name}
                 onChange={(e) => setName(e.target.value)} // 아이디 상태 업데이트
               />
               <Button variant="outline-secondary" id="button-addon2" size='sm' onClick={nameCheck}>
@@ -249,6 +270,19 @@ const JoinModal = ({ show, onHide, onJoinComplete }) => {
               name="email"
             />
           </Form.Group>
+
+          <Form.Group className="mb-3" controlId="formBasicProfileImage">
+                        <Form.Label>프로필 이미지</Form.Label>
+                        <input type="file" accept="image/*" onChange={handleImageChange} />
+                        {preview && (
+                            <div>
+                                <img src={preview} alt="Profile Preview" style={{ width: '100px', height: '100px', objectFit: 'cover', marginTop: '10px' }} />
+                                <Button variant="outline-danger" onClick={handleRemoveImage} style={{ marginTop: '10px' }}>
+                                    Remove Image
+                                </Button>
+                            </div>
+                        )}
+                    </Form.Group>
 
           <Button variant="primary" type="submit">
             Submit
