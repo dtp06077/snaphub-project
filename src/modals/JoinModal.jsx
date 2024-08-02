@@ -1,7 +1,6 @@
-import React, { useContext, useState } from 'react'
+import React, { useState } from 'react'
 import { Modal, Button, Form, InputGroup } from 'react-bootstrap'
 import { checkName, checkLoginId, join } from '../apis/auth';
-import { LoginContext } from '../contexts/LoginContextProvider';
 
 const JoinModal = ({ show, onHide, onJoinComplete }) => {
 
@@ -15,8 +14,8 @@ const JoinModal = ({ show, onHide, onJoinComplete }) => {
   const [isLoginIdChecked, setIsLoginIdChecked] = useState(false);
   const [isNameChecked, setIsNameChecked] = useState(false);
 
-  const { profileImage, setProfileImage } = useContext(LoginContext);
-  const [preview, setPreview] = useState('https://reactjs.org/logo-og.png');
+  const [profileImage, setProfileImage] = useState('https://reactjs.org/logo-og.png');
+  const [previewImage, setPreviewImage] = useState('https://reactjs.org/logo-og.png');
 
   const onJoin = async (e) => {
     e.preventDefault();
@@ -65,14 +64,15 @@ const JoinModal = ({ show, onHide, onJoinComplete }) => {
 
     const form = e.target;
     const email = form.email.value;
+    const profile = profileImage;
 
-    console.log(name, email, loginId, password);
+    console.log(name, email, loginId, password, profile);
 
     let response;
     let data;
 
     try {
-      response = await join({ name, email, loginId, password });
+      response = await join({ name, email, loginId, password, profile });
     } catch (error) {
       console.error(`${error}`);
       alert(`${error}`);
@@ -154,12 +154,12 @@ const JoinModal = ({ show, onHide, onJoinComplete }) => {
     if (file) {
       setProfileImage(file);
       const filePreviewUrl = URL.createObjectURL(file);
-      setPreview(filePreviewUrl);
+      setPreviewImage(filePreviewUrl);
     }
   };
   //프로필 이미지 삭제
   const handleRemoveImage = () => {
-    setPreview('https://reactjs.org/logo-og.png');
+    setPreviewImage('https://reactjs.org/logo-og.png');
   };
 
   //정보 입력란 초기화
@@ -173,6 +173,7 @@ const JoinModal = ({ show, onHide, onJoinComplete }) => {
     setName('');
     setIsNameChecked(false);
     setNameError('');
+    setPreviewImage('https://reactjs.org/logo-og.png');
   };
 
   const handleClose = () => {
@@ -273,10 +274,10 @@ const JoinModal = ({ show, onHide, onJoinComplete }) => {
 
           <Form.Group className="mb-3" controlId="formBasicProfileImage">
                         <Form.Label>프로필 이미지</Form.Label>
-                        <input type="file" accept="image/*" onChange={handleImageChange} />
-                        {preview && (
+                        <input type="file" accept="image/*" name="profileImage" onChange={handleImageChange} />
+                        {previewImage && (
                             <div>
-                                <img src={preview} alt="Profile Preview" style={{ width: '100px', height: '100px', objectFit: 'cover', marginTop: '10px' }} />
+                                <img src={previewImage} alt="Profile Preview" style={{ width: '100px', height: '100px', objectFit: 'cover', marginTop: '10px' }} />
                                 <Button variant="outline-danger" onClick={handleRemoveImage} style={{ marginTop: '10px' }}>
                                     Remove Image
                                 </Button>
