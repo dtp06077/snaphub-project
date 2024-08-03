@@ -19,6 +19,7 @@ import project.server.dto.UserJoinRequest;
 import project.server.dto.UserUpdateRequest;
 import project.server.repository.UserRepository;
 
+import java.io.File;
 import java.time.LocalDateTime;
 
 @Service
@@ -50,9 +51,22 @@ public class UserServiceImpl implements UserService {
         User user = new User();
 
         if(request.getProfile()!=null && !request.getProfile().isEmpty()) {
-            // MultipartFile을 byte[]로 변환
-            byte[] profileImageBytes = request.getProfile().getBytes();
-            user.setProfile(profileImageBytes);
+            // 파일 저장 경로 설정
+            String uploadDir = "C:\\Users\\dtp06\\Spring project\\snaphub-project\\profileImage"; // 파일을 저장할 디렉토리
+            String fileName = System.currentTimeMillis() + "_" + request.getProfile().getOriginalFilename(); // 파일 이름 생성
+            File directory = new File(uploadDir);
+
+            // 디렉토리가 존재하지 않으면 생성
+            if (!directory.exists()) {
+                directory.mkdirs();
+            }
+
+            // 파일 저장
+            File uploadFile = new File(directory, fileName);
+            request.getProfile().transferTo(uploadFile); // 파일 저장
+
+            // 파일 경로 설정
+            user.setProfile(uploadDir + "\\" + fileName); // DB에 저장할 경로 설정
         }
         //회원 등록
         user.setName(request.getName());
@@ -88,7 +102,7 @@ public class UserServiceImpl implements UserService {
         userInfo.setUserId(findUser.getId());
         userInfo.setLoginId(findUser.getLoginId());
         userInfo.setPassword(findUser.getPassword());
-        //userInfo.setProfile(findUser.getProfile());
+        userInfo.setProfile(findUser.getProfile());
         userInfo.setName(findUser.getName());
         userInfo.setEmail(findUser.getEmail());
         userInfo.setCreatedAt(findUser.getCreatedAt());
