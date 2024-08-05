@@ -65,8 +65,9 @@ public class UserServiceImpl implements UserService {
             File uploadFile = new File(directory, fileName);
             request.getProfile().transferTo(uploadFile); // 파일 저장
 
-            // 파일 경로 설정
-            user.setProfile(uploadDir + "\\" + fileName); // DB에 저장할 경로 설정
+            // 웹에서 접근 가능한 경로 설정 (예시: http://yourserver.com/profileImage/)
+            String webPath = "http://snabhub.com/profileImage/" + fileName; // 웹 경로 설정
+            user.setProfile(webPath); // DB에 저장할 경로 설정
         }
         //회원 등록
         user.setName(request.getName());

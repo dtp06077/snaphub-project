@@ -45,7 +45,7 @@ public class UserServiceImplTest {
         userRequest.setLoginId("testLoginId");
         userRequest.setPassword("testPassword");
         userRequest.setEmail("");
-        userRequest.setProfile("");
+        //userRequest.setProfile("");
     }
 
     @Test
