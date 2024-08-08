@@ -46,7 +46,7 @@ public class UserController {
         return new ResponseEntity<>("UNAUTHORIZED", HttpStatus.UNAUTHORIZED);
     }
     /**
-     * 중복 로그인 조회
+     * 중복 아이디 조회
      */
     @GetMapping("/check-loginId")
     public ResponseEntity<?> checkLoginId(@RequestParam String loginId) {
@@ -67,7 +67,7 @@ public class UserController {
     }
 
     /**
-     * 중복 로그인 조회
+     * 중복 닉네임 조회
      */
     @GetMapping("/check-name")
     public ResponseEntity<?> checkName(@RequestParam String name) {
