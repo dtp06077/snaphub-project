@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react'
-import { LoginContext } from '../../contexts/LoginContextProvider'
-import LoginModal from '../../modals/LoginModal'
+import { LoginContext } from '../contexts/LoginContextProvider'
+import LoginModal from '../modals/LoginModal'
 import { Button, Container, Nav, Navbar } from 'react-bootstrap'
 import './Header.css';
 
@@ -8,7 +8,7 @@ const Header = () => {
 
   //isLogin : 로그인 여부 - 로그인(true), 비로그인(false)
   //logout() : 로그아웃 함수 -> setLogin(false)
-  const { isLogin, logout } = useContext(LoginContext);
+  const { isLogin, logout, profileImage } = useContext(LoginContext);
   const [LoginModalOn, setLoginModalOn] = useState(false);
 
   return (
@@ -32,6 +32,13 @@ const Header = () => {
                   <Nav.Link className='custom-nav-link'>
                     search
                   </Nav.Link>
+                  {/* 프로필 사진 추가 */}
+                  <img 
+                    src={profileImage} 
+                    alt="Profile" 
+                    className="profile-image" 
+                    onClick={() => {/* 프로필 클릭 시 동작 */}} 
+                  />
                 </>
               ) : (
                 <>
@@ -46,6 +53,13 @@ const Header = () => {
                   >
                     logout
                   </Nav.Link>
+                  {/* 프로필 사진 추가 */}
+                  <img 
+                    src={profileImage} 
+                    alt="Profile" 
+                    className="profile-image" 
+                    onClick={() => {/* 프로필 클릭 시 동작 */}} 
+                  />
                 </>
               )}
             </Nav>

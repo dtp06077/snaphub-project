@@ -151,12 +151,17 @@ const JoinModal = ({ show, onHide, onJoinComplete }) => {
   //프로필 이미지 변경
   const handleImageChange = (e) => {
     const file = e.target.files[0];
+    console.log(file);
+    
     if (file) {
       setProfileImage(file);
       const filePreviewUrl = URL.createObjectURL(file);
+      console.log(`preview = ${filePreviewUrl}`);
+      
       setPreviewImage(filePreviewUrl);
     }
   };
+
   //프로필 이미지 삭제
   const handleRemoveImage = () => {
     setPreviewImage('https://reactjs.org/logo-og.png');

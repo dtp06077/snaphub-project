@@ -135,10 +135,11 @@ const LoginContextProvider = ({ children }) => {
     // userData, accessToken (jwt)
     const loginSetting = (userData, accessToken) => {
 
-        const { userId, loginId, auths } = userData
+        const { userId, loginId, email, profile, auths } = userData
 
         console.log(`userId : ${userId}`);
         console.log(`loginId : ${loginId}`);
+        console.log(`email : ${email}`);
         console.log(`auths : ${auths}`);
 
 
@@ -147,6 +148,12 @@ const LoginContextProvider = ({ children }) => {
 
         //로그인 여부 : true
         setLogin(true);
+
+        //프로필 이미지 업데이트
+        //웹 서버 배포 시`http://snaphub.com/.../로 변경
+        setProfileImage(`${profile}`);
+        console.log(`${profile}`);
+    
 
         //유저정보
         const updateUserInfo = { userId, loginId, auths };
@@ -191,6 +198,9 @@ const LoginContextProvider = ({ children }) => {
         //유저 정보 초기화
         setUserInfo(null);
 
+        //프로필 사진 초기화
+        setProfileImage('https://reactjs.org/logo-og.png');
+
         //권한 정보 초기화
         setRoles(null);
     }
@@ -200,7 +210,7 @@ const LoginContextProvider = ({ children }) => {
         loginCheck()
     }, [])
     return (
-        <LoginContext.Provider value={{ profileImage, setProfileImage, isLogin, userInfo, roles, login, logout }}>
+        <LoginContext.Provider value={{ profileImage, isLogin, userInfo, roles, login, logout }}>
             {children}
         </LoginContext.Provider>
     )

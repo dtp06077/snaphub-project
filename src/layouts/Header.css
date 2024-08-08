@@ -12,3 +12,13 @@
 .custom-nav-link:hover {
     color: #e7e6e6; /* 마우스 오버시 색상 변경 */
 }
+
+
+.profile-image {
+    width: 40px; /* 원하는 크기로 조정 */
+    height: 40px; /* 원하는 크기로 조정 */
+    border-radius: 50%; /* 원형으로 만들기 */
+    margin-left: 15px; /* 링크와의 간격 */
+    cursor: pointer; /* 클릭 가능하게 보이기 */
+}
+  
