@@ -34,8 +34,8 @@ public class EmotionServiceTest {
 
     private User user;
     private Post post;
-    private Long userId;
-    private Long postId;
+    private int userId;
+    private int postId;
 
     @BeforeEach
     void setUp() throws Exception {
@@ -82,13 +82,13 @@ public class EmotionServiceTest {
         userRepository.userSave(user3);
 
         Emotion emotion1 = makeEmotion(EmotionStatus.ANGRY);
-        Long id1 = emotionService.saveEmotion(user2.getId(), postId, emotion1);
+        int id1 = emotionService.saveEmotion(user2.getId(), postId, emotion1);
 
         Emotion emotion2 = makeEmotion(EmotionStatus.ANGRY);
-        Long id2 = emotionService.saveEmotion(user3.getId(), postId, emotion2);
+        int id2 = emotionService.saveEmotion(user3.getId(), postId, emotion2);
 
         Emotion emotion3 = makeEmotion(EmotionStatus.HAPPY);
-        Long id3 = emotionService.saveEmotion(user3.getId(), postId, emotion3);
+        int id3 = emotionService.saveEmotion(user3.getId(), postId, emotion3);
 
         //When
         Emotion findEmo1 = emotionRepository.findById(id1);
@@ -125,13 +125,13 @@ public class EmotionServiceTest {
         userRepository.userSave(user3);
 
         Emotion emotion1 = makeEmotion(EmotionStatus.ANGRY);
-        Long id1 = emotionService.saveEmotion(user2.getId(), postId, emotion1);
+        int id1 = emotionService.saveEmotion(user2.getId(), postId, emotion1);
 
         Emotion emotion2 = makeEmotion(EmotionStatus.ANGRY);
-        Long id2 = emotionService.saveEmotion(user3.getId(), postId, emotion2);
+        int id2 = emotionService.saveEmotion(user3.getId(), postId, emotion2);
 
         Emotion emotion3 = makeEmotion(EmotionStatus.HAPPY);
-        Long id3 = emotionService.saveEmotion(user3.getId(), postId, emotion3);
+        int id3 = emotionService.saveEmotion(user3.getId(), postId, emotion3);
 
         //When
         List<Emotion> emotions = emotionService.getEmosByPostId(postId);
@@ -148,7 +148,7 @@ public class EmotionServiceTest {
         userRepository.userSave(user2);
 
         Emotion emotion1 = makeEmotion(EmotionStatus.ANGRY);
-        Long id1 = emotionService.saveEmotion(user2.getId(), postId, emotion1);
+        int id1 = emotionService.saveEmotion(user2.getId(), postId, emotion1);
 
         //When
         emotionService.deleteEmotion(id1);
@@ -165,7 +165,7 @@ public class EmotionServiceTest {
         userRepository.userSave(user2);
 
         Emotion emotion1 = makeEmotion(EmotionStatus.ANGRY);
-        Long id1 = emotionService.saveEmotion(user2.getId(), postId, emotion1);
+        int id1 = emotionService.saveEmotion(user2.getId(), postId, emotion1);
 
         //When
         postService.deletePost(postId);
@@ -182,7 +182,7 @@ public class EmotionServiceTest {
         userRepository.userSave(user2);
 
         Emotion emotion1 = makeEmotion(EmotionStatus.ANGRY);
-        Long id1 = emotionService.saveEmotion(user2.getId(), postId, emotion1);
+        int id1 = emotionService.saveEmotion(user2.getId(), postId, emotion1);
 
         //When
         //userRepository.delete(userId);

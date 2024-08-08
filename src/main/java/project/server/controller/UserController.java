@@ -1,4 +1,4 @@
-package project.server.api.controller;
+package project.server.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -108,7 +108,7 @@ public class UserController {
             request.setProfile(profile);
             request.setPassword(password);
             request.setLoginId(loginId);
-            Long result = userService.insert(request);
+            int result = userService.insert(request);
 
             if( result >= 1) {
                 log.info("회원가입 성공! - SUCCESS");
@@ -130,7 +130,7 @@ public class UserController {
     @PutMapping("")
     public ResponseEntity<?> update(@RequestBody UserUpdateRequest request) throws Exception {
         log.info("[PUT] - /users");
-        Long result = userService.update(request);
+        int result = userService.update(request);
 
         if( result >= 0 ) {
             log.info("회원수정 성공! - SUCCESS");
@@ -150,7 +150,7 @@ public class UserController {
     public ResponseEntity<?> destroy(@PathVariable("loginId") String loginId) throws Exception {
         log.info("[DELETE] - /users/{userId}");
 
-        Long result = userService.delete(loginId);
+        int result = userService.delete(loginId);
 
         if( result >= 0 ) {
             log.info("회원삭제 성공! - SUCCESS");

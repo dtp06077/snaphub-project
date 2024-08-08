@@ -11,13 +11,19 @@ import project.server.domain.id.EmotionId;
 public class Emotion {
 
     @Id
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "post_id")
-    private Post post;
+    @Column(name = "post_id") // postId를 컬럼으로 매핑
+    private int postId;
 
     @Id
+    @Column(name = "user_id") // userId를 컬럼으로 매핑
+    private int userId;
+
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "post_id", insertable = false, updatable = false)
+    private Post post;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", insertable = false, updatable = false)
     private User user;
 
     @Enumerated(EnumType.STRING)

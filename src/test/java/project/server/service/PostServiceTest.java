@@ -35,8 +35,8 @@ public class PostServiceTest {
 
     private Post post1;
     private User user1;
-    private Long postId1;
-    private Long userId1;
+    private int postId1;
+    private int userId1;
 
     @BeforeEach
     void setUp() {
@@ -99,7 +99,7 @@ public class PostServiceTest {
     public void getPostByUser_success() {
         //Given
         Post post2 = makePost("title2", "content2");
-        Long postId2 = postService.savePost(user1.getId(), post2);
+        int postId2 = postService.savePost(user1.getId(), post2);
 
         //When
         List<Post> posts = postService.getPostByUserId(user1.getId());
@@ -122,9 +122,9 @@ public class PostServiceTest {
         Post post3 = makePost("title3", "content3");
         Post post4 = makePost("title4", "content4");
 
-        Long postId2 = postService.savePost(user2.getId(), post2);
-        Long postId3 = postService.savePost(user3.getId(), post3);
-        Long postId4 = postService.savePost(user3.getId(), post4);
+        int postId2 = postService.savePost(user2.getId(), post2);
+        int postId3 = postService.savePost(user3.getId(), post3);
+        int postId4 = postService.savePost(user3.getId(), post4);
 
         //When
         List<Post> allPosts = postService.getAllPosts();
@@ -167,15 +167,12 @@ public class PostServiceTest {
         LocalDateTime now = LocalDateTime.now();
 
         //When
-        postService.updatePost(postId1, "newTitle", "newContent",
-                "image", now);
+        postService.updatePost(postId1, "newTitle", "newContent", now);
 
         //Then
         Post findPost = postRepository.findById(postId1);
         assertThat(findPost.getTitle()).isEqualTo("newTitle");
         assertThat(findPost.getContent()).isEqualTo("newContent");
-        assertThat(findPost.getImageUrl()).isEqualTo("image");
-        assertThat(findPost.getCreatedAt()).isEqualTo(now);
     }
 
     @Test
@@ -187,8 +184,7 @@ public class PostServiceTest {
 
         //When
         try {
-            postService.updatePost(postId1, "newTitle", "newContent",
-                    "image", now);
+            postService.updatePost(postId1, "newTitle", "newContent", now);
         } catch (IllegalStateException e) {
             return;
         }
