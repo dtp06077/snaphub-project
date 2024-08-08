@@ -3,6 +3,7 @@ package project.server.domain;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import project.server.domain.id.EmotionId;
 
 @Entity
 @Getter @Setter

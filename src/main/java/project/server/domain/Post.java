@@ -12,35 +12,46 @@ import java.util.List;
 public class Post {
 
     @Id @GeneratedValue
-    private Long id;
+    @Column(name = "post_id")
+    private int id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     //외래키
     @JoinColumn(name = "user_id")
     private User author;
 
+    //자식 엔티티 영속화
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PostImage> images = new ArrayList<>();
+
     //null 허용 X
-    @Column(nullable = false, length = 20)
+    @Column(nullable = false)
+    @Lob
     private String title;
 
     //null 허용 X
     @Column(nullable = false)
+    @Lob
     private String content;
 
-    private String imageUrl;
-
-    private LocalDateTime createdAt;
+    private LocalDateTime postDatetime;
 
     //감정표현 카운트 파라미터
     private int happyEmoCnt;
     private int sadEmoCnt;
     private int angryEmoCnt;
 
-    //생성 시 감정표현 카운트 초기화
+    private int commentCnt;
+
+    private int viewCnt;
+
+    //생성 시 카운트 초기화
     public Post() {
         this.happyEmoCnt = 0;
         this.sadEmoCnt = 0;
         this.angryEmoCnt = 0;
+        this.commentCnt = 0;
+        this.viewCnt = 0;
     }
 
     //게시글과 생명주기를 함께하므로 영속화
