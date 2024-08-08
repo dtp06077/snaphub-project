@@ -13,27 +13,22 @@ public class EmotionRepository {
 
     private final EntityManager em;
 
-    public Long save(Emotion emotion) {
-        if(emotion.getId() == null) {
-            em.persist(emotion);
-        }
-        else {
-            em.merge(emotion);
-        }
-        return emotion.getId();
+    public int save(Emotion emotion) {
+        em.persist(emotion);
+        return emotion.getPost().getId();
     }
 
-    public Emotion findById(Long id) {
+    public Emotion findById(int id) {
         return em.find(Emotion.class, id);
     }
 
-    public List<Emotion> findByPostId(Long id) {
+    public List<Emotion> findByPostId(int id) {
         return em.createQuery("select e from Emotion e where e.post.id = :postId", Emotion.class)
                 .setParameter("postId", id)
                 .getResultList();
     }
 
-    public void delete(Long id) {
+    public void delete(int id) {
         Emotion emotion = em.find(Emotion.class, id);
         if(emotion != null) {
             em.remove(emotion);

@@ -14,19 +14,19 @@ public class UserRepository {
     private final EntityManager em;
 
     //사용자 저장
-    public Long userSave(User user) {
+    public int userSave(User user) {
         em.persist(user);
         return user.getId();
     }
 
     //권한 저장
-    public Long authSave(UserAuth userAuth) {
+    public int authSave(UserAuth userAuth) {
         em.persist(userAuth);
-        return userAuth.getId();
+        return userAuth.getUser().getId();
     }
 
     //회원 조회 메서드
-    public User findById(Long id) {
+    public User findById(int id) {
         return em.find(User.class, id);
     }
 
@@ -55,9 +55,9 @@ public class UserRepository {
     }
 
     //사용자 삭제 메서드
-    public Long delete(String loginId) {
+    public int delete(String loginId) {
         User user = findByLoginId(loginId);
-        Long id = user.getId();
+        int id = user.getId();
 
         if(user != null) {
             em.remove(user);

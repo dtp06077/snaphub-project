@@ -13,27 +13,22 @@ public class CommentRepository {
 
     private final EntityManager em;
 
-    public Long save(Comment comment) {
-        if(comment.getId() == null) {
-            em.persist(comment);
-        }
-        else {
-            em.merge(comment);
-        }
+    public int save(Comment comment) {
+        em.persist(comment);
         return comment.getId();
     }
 
-    public Comment findById(Long id) {
+    public Comment findById(int id) {
         return em.find(Comment.class, id);
     }
 
-    public List<Comment> findByPostId(Long id) {
+    public List<Comment> findByPostId(int id) {
         return em.createQuery("select c from Comment c where c.post.id = :postId", Comment.class)
                 .setParameter("postId", id)
                 .getResultList();
     }
 
-    public void delete(Long id) {
+    public void delete(int id) {
         Comment comment = em.find(Comment.class, id);
         if(comment != null) {
             em.remove(comment);

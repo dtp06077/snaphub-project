@@ -3,6 +3,8 @@ package project.server.domain;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,8 +40,8 @@ public class User {
     @Lob
     private String profileImage;
 
-    //String 으로 변경
-    private String createdAt;
+    //LocalDateTime 으로 변경
+    private LocalDateTime createdAt;
 
     //자식 엔티티 영속화
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
