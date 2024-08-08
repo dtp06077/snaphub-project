@@ -9,7 +9,7 @@ import project.server.dto.UserUpdateRequest;
 
 public interface UserService {
     //회원 등록
-    public Long insert(UserJoinRequest userRequest) throws Exception;
+    public int insert(UserJoinRequest userRequest) throws Exception;
 
     //회원 조회
     public UserInfoRequest select(User user);
@@ -24,8 +24,8 @@ public interface UserService {
     public void login(UserLoginRequest loginRequest, HttpServletRequest request) throws Exception;
 
     //회원 수정
-    public Long update(UserUpdateRequest request) throws Exception;
+    public int update(UserUpdateRequest request) throws Exception;
 
     //회원 삭제
-    public Long delete(String loginId) throws Exception;
+    public int delete(String loginId) throws Exception;
 }

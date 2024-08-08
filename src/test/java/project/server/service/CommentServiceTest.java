@@ -34,8 +34,8 @@ public class CommentServiceTest {
 
     private User user;
     private Post post;
-    private Long userId;
-    private Long postId;
+    private int userId;
+    private int postId;
 
     @BeforeEach
     void setUp() {
@@ -77,7 +77,7 @@ public class CommentServiceTest {
     public void save_success() {
         //Given
         Comment comment = makeComment("안녕하세요.");
-        Long commentId = commentService.saveComment(userId, postId, comment);
+        int commentId = commentService.saveComment(userId, postId, comment);
 
         //When
         List<Comment> userComments = user.getComments();
@@ -99,8 +99,8 @@ public class CommentServiceTest {
         //Given
         Comment comment1 = makeComment("안녕하세요.");
         Comment comment2 = makeComment("반갑습니다.");
-        Long id1 = commentService.saveComment(userId, postId, comment1);
-        Long id2 = commentService.saveComment(userId, postId, comment2);
+        int id1 = commentService.saveComment(userId, postId, comment1);
+        int id2 = commentService.saveComment(userId, postId, comment2);
 
         //When
         Comment findComment = commentService.getComment(id2);
@@ -115,11 +115,11 @@ public class CommentServiceTest {
     public void byPostId_success() {
         //Given
         User user2 = makeUser("gildong", "2345", "2345");
-        Long userId2 = userRepository.userSave(user2);
+        int userId2 = userRepository.userSave(user2);
         Post post2 = makePost("title2", "content2");
         Post post3 = makePost("title3", "content3");
-        Long postId2 = postService.savePost(userId2, post2);
-        Long postId3 = postService.savePost(userId, post3);
+        int postId2 = postService.savePost(userId2, post2);
+        int postId3 = postService.savePost(userId, post3);
 
         Comment comment1 = makeComment("안녕");
         Comment comment2 = makeComment("하이");
@@ -148,7 +148,7 @@ public class CommentServiceTest {
     public void delete_success() {
         //Given
         Comment comment = makeComment("안녕하세요");
-        Long commentId = commentService.saveComment(userId, postId, comment);
+        int commentId = commentService.saveComment(userId, postId, comment);
 
         //When
         commentService.deleteComment(commentId);
@@ -162,7 +162,7 @@ public class CommentServiceTest {
     public void deletePost_success() {
         //Given
         Comment comment = makeComment("안녕하세요");
-        Long commentId = commentService.saveComment(userId, postId, comment);
+        int commentId = commentService.saveComment(userId, postId, comment);
 
         //When
         postService.deletePost(postId);
@@ -176,7 +176,7 @@ public class CommentServiceTest {
     public void deleteUser_success() {
         //Given
         Comment comment = makeComment("안녕하세요");
-        Long commentId = commentService.saveComment(userId, postId, comment);
+        int commentId = commentService.saveComment(userId, postId, comment);
 
         //When
         //userRepository.delete(userId);

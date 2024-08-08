@@ -5,7 +5,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Data
 public class UserUpdateRequest {
-    private Long id;
+    private int id;
     private String name;
     private String email;
     private String loginId;

@@ -23,7 +23,7 @@ public class EmotionService {
      * 감정표현 저장
      */
     @Transactional
-    public Long saveEmotion(Long userId, Long postId, Emotion emotion) {
+    public int saveEmotion(int userId, int postId, Emotion emotion) {
         emotion.setUser(userRepository.findById(userId));
         emotion.setPost(postRepository.findById(postId));
         return emotionRepository.save(emotion);
@@ -33,14 +33,14 @@ public class EmotionService {
      * 감정표현 삭제
      */
     @Transactional
-    public void deleteEmotion(Long id) {
+    public void deleteEmotion(int id) {
         emotionRepository.delete(id);
     }
 
     /**
      * 특정 게시글의 감정표현 검색
      */
-    public List<Emotion> getEmosByPostId(Long postId) {
+    public List<Emotion> getEmosByPostId(int postId) {
         return emotionRepository.findByPostId(postId);
     }
 }

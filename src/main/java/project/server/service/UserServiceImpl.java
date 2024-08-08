@@ -42,7 +42,7 @@ public class UserServiceImpl implements UserService {
      */
     @Transactional
     @Override
-    public Long insert(UserJoinRequest request) throws Exception {
+    public int insert(UserJoinRequest request) throws Exception {
         //비밀번호 암호화
         String password = request.getPassword();
         String encodePw = passwordEncoder.encode(password);
@@ -67,15 +67,15 @@ public class UserServiceImpl implements UserService {
 
             // 웹에서 접근 가능한 경로 설정 (예시: http://yourserver.com/profileImage/)
             String webPath = "http://snabhub.com/profileImage/" + fileName; // 웹 경로 설정
-            user.setProfile(webPath); // DB에 저장할 경로 설정
+            user.setProfileImage(webPath); // DB에 저장할 경로 설정
         }
         //회원 등록
         user.setName(request.getName());
         user.setEmail(request.getEmail());
         user.setLoginId(request.getLoginId());
         user.setPassword(request.getPassword());
-        user.setCreatedAt(LocalDateTime.now().toString());
-        Long userId = userRepository.userSave(user);
+        user.setCreatedAt(LocalDateTime.now());
+        int userId = userRepository.userSave(user);
 
         //권한 등록
         if(userId > 0) {
@@ -103,10 +103,9 @@ public class UserServiceImpl implements UserService {
         userInfo.setUserId(findUser.getId());
         userInfo.setLoginId(findUser.getLoginId());
         userInfo.setPassword(findUser.getPassword());
-        userInfo.setProfile(findUser.getProfile());
+        userInfo.setProfileImage(findUser.getProfileImage());
         userInfo.setName(findUser.getName());
         userInfo.setEmail(findUser.getEmail());
-        userInfo.setCreatedAt(findUser.getCreatedAt());
         userInfo.setAuths(findUser.getRoles());
         userInfo.setPostCnt(findUser.getPostCnt());
 
@@ -167,7 +166,7 @@ public class UserServiceImpl implements UserService {
      */
     @Transactional
     @Override
-    public Long update(UserUpdateRequest request) throws Exception {
+    public int update(UserUpdateRequest request) throws Exception {
         // 비밀번호 암호화
         String password = request.getPassword();
         String encodedPw = passwordEncoder.encode(password);
@@ -189,7 +188,7 @@ public class UserServiceImpl implements UserService {
      */
     @Transactional
     @Override
-    public Long delete(String loginId) {
+    public int delete(String loginId) {
 
         return userRepository.delete(loginId);
     }

@@ -40,7 +40,7 @@ public class JwtTokenProvider {
     /**
      * 토큰 생성
      */
-    public String createToken(Long userId, String loginId, List<String> roles) {
+    public String createToken(int userId, String loginId, List<String> roles) {
 
         //jwt 토큰 생성
         String jwt = Jwts.builder()
@@ -81,7 +81,7 @@ public class JwtTokenProvider {
 
             //인증된 회원 PK
             String id = parsedToken.getPayload().get("uid").toString();
-            Long userId = (id == null) ? 0 : Long.parseLong(id);
+            int userId = (id == null) ? 0 : Integer.parseInt(id);
             log.info("userId : " + id);
 
             //인증된 회원 아이디

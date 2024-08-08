@@ -22,7 +22,7 @@ public class CommentService {
      * 댓글 저장
      */
     @Transactional
-    public Long saveComment(Long userId, Long postId, Comment comment) {
+    public int saveComment(int userId, int postId, Comment comment) {
         comment.setAuthor(userRepository.findById(userId));
         comment.setPost(postRepository.findById(postId));
         return commentRepository.save(comment);
@@ -31,14 +31,14 @@ public class CommentService {
     /**
      * 댓글 검색
      */
-    public Comment getComment(Long id) {
+    public Comment getComment(int id) {
         return commentRepository.findById(id);
     }
 
     /**
      *특정 게시글의 댓글 검색
      */
-    public List<Comment> getCommentsByPostId(Long postId) {
+    public List<Comment> getCommentsByPostId(int postId) {
         return commentRepository.findByPostId(postId);
     }
 
@@ -46,7 +46,7 @@ public class CommentService {
      * 댓글 삭제
      */
     @Transactional
-    public void deleteComment(Long id) {
+    public void deleteComment(int id) {
         commentRepository.delete(id);
     }
 }
