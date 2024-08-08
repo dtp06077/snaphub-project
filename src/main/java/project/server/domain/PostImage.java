@@ -7,6 +7,7 @@ import project.server.domain.id.PostImageId;
 
 @Entity
 @Getter @Setter
+@Table(name = "post_image")
 @IdClass(PostImageId.class)
 public class PostImage {
     @Id
