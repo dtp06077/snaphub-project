@@ -50,25 +50,25 @@ public class UserServiceImpl implements UserService {
 
         User user = new User();
 
-        if(request.getProfile()!=null && !request.getProfile().isEmpty()) {
-            // 파일 저장 경로 설정
-            String uploadDir = "C:\\Users\\dtp06\\Spring project\\snaphub-project\\profileImage"; // 파일을 저장할 디렉토리
-            String fileName = System.currentTimeMillis() + "_" + request.getProfile().getOriginalFilename(); // 파일 이름 생성
-            File directory = new File(uploadDir);
-
-            // 디렉토리가 존재하지 않으면 생성
-            if (!directory.exists()) {
-                directory.mkdirs();
-            }
-
-            // 파일 저장
-            File uploadFile = new File(directory, fileName);
-            request.getProfile().transferTo(uploadFile); // 파일 저장
-
-            // 웹에서 접근 가능한 경로 설정 (예시: http://yourserver.com/profileImage/)
-            String webPath = "http://snabhub.com/profileImage/" + fileName; // 웹 경로 설정
-            user.setProfileImage(webPath); // DB에 저장할 경로 설정
-        }
+//        if(request.getProfile()!=null && !request.getProfile().isEmpty()) {
+//            // 파일 저장 경로 설정
+//            String uploadDir = "C:\\Users\\dtp06\\Spring project\\snaphub-project\\profileImage"; // 파일을 저장할 디렉토리
+//            String fileName = System.currentTimeMillis() + "_" + request.getProfile().getOriginalFilename(); // 파일 이름 생성
+//            File directory = new File(uploadDir);
+//
+//            // 디렉토리가 존재하지 않으면 생성
+//            if (!directory.exists()) {
+//                directory.mkdirs();
+//            }
+//
+//            // 파일 저장
+//            File uploadFile = new File(directory, fileName);
+//            request.getProfile().transferTo(uploadFile); // 파일 저장
+//
+//            // 웹에서 접근 가능한 경로 설정 (예시: http://yourserver.com/profileImage/)
+//            String webPath = "http://snabhub.com/profileImage/" + fileName; // 웹 경로 설정
+//            user.setProfileImage(webPath); // DB에 저장할 경로 설정
+//        }
         //회원 등록
         user.setName(request.getName());
         user.setEmail(request.getEmail());

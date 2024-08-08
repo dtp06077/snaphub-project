@@ -91,23 +91,13 @@ public class UserController {
      *  회원 가입
      */
     @PostMapping("")
-    public ResponseEntity<?> join(@RequestParam("name") String name,
-                                  @RequestParam("email") String email,
-                                  @RequestParam("loginId") String loginId,
-                                  @RequestParam("password") String password,
-                                  @RequestParam("profile") MultipartFile profile) throws Exception {
+    public ResponseEntity<?> join(@RequestBody UserJoinRequest request) throws Exception {
         log.info("[POST] - /users");
-        if (password == null || password.isEmpty()) {
+        if (request.getPassword() == null || request.getPassword().isEmpty()) {
             throw new IllegalArgumentException("비밀번호가 비어있습니다."); // 예외 처리
         }
 
         try {
-            UserJoinRequest request = new UserJoinRequest();
-            request.setName(name);
-            request.setEmail(email);
-            request.setProfile(profile);
-            request.setPassword(password);
-            request.setLoginId(loginId);
             int result = userService.insert(request);
 
             if( result >= 1) {

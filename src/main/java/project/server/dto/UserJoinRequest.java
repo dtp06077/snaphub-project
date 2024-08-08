@@ -11,6 +11,6 @@ public class UserJoinRequest {
     private String loginId;
     private String password;
     //프로필 이미지 데이터타입 변경
-    private MultipartFile profile;
+    private String profileImage;
 
 }
