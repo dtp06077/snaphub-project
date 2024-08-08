@@ -14,20 +14,20 @@ public class User {
 
     @Id @GeneratedValue
     @Column(name = "user_id") //기본키
-    private Long id;
+    private int id;
 
     @Column(nullable = false)
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UserAuth> auths = new ArrayList<>();
 
     //회원 이름 필수, 중복 허용 X
-    @Column(nullable = false, length = 20, unique = true)
+    @Column(nullable = false, length = 50, unique = true)
     private String name;
 
     private String email;
 
     //로그인 아이디 필수, 중복 허용 X
-    @Column(nullable = false, length = 30, unique = true)
+    @Column(nullable = false, length = 50, unique = true)
     private String loginId;
 
     //로그인 비밀번호 필수
@@ -35,7 +35,8 @@ public class User {
     private String password;
 
     //프로필 이미지 경로
-    private String profile;
+    @Lob
+    private String profileImage;
 
     //String 으로 변경
     private String createdAt;

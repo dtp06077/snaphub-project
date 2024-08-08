@@ -12,12 +12,13 @@ public class Comment {
 
     @Id @GeneratedValue
     @Column(name = "comment_id")
-    private Long id;
+    private int id;
 
     @Column(nullable = false)
+    @Lob
     private String content;
 
-    private LocalDateTime createdAt;
+    private LocalDateTime commentDatetime;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")

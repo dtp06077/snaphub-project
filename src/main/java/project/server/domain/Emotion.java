@@ -6,16 +6,15 @@ import lombok.Setter;
 
 @Entity
 @Getter @Setter
+@IdClass(EmotionId.class)
 public class Emotion {
 
-    @Id @GeneratedValue
-    @Column(name = "emotion_id")
-    private Long id;
-
+    @Id
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id")
     private Post post;
 
+    @Id
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;

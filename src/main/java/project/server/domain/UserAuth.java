@@ -10,10 +10,6 @@ import lombok.Setter;
 public class UserAuth {
 
     @Id
-    @GeneratedValue
-    @Column(name = "auth_id")
-    private Long id;
-
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
