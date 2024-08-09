@@ -27,7 +27,8 @@ import java.util.stream.Collectors;
  *    생성된 JWT -> response-header-authorization 에 담김
  *
  * 2. 인증 실패 시 -> response-status -> 401 (UNAUTHORIZED)
- */@Slf4j
+ */
+@Slf4j
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private final AuthenticationManager authenticationManager;
@@ -78,7 +79,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
      */
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
-                                            Authentication authentication) throws IOException, ServletException {
+                                            Authentication authentication) {
 
         log.info("인증 성공");
 
@@ -96,7 +97,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         String jwt = jwtTokenProvider.createToken(userId, loginId, roles);
 
         // jwt 응답 헤더에 설정 { Authorization : Bearer + {jwt} }
-        response.addHeader(JwtConstants.TOKEN_HEADER, JwtConstants.TOKEN_PREFIX+ jwt);
+        response.addHeader(JwtConstants.TOKEN_HEADER, JwtConstants.TOKEN_PREFIX + jwt);
         response.setStatus(200);
     }
 }

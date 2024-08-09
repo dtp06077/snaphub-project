@@ -125,13 +125,13 @@ public class JwtTokenProvider {
             return new UsernamePasswordAuthenticationToken(userDetails, null, authorities);
         }
         catch (ExpiredJwtException exception) {
-            log.warn("Request to parse expired JWT : {} failed : {}", authHeader, exception.getMessage());
+            log.warn("Request to parse expired JWT : { "+authHeader+" } failed : { "+exception.getMessage()+" }");
         } catch (UnsupportedJwtException exception) {
-            log.warn("Request to parse unsupported JWT : {} failed : {}", authHeader, exception.getMessage());
+            log.warn("Request to parse unsupported JWT : { "+authHeader+" } failed : { "+exception.getMessage()+" }");
         } catch (MalformedJwtException exception) {
-            log.warn("Request to parse invalid JWT : {} failed : {}", authHeader, exception.getMessage());
+            log.warn("Request to parse invalid JWT : { "+authHeader+" } failed : { "+exception.getMessage()+" }");
         } catch (IllegalArgumentException exception) {
-            log.warn("Request to parse empty or null JWT : {} failed : {}", authHeader, exception.getMessage());
+            log.warn("Request to parse empty or null JWT : { "+authHeader+" } failed : { "+exception.getMessage()+" }");
         }
 
         return null;
