@@ -2,10 +2,10 @@ package project.server.service;
 
 import jakarta.servlet.http.HttpServletRequest;
 import project.server.domain.User;
-import project.server.dto.UserInfoRequest;
-import project.server.dto.UserLoginRequest;
-import project.server.dto.UserJoinRequest;
-import project.server.dto.UserUpdateRequest;
+import project.server.dto.request.UserInfoRequest;
+import project.server.dto.request.UserLoginRequest;
+import project.server.dto.request.UserJoinRequest;
+import project.server.dto.request.UserUpdateRequest;
 
 public interface UserService {
     //회원 등록

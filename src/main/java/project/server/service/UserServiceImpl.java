@@ -13,13 +13,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import project.server.domain.UserAuth;
 import project.server.domain.User;
-import project.server.dto.UserInfoRequest;
-import project.server.dto.UserLoginRequest;
-import project.server.dto.UserJoinRequest;
-import project.server.dto.UserUpdateRequest;
+import project.server.dto.request.UserInfoRequest;
+import project.server.dto.request.UserLoginRequest;
+import project.server.dto.request.UserJoinRequest;
+import project.server.dto.request.UserUpdateRequest;
 import project.server.repository.UserRepository;
 
-import java.io.File;
 import java.time.LocalDateTime;
 
 @Service

@@ -13,7 +13,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 import project.server.domain.User;
 import project.server.domain.UserAuth;
-import project.server.dto.UserJoinRequest;
+import project.server.dto.request.UserJoinRequest;
 import project.server.repository.UserRepository;
 
 import static org.assertj.core.api.Assertions.assertThat;
