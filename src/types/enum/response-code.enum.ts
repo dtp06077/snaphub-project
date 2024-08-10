@@ -23,4 +23,4 @@ enum ResponseCode {
     DATABASE_ERROR = "DE",
 }
 
-export default ResponseCode
+export default ResponseCode;
