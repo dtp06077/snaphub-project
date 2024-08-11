@@ -12,11 +12,11 @@ const Home = () => {
                     <div className='container'>
                         <h1>Home</h1>
                         <hr />
+                        <PostListItem/>
                         <h2>메인 페이지</h2>
                         <LoginContextConsumer />
                     </div>
                 </Container>
-                <PostListItem/>
             </Layout>
         </>
     )

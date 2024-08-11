@@ -1,0 +1,3 @@
+{
+    "typescript.tsdk": "$GLOBAL_NPM_PATH/typescript/lib"
+}

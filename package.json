@@ -45,6 +45,10 @@
   },
   "proxy": "http://localhost:8080",
   "devDependencies": {
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "install": "^0.13.0",
+    "npm": "^10.8.2",
     "typescript": "^5.5.4"
   }
 }
