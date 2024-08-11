@@ -1,5 +1,5 @@
 import React from 'react'
-import Header from '../components/layouts/Header'
+import Header from '../layouts/Header'
 import LoginContextConsumer from '../contexts/LoginContextConsumer'
 
 const About = () => {

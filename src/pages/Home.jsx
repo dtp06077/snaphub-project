@@ -1,7 +1,8 @@
 import React from 'react'
 import LoginContextConsumer from '../contexts/LoginContextConsumer'
-import Layout from '../components/layouts/Layout'
+import Layout from '../layouts/Layout'
 import { Container } from 'react-bootstrap'
+import PostListItem from '../components/PostListItem'
 
 const Home = () => {
     return (
@@ -15,6 +16,7 @@ const Home = () => {
                         <LoginContextConsumer />
                     </div>
                 </Container>
+                <PostListItem/>
             </Layout>
         </>
     )
