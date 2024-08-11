@@ -1,5 +1,7 @@
 import latestPostListMock from "./latest-post-list.mock";
+import top3PostListMock from "./top-3-post-list.mock";
 
 export {
-    latestPostListMock
+    latestPostListMock,
+    top3PostListMock
 }
