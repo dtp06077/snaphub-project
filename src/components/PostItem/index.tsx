@@ -34,7 +34,7 @@ export default function PostItem({ postListItem }: Props) {
                     </div>
                     <div className='post-list-item-write-box'>
                         <div className='post-list-item-name'>{posterName}</div>
-                        <div className='post-list-item-write-datetime'>{postDateTime}</div>
+                        <div className='post-list-item-post-datetime'>{postDateTime}</div>
                     </div>
                 </div>
                 <div className='post-list-item-middle'>
