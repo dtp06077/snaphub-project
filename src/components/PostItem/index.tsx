@@ -2,14 +2,14 @@ import React from 'react';
 import './style.css';
 import { PostListItem } from '../../types/interface';
 import { useNavigate } from 'react-router-dom';
-import DefaultProfileImage from '../../assets/image/default-profile-image.png';
+import defaultProfileImage from "../../assets/image/default-profile-image.png";
 
 interface Props {
     postListItem: PostListItem
 }
 
 //component : Post List Item 컴포넌트
-export default function PostListItem({ postListItem }: Props) {
+export default function PostItem({ postListItem }: Props) {
 
     //function: 네비게이트 함수
     const navigater = useNavigate();
@@ -30,7 +30,7 @@ export default function PostListItem({ postListItem }: Props) {
             <div className='post-list-item-main-box'>
                 <div className='post-list-item-top'>
                     <div className='post-list-item-profile-box'>
-                        <div className='post-list-item-profile-image' style={{ backgroundImage: `url(${posterProfileImage})` }}></div>
+                        <div className='post-list-item-profile-image' style={{ backgroundImage: `url(${posterProfileImage ? posterProfileImage : defaultProfileImage})` }}></div>
                     </div>
                     <div className='post-list-item-write-box'>
                         <div className='post-list-item-name'>{posterName}</div>
