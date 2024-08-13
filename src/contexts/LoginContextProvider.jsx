@@ -3,6 +3,7 @@ import api from '../apis/api';
 import Cookies from 'js-cookie';
 import * as auth from '../apis/auth';
 import { useNavigate } from 'react-router-dom';
+import defaultImage from '../assets/image/default-profile-image.png';
 
 export const LoginContext = createContext();
 LoginContext.displayName = 'LoginContextName';
@@ -31,7 +32,7 @@ const LoginContextProvider = ({ children }) => {
     const [roles, setRoles] = useState({ isUser: false, isAdmin: false });
 
     //유저 프로필 이미지
-    const [profileImage, setProfileImage] = useState('https://reactjs.org/logo-og.png');
+    const [profileImage, setProfileImage] = useState(defaultImage);
 
     // 아이디 저장
     const [rememberUserId, setRememberUserId] = useState();
@@ -199,7 +200,7 @@ const LoginContextProvider = ({ children }) => {
         setUserInfo(null);
 
         //프로필 사진 초기화
-        setProfileImage('https://reactjs.org/logo-og.png');
+        setProfileImage(defaultImage);
 
         //권한 정보 초기화
         setRoles(null);

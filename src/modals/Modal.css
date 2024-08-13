@@ -2,6 +2,11 @@
     border-radius: 7px;
 }
 
+.inputbox {
+    display: flex;
+    align-items: center;
+}
+
 .icon-button {
     border-radius: 50% 50%;
 
@@ -11,6 +16,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    margin-left: -40px; 
 
     cursor: pointer;
 }

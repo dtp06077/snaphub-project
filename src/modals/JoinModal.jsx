@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Modal, Button, Form, InputGroup } from 'react-bootstrap'
 import { checkName, checkLoginId, join } from '../apis/auth';
+import defaultImage from '../assets/image/default-profile-image.png';
 
 const JoinModal = ({ show, onHide, onJoinComplete }) => {
 
@@ -14,8 +15,8 @@ const JoinModal = ({ show, onHide, onJoinComplete }) => {
   const [isLoginIdChecked, setIsLoginIdChecked] = useState(false);
   const [isNameChecked, setIsNameChecked] = useState(false);
 
-  const [profileImage, setProfileImage] = useState('https://reactjs.org/logo-og.png');
-  const [previewImage, setPreviewImage] = useState('https://reactjs.org/logo-og.png');
+  const [profileImage, setProfileImage] = useState(defaultImage);
+  const [previewImage, setPreviewImage] = useState(defaultImage);
 
   const onJoin = async (e) => {
     e.preventDefault();
@@ -152,19 +153,19 @@ const JoinModal = ({ show, onHide, onJoinComplete }) => {
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     console.log(file);
-    
+
     if (file) {
       setProfileImage(file);
       const filePreviewUrl = URL.createObjectURL(file);
       console.log(`preview = ${filePreviewUrl}`);
-      
+
       setPreviewImage(filePreviewUrl);
     }
   };
 
   //프로필 이미지 삭제
   const handleRemoveImage = () => {
-    setPreviewImage('https://reactjs.org/logo-og.png');
+    setPreviewImage(defaultImage);
   };
 
   //정보 입력란 초기화
@@ -178,7 +179,7 @@ const JoinModal = ({ show, onHide, onJoinComplete }) => {
     setName('');
     setIsNameChecked(false);
     setNameError('');
-    setPreviewImage('https://reactjs.org/logo-og.png');
+    setPreviewImage(defaultImage);
   };
 
   const handleClose = () => {
@@ -247,25 +248,35 @@ const JoinModal = ({ show, onHide, onJoinComplete }) => {
 
           <Form.Group className="mb-3" controlId="formBasicPassword">
             <Form.Label>비밀번호</Form.Label>
-            <Form.Control
-              type="password"
-              placeholder="Enter Password"
-              name="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)} //비밀번호 상태 업데이트
-            />
+            <div className="inputbox">
+              <Form.Control
+                type="password"
+                placeholder="Enter Password"
+                name="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)} // 비밀번호 상태 업데이트
+              />
+              <div className='icon-button'>
+                <div className='icon eye-light-off-icon'></div>
+              </div>
+            </div>
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formBasicPasswordCheck">
             <Form.Label>비밀번호 확인</Form.Label>
-            <Form.Control
-              type="password"
-              placeholder="Enter Password"
-              name="passwordCheck"
-              value={passwordCheck}
-              onChange={(e) => setPasswordCheck(e.target.value)} //비밀번호 확인 상태 업데이트
-            />
-            {passwordError && <Form.Text className='text-danger'>{passwordError}</Form.Text>}
+            <div className='inputbox'>
+              <Form.Control
+                type="password"
+                placeholder="Enter Password"
+                name="passwordCheck"
+                value={passwordCheck}
+                onChange={(e) => setPasswordCheck(e.target.value)} //비밀번호 확인 상태 업데이트
+              />
+              {passwordError && <Form.Text className='text-danger'>{passwordError}</Form.Text>}
+              <div className='icon-button'>
+                <div className='icon eye-light-off-icon'></div>
+              </div>
+            </div>
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formBasicEmail">
@@ -278,17 +289,17 @@ const JoinModal = ({ show, onHide, onJoinComplete }) => {
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formBasicProfileImage">
-                        <Form.Label>프로필 이미지</Form.Label>
-                        <input type="file" accept="image/*" name="profileImage" onChange={handleImageChange} />
-                        {previewImage && (
-                            <div>
-                                <img src={previewImage} alt="Profile Preview" style={{ width: '100px', height: '100px', objectFit: 'cover', marginTop: '10px' }} />
-                                <Button variant="outline-danger" onClick={handleRemoveImage} style={{ marginTop: '10px' }}>
-                                    Remove Image
-                                </Button>
-                            </div>
-                        )}
-                    </Form.Group>
+            <Form.Label>프로필 이미지</Form.Label>
+            <input type="file" accept="image/*" name="profileImage" onChange={handleImageChange} />
+            {previewImage && (
+              <div>
+                <img src={previewImage} alt="Profile Preview" style={{ width: '100px', height: '100px', objectFit: 'cover', marginTop: '10px' }} />
+                <Button variant="outline-danger" onClick={handleRemoveImage} style={{ marginTop: '10px' }}>
+                  Remove Image
+                </Button>
+              </div>
+            )}
+          </Form.Group>
 
           <Button variant="primary" type="submit">
             Submit
