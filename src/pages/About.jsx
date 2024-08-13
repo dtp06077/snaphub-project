@@ -1,17 +1,18 @@
 import React from 'react'
-import Header from '../layouts/Header'
 import LoginContextConsumer from '../contexts/LoginContextConsumer'
+import Layout from '../layouts/Layout'
 
 const About = () => {
     return (
         <>
-            <Header />
+            <Layout>
             <div className='container'>
                 <h1>About</h1>
                 <hr />
                 <h2>소개 페이지</h2>
                 <LoginContextConsumer/>
             </div>
+            </Layout>
         </>
     )
 }

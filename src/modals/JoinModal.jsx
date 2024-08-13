@@ -256,7 +256,7 @@ const JoinModal = ({ show, onHide, onJoinComplete }) => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)} // 비밀번호 상태 업데이트
               />
-              <div className='icon-button'>
+              <div className='icon-button' style={{marginLeft: -40}}>
                 <div className='icon eye-light-off-icon'></div>
               </div>
             </div>
@@ -273,7 +273,7 @@ const JoinModal = ({ show, onHide, onJoinComplete }) => {
                 onChange={(e) => setPasswordCheck(e.target.value)} //비밀번호 확인 상태 업데이트
               />
               {passwordError && <Form.Text className='text-danger'>{passwordError}</Form.Text>}
-              <div className='icon-button'>
+              <div className='icon-button' style={{marginLeft: -40}}>
                 <div className='icon eye-light-off-icon'></div>
               </div>
             </div>
