@@ -13,6 +13,7 @@ public class PostListItem {
     private String title;
     private String content;
     private String postDateTime;
+    private String postTitleImage;
     private String posterName;
     private String posterProfileImage;
     private int emotionCount;

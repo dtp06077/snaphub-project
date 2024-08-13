@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 public class CommentListItem {
     private String loginId;
     private String name;
+    private String profileImage;
     private String commentDateTime;
     private String content;
 }

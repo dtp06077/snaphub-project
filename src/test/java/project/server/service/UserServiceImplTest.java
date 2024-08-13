@@ -52,7 +52,7 @@ public class UserServiceImplTest {
     @DisplayName("회원 가입 성공 테스트")
     public void insert_success() throws Exception {
         //Given
-        Long userId = userServiceImpl.insert(userRequest);
+        int userId = userServiceImpl.insert(userRequest);
 
         //When
         User findUser = userRepository.findById(userId);
