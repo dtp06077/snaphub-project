@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react'
-import { LoginContext } from '../contexts/LoginContextProvider'
-import LoginModal from '../modals/LoginModal'
+import { LoginContext } from '../../contexts/LoginContextProvider'
+import LoginModal from '../../modals/LoginModal'
 import { Button, Container, Nav, Navbar } from 'react-bootstrap'
 import './Header.css';
 
