@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react'
 import { Modal, Button, Form } from 'react-bootstrap'
 import { LoginContext } from '../contexts/LoginContextProvider'
 import JoinModal from './JoinModal';
-import './Modal.css';
+import './style.css';
 
 const LoginModal = ({ show, onHide, handleJoinComplete }) => {
 
