@@ -2,8 +2,13 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './App.css';
 import Home from './pages/Home';
 import User from './pages/User';
-import About from './pages/About';
+import Search from './pages/Search';
+import PostDetail from './pages/Post/Detail';
+import PostUpdate from './pages/Post/Update';
+import PostWrite from './pages/Post/Write';
 import LoginContextProvider from './contexts/LoginContextProvider';
+import Wrapper from './layouts/wrapper/Wrapper';
+import { MAIN_PATH, USER_PATH, SEARCH_PATH, POST_PATH, POST_DETAIL_PATH, POST_WRITE_PATH, POST_UPDATE_PATH } from './constants'
 
 //component: Application 컴포넌트
 function App() {
@@ -22,9 +27,17 @@ function App() {
         <BrowserRouter>
             <LoginContextProvider>
                 <Routes>
-                    <Route path="/" element={<Home />}></Route>
-                    <Route path="/user" element={<User />}></Route>
-                    <Route path="/about" element={<About />}></Route>
+                    <Route element={<Wrapper />}>
+                        <Route path={MAIN_PATH()} element={<Home />}></Route>
+                        <Route path={USER_PATH(':loginId')} element={<User />}></Route>
+                        <Route path={SEARCH_PATH(':searchWord')} element={<Search />}></Route>
+                        <Route path={POST_PATH()}>
+                            <Route path={POST_WRITE_PATH()} element={<PostWrite />}></Route>
+                            <Route path={POST_UPDATE_PATH(':postId')} element={<PostUpdate />}></Route>
+                            <Route path={POST_DETAIL_PATH(':postId')} element={<PostDetail />}></Route>
+                        </Route>
+                        <Route path='*' element={<h1>404 Not Found</h1>}/>
+                    </Route>
                 </Routes>
             </LoginContextProvider>
         </BrowserRouter>
