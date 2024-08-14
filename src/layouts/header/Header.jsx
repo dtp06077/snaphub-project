@@ -1,59 +1,68 @@
-import React, { useContext, useRef, useState, } from 'react'
+import React, { useContext, useEffect, useState, } from 'react'
 import { LoginContext } from '../../contexts/LoginContextProvider'
 import LoginModal from '../../modals/LoginModal'
 import { Container, Nav, Navbar } from 'react-bootstrap'
 import './style.css';
 import { MAIN_PATH, SEARCH_PATH } from '../../constants';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 
 //component: 헤더 레이아웃
 const Header = () => {
-
-  const navigate = useNavigate();
 
   //isLogin : 로그인 여부 - 로그인(true), 비로그인(false)
   //logout() : 로그아웃 함수 -> setLogin(false)
   const { isLogin, logout, profileImage } = useContext(LoginContext);
   const [loginModalOn, setLoginModalOn] = useState(false);
 
-  //state: 검색어 상태
-  //리렌더링 에러 발생으로 useState => useRef
-  const searchWord = useRef('');
-
-  //event handler: 검색 아이콘 클릭 이벤트 처리 함수
-  const onSearchButtonClickHandler = () => {
-    if(searchWord.current !== '') {
-      navigate(SEARCH_PATH(searchWord.current));
-    }
-    else {
-      alert("검색어를 입력하세요.")
-    }
-  }
-  //event handler: 검색어 키 이벤트 처리 함수
-  const onSearchWordKeyDownHandler = (e) => {
-    if (e.key === 'Enter') {
-      onSearchButtonClickHandler(); // 엔터 키 눌렀을 때 검색 호출
-    }
-  }
   //component: 검색 버튼 컴포넌트
   const SearchButton = () => {
+
+    const navigate = useNavigate();
+
+    const [word, setWord] = useState('');
+
+    const { searchWord } = useParams();
+
+    //event handler: 검색 아이콘 클릭 이벤트 처리 함수
+    const onSearchButtonClickHandler = () => {
+      if (word !== '') {
+        navigate(SEARCH_PATH(word));
+      }
+      else {
+        alert("검색어를 입력하세요.")
+      }
+    }
+
+    //event handler: 검색어 키 이벤트 처리 함수
+    const onwordKeyDownHandler = (e) => {
+      if (e.key === 'Enter') {
+        onSearchButtonClickHandler(); // 엔터 키 눌렀을 때 검색 호출
+      }
+    }
+
+    //effect: 검색어 path variable 변경 될 때마다 실행될 함수
+    useEffect(() => {
+      if (searchWord) setWord(searchWord);
+    }, [searchWord]);
+
     return (
       <div className='header-search-input-box'>
         <input
           className='header-search-input'
           type='text'
           placeholder='Please enter a search term.'
-          onChange={(e) => searchWord.current = e.target.value}
-          onKeyDown={onSearchWordKeyDownHandler}
-           />
+          value={word}
+          onChange={(e) => setWord(e.target.value)}
+          onKeyDown={onwordKeyDownHandler}
+        />
         <div className='icon-button' onClick={onSearchButtonClickHandler}>
           <div className='icon search-light-icon'></div>
         </div>
       </div>
     );
   }
-  
+
   //render: 헤더 레이아웃 렌더링
   return (
     <>
@@ -79,7 +88,7 @@ const Header = () => {
                     login
                   </Nav.Link>
                   <Nav.Link>
-                  <SearchButton />
+                    <SearchButton />
                   </Nav.Link>
                   {/* 프로필 사진 추가 */}
                   <img
