@@ -12,6 +12,7 @@
 }
 body {
   font-size: var(--font-size-main);
+  min-width: 1440px;
 }
 ul { list-style-type: none; }
 a { text-decoration: none; color: black; }

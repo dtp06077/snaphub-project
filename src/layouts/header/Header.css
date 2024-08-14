@@ -1,6 +1,38 @@
+header {
+
+    justify-content: center;
+}
+
+.header-container {
+    width: 1200px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-left-box {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
 .custom-nav-brand {
     font-size: 35px;
     color: aliceblue;
+}
+
+.header-logo {
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 140%;
+    letter-spacing: -0.4px;
+}
+
+.header-right-box {
+    display: flex;
+    align-items: center;
+    gap: 15px;
 }
 
 .custom-nav-link {
@@ -20,5 +52,17 @@
     border-radius: 50%; /* 원형으로 만들기 */
     margin-left: 15px; /* 링크와의 간격 */
     cursor: pointer; /* 클릭 가능하게 보이기 */
+}
+
+.logo-light-icon {
+    background-image: url(../../assets/image/logo-light.png);
+}
+
+.search-dark-icon {
+    background-image: url(../../assets/image/search-dark.png);
+}
+
+.search-light-icon {
+    background-image: url(../../assets/image/search-light.png);
 }
   
