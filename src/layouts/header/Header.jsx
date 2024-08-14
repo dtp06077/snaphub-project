@@ -1,51 +1,48 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useRef, useState } from 'react'
 import { LoginContext } from '../../contexts/LoginContextProvider'
 import LoginModal from '../../modals/LoginModal'
 import { Container, Nav, Navbar } from 'react-bootstrap'
-import './Header.css';
-import { MAIN_PATH } from '../../constants';
+import './style.css';
+import { MAIN_PATH, SEARCH_PATH } from '../../constants';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 
 //component: 헤더 레이아웃
 const Header = () => {
+
+  const navigate = useNavigate();
 
   //isLogin : 로그인 여부 - 로그인(true), 비로그인(false)
   //logout() : 로그아웃 함수 -> setLogin(false)
   const { isLogin, logout, profileImage } = useContext(LoginContext);
   const [loginModalOn, setLoginModalOn] = useState(false);
 
-  //검색 버튼 상태 
-  const [searchOn, setSearchOn] = useState(false);
+  //state: 검색어 상태
+  const searchWord = useRef('');
 
   //event handler: 검색 아이콘 클릭 이벤트 처리 함수
   const onSearchButtonClickHandler = () => {
-    if(!searchOn) {
-      setSearchOn(!searchOn);
-      return;
-    }
+    navigate(SEARCH_PATH(searchWord.current));
   }
 
 
   //component: 검색 버튼 컴포넌트
   const SearchButton = () => {
-
-    if(!searchOn) {
-      return (
-        <div className='icon-button' onClick={onSearchButtonClickHandler}>
-          <div className='icon search-dark-icon'></div>
-        </div>
-      );
-    }
-  
     return (
       <div className='header-search-input-box'>
-        <input className='header-search-input' type='text' placeholder='검색어를 입력해주세요.'/>
-        <div className='icon-button'>
+        <input
+          className='header-search-input'
+          type='text'
+          placeholder='Please enter a search term.'
+          onChange={(e) => searchWord.current = e.target.value}
+           />
+        <div className='icon-button' onClick={onSearchButtonClickHandler}>
           <div className='icon search-light-icon'></div>
         </div>
       </div>
     );
   }
+  
   //render: 헤더 레이아웃 렌더링
   return (
     <>
@@ -70,8 +67,8 @@ const Header = () => {
                     onClick={() => setLoginModalOn(true)}>
                     login
                   </Nav.Link>
-                  <Nav.Link className='custom-nav-link'>
-                    <SearchButton />
+                  <Nav.Link>
+                  <SearchButton />
                   </Nav.Link>
                   {/* 프로필 사진 추가 */}
                   <img
