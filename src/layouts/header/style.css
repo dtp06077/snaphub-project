@@ -3,6 +3,12 @@ header {
     justify-content: center;
 }
 
+.header-nav-bar {
+    
+    height: 100px; 
+    padding: 10px 0;
+}
+
 .header-container {
     width: 1200px;
 
@@ -59,18 +65,18 @@ header {
     color: #ababab; 
 }
 
-.custom-nav-link {
-    font-size: 18px; /* 글씨 크기 조정 */
-    color: rgb(138, 138, 138); /* 글씨 색상 */
-    transition: color 0.3s; /* 마우스 오버시 효과 */
+.header-nav-link {
+    font-size: 18px; 
+    color: rgb(138, 138, 138); 
+    transition: color 0.3s;
 }   
 
-.custom-nav-link:hover {
+.header-nav-link:hover {
     color: #e7e6e6; /* 마우스 오버시 색상 변경 */
 }
 
 
-.profile-image {
+.header-profile-image {
     width: 40px; /* 원하는 크기로 조정 */
     height: 40px; /* 원하는 크기로 조정 */
     border-radius: 50%; /* 원형으로 만들기 */

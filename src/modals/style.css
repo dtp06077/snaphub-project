@@ -1,5 +1,6 @@
-.custom-button {
+.modal-button {
     border-radius: 7px;
+    background-color: rgba(52, 58, 64, 1);
 }
 
 .inputbox {

@@ -75,7 +75,11 @@ const LoginModal = ({ show, onHide, handleJoinComplete }) => {
                             // defaultValue={} // 필요시 추가
                             />
                         </Form.Group>
-                        <Button className='custom-button' variant="primary" type="submit">
+                        <Button 
+                        className='modal-button' 
+                        variant="primary" 
+                        type="submit" 
+                        >
                             Login
                         </Button>
                     </Form>
@@ -87,7 +91,7 @@ const LoginModal = ({ show, onHide, handleJoinComplete }) => {
                     }}>
                         아직 회원이 아니십니까?
                     </div>
-                    <Button className='custom-button' onClick={() => {
+                    <Button className='modal-button' onClick={() => {
                         onHide();
                         resetForm();
                         setJoinModalOn(true);

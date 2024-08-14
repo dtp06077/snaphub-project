@@ -72,7 +72,7 @@ const Header = () => {
         handleJoinComplete={() => setLoginModalOn(true)}
       />
       <header>
-        <Navbar className='header-nav-bar' style={{ height: '100px', padding: '10px 0' }} bg="dark" data-bs-theme="dark">
+        <Navbar className='header-nav-bar' bg="dark" data-bs-theme="dark">
           <Container className='header-container'>
             <div className='header-left-box'>
               <div className='icon-box'>
@@ -83,39 +83,35 @@ const Header = () => {
             <Nav className="header-right-box">
               {!isLogin ? (
                 <>
-                  <Nav.Link className='custom-nav-link'
+                <Nav.Link>
+                    <SearchButton />
+                  </Nav.Link>
+                  <Nav.Link className='header-nav-link'
                     onClick={() => setLoginModalOn(true)}>
                     login
-                  </Nav.Link>
-                  <Nav.Link>
-                    <SearchButton />
                   </Nav.Link>
                   {/* 프로필 사진 추가 */}
                   <img
                     src={profileImage}
                     alt="Profile"
-                    className="profile-image"
+                    className="header-profile-image"
                     onClick={() => {/* 프로필 클릭 시 동작 */ }}
                   />
                 </>
               ) : (
                 <>
-                  <Nav.Link className='custom-nav-link'>
-                    mypage
+                  <Nav.Link>
+                    <SearchButton />
                   </Nav.Link>
-                  <Nav.Link className='custom-nav-link'>
-                    search
-                  </Nav.Link>
-                  <Nav.Link className='custom-nav-link'
-                    onClick={() => logout()}
-                  >
+                  <Nav.Link className='header-nav-link'
+                    onClick={() => logout()}>
                     logout
                   </Nav.Link>
                   {/* 프로필 사진 추가 */}
                   <img
                     src={profileImage}
                     alt="Profile"
-                    className="profile-image"
+                    className="header-profile-image"
                     onClick={() => {/* 프로필 클릭 시 동작 */ }}
                   />
                 </>
