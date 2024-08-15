@@ -3,7 +3,7 @@ import { LoginContext } from '../../contexts/LoginContextProvider'
 import LoginModal from '../../modals/LoginModal'
 import { Container, Nav, Navbar } from 'react-bootstrap'
 import './style.css';
-import { MAIN_PATH, SEARCH_PATH } from '../../constants';
+import { MAIN_PATH, SEARCH_PATH, USER_PATH } from '../../constants';
 import { useNavigate, useParams } from 'react-router-dom';
 
 
@@ -12,13 +12,18 @@ const Header = () => {
 
   //isLogin : 로그인 여부 - 로그인(true), 비로그인(false)
   //logout() : 로그아웃 함수 -> setLogin(false)
-  const { isLogin, logout, profileImage } = useContext(LoginContext);
+  const { isLogin, logout, profileImage, userInfo } = useContext(LoginContext);
   const [loginModalOn, setLoginModalOn] = useState(false);
+
+  const navigate = useNavigate();
+
+  const onMyPageButtonClickHandler = () => {
+    const { loginId } = userInfo;
+      navigate(USER_PATH(loginId));  
+  };
 
   //component: 검색 버튼 컴포넌트
   const SearchButton = () => {
-
-    const navigate = useNavigate();
 
     const [word, setWord] = useState('');
 
@@ -95,7 +100,6 @@ const Header = () => {
                     src={profileImage}
                     alt="Profile"
                     className="header-profile-image"
-                    onClick={() => {/* 프로필 클릭 시 동작 */ }}
                   />
                 </>
               ) : (
@@ -112,7 +116,7 @@ const Header = () => {
                     src={profileImage}
                     alt="Profile"
                     className="header-profile-image"
-                    onClick={() => {/* 프로필 클릭 시 동작 */ }}
+                    onClick={() => {onMyPageButtonClickHandler()}}
                   />
                 </>
               )}
