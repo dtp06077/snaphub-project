@@ -1,7 +1,6 @@
 package project.server.dto.request.auth;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -16,16 +15,17 @@ public class JoinRequestDto {
     @NotBlank
     private String loginId;
     @NotBlank
+    @Size(min = 7, max = 18)
     private String password;
 
     private String profileImage;
-
+    @Pattern(regexp = "^[0-9]{11,13}$")
     private String telNumber;
 
     private String address;
 
     private String addressDetail;
-    @NotBlank
-    private boolean agreedPersonal;
+    @NotNull @AssertTrue
+    private Boolean agreedPersonal;
 
 }
