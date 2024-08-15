@@ -9,7 +9,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import project.server.domain.User;
 import project.server.dto.request.UserInfoRequest;
-import project.server.dto.request.UserJoinRequest;
+import project.server.dto.request.auth.JoinRequestDto;
 import project.server.dto.request.UserUpdateRequest;
 import project.server.security.domain.CustomUser;
 import project.server.service.UserService;
@@ -90,7 +90,7 @@ public class UserController {
      *  회원 가입
      */
     @PostMapping("")
-    public ResponseEntity<?> join(@RequestBody UserJoinRequest request) throws Exception {
+    public ResponseEntity<?> join(@RequestBody JoinRequestDto request) throws Exception {
         log.info("[POST] - /users");
         if (request.getPassword() == null || request.getPassword().isEmpty()) {
             throw new IllegalArgumentException("비밀번호가 비어있습니다."); // 예외 처리

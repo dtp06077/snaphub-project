@@ -13,7 +13,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 import project.server.domain.User;
 import project.server.domain.UserAuth;
-import project.server.dto.request.UserJoinRequest;
+import project.server.dto.request.auth.JoinRequestDto;
 import project.server.repository.UserRepository;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -36,11 +36,11 @@ public class UserServiceImplTest {
     @Mock
     private HttpServletRequest mockRequest;
 
-    private UserJoinRequest userRequest;
+    private JoinRequestDto userRequest;
 
     @BeforeEach
     void setUp() {
-        userRequest = new UserJoinRequest();
+        userRequest = new JoinRequestDto();
         userRequest.setName("HuiSeong");
         userRequest.setLoginId("testLoginId");
         userRequest.setPassword("testPassword");

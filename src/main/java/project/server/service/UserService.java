@@ -4,12 +4,12 @@ import jakarta.servlet.http.HttpServletRequest;
 import project.server.domain.User;
 import project.server.dto.request.UserInfoRequest;
 import project.server.dto.request.UserLoginRequest;
-import project.server.dto.request.UserJoinRequest;
+import project.server.dto.request.auth.JoinRequestDto;
 import project.server.dto.request.UserUpdateRequest;
 
 public interface UserService {
     //회원 등록
-    public int insert(UserJoinRequest userRequest) throws Exception;
+    public int insert(JoinRequestDto userRequest) throws Exception;
 
     //회원 조회
     public UserInfoRequest select(User user);

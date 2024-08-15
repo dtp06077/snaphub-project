@@ -40,6 +40,15 @@ public class User {
     @Lob
     private String profileImage;
 
+    private String telNumber;
+
+    private String address;
+
+    private String addressDetail;
+
+    @Column(nullable = false)
+    private boolean agreedPersonal;
+
     //LocalDateTime 으로 변경
     private LocalDateTime createdAt;
 

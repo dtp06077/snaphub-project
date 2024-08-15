@@ -15,7 +15,7 @@ import project.server.domain.UserAuth;
 import project.server.domain.User;
 import project.server.dto.request.UserInfoRequest;
 import project.server.dto.request.UserLoginRequest;
-import project.server.dto.request.UserJoinRequest;
+import project.server.dto.request.auth.JoinRequestDto;
 import project.server.dto.request.UserUpdateRequest;
 import project.server.repository.UserRepository;
 
@@ -41,7 +41,7 @@ public class UserServiceImpl implements UserService {
      */
     @Transactional
     @Override
-    public int insert(UserJoinRequest request) throws Exception {
+    public int insert(JoinRequestDto request) throws Exception {
         //비밀번호 암호화
         String password = request.getPassword();
         String encodePw = passwordEncoder.encode(password);
