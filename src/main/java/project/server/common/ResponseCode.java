@@ -8,10 +8,9 @@ public interface ResponseCode {
     //HTTP Status 400
     String MISSING_ID = "MI";
     String DUPLICATE_ID = "DI";
-    String MISSING_PASSWORD = "MP";
-    String MISSING_PASSWORD_CHECK = "MPC";
     String MISSING_NAME = "MN";
     String DUPLICATE_NAME = "DN";
+    String MISSING_PASSWORD = "MP";
     String NOT_EXISTED_POST = "NP";
     String NOT_EXISTED_USER = "NU";
 

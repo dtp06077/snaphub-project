@@ -3,7 +3,9 @@ package project.server.domain;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import project.server.dto.request.auth.JoinRequestDto;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,7 +65,25 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Emotion> emotions = new ArrayList<>();
 
-    //연관관계 메서드
+    //DB 저장용 생성자 메서드
+    public User(JoinRequestDto request) {
+        this.loginId=request.getLoginId();
+        this.name=request.getName();
+        this.email=request.getEmail();
+        this.password=request.getPassword();
+        this.profileImage=request.getProfileImage();
+        this.telNumber=request.getTelNumber();
+        this.address=request.getAddress();
+        this.addressDetail=request.getAddressDetail();
+        this.agreedPersonal=request.getAgreedPersonal();
+        this.createdAt= LocalDateTime.now().toString();
+    }
+
+    public User() {
+
+    }
+
+    //=====연관관계 메서드=======
 
     //권한 가져오기
     public List<String> getRoles() {

@@ -30,18 +30,13 @@ public class JoinResponseDto extends ResponseDto {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
     }
 
-    public static ResponseEntity<ResponseDto> missingPassword() {
-        ResponseDto result = new ResponseDto(ResponseCode.MISSING_PASSWORD, ResponseMessage.MISSING_PASSWORD);
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
-    }
-
-    public static ResponseEntity<ResponseDto> missingPasswordCheck() {
-        ResponseDto result = new ResponseDto(ResponseCode.MISSING_PASSWORD_CHECK, ResponseMessage.MISSING_PASSWORD_CHECK);
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
-    }
-
     public static ResponseEntity<ResponseDto> missingName() {
         ResponseDto result = new ResponseDto(ResponseCode.MISSING_NAME, ResponseMessage.MISSING_NAME);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
+    }
+
+    public static ResponseEntity<ResponseDto> missingPassword() {
+        ResponseDto result = new ResponseDto(ResponseCode.MISSING_PASSWORD, ResponseMessage.MISSING_PASSWORD);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
     }
 

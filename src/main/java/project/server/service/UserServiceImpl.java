@@ -47,7 +47,7 @@ public class UserServiceImpl implements UserService {
         String encodePw = passwordEncoder.encode(password);
         request.setPassword(encodePw);
 
-        User user = new User();
+        User user = new User(request);
 
 //        if(request.getProfile()!=null && !request.getProfile().isEmpty()) {
 //            // 파일 저장 경로 설정
@@ -73,7 +73,7 @@ public class UserServiceImpl implements UserService {
         user.setEmail(request.getEmail());
         user.setLoginId(request.getLoginId());
         user.setPassword(request.getPassword());
-        user.setCreatedAt(LocalDateTime.now());
+        user.setCreatedAt(LocalDateTime.now().toString());
         int userId = userRepository.userSave(user);
 
         //권한 등록

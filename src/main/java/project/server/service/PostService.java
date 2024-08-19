@@ -54,15 +54,15 @@ public class PostService {
     /**
      * 게시글 수정
      */
-    @Transactional
-    public void updatePost(int id, String title, String content,
-                           LocalDateTime createdAt) {
-        Post post = postRepository.findById(id);
-        if(post == null) {
-            throw new IllegalStateException("해당 게시글이 존재하지 않습니다.");
-        }
-        post.setTitle(title);
-        post.setContent(content);
-        post.setPostDatetime(createdAt);
-    }
+//    @Transactional
+//    public void updatePost(int id, String title, String content,
+//                           LocalDateTime createdAt) {
+//        Post post = postRepository.findById(id);
+//        if(post == null) {
+//            throw new IllegalStateException("해당 게시글이 존재하지 않습니다.");
+//        }
+//        post.setTitle(title);
+//        post.setContent(content);
+//        post.setPostDatetime(createdAt);
+//    }
 }

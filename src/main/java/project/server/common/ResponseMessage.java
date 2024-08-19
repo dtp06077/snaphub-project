@@ -8,10 +8,9 @@ public interface ResponseMessage {
     //HTTP Status 400
     String MISSING_ID = "Login ID is missing.";
     String DUPLICATE_ID = "Duplicate Login ID.";
-    String MISSING_PASSWORD = "Password is missing.";
-    String MISSING_PASSWORD_CHECK = "Password check is missing.";
     String MISSING_NAME = "Name is missing.";
     String DUPLICATE_NAME = "Duplicate Name.";
+    String MISSING_PASSWORD = "Password is missing.";
     String NOT_EXISTED_POST = "This post does not exist.";
     String NOT_EXISTED_USER = "This user does not exist.";
 
