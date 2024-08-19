@@ -15,7 +15,6 @@ public interface ResponseMessage {
     String NOT_EXISTED_USER = "This user does not exist.";
 
     //HTTP Status 401
-    String LOGIN_FAIL = "Login failed.";
     String AUTHORIZATION_FAIL = "Authorization failed.";
 
     //HTTP Status 403

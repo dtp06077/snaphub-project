@@ -15,7 +15,6 @@ public interface ResponseCode {
     String NOT_EXISTED_USER = "NU";
 
     //HTTP Status 401
-    String LOGIN_FAIL = "LF";
     String AUTHORIZATION_FAIL = "AF";
 
     //HTTP Status 403

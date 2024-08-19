@@ -115,7 +115,7 @@ public class JwtTokenProvider {
 
             } catch (Exception e) {
                 log.error(e.getMessage());
-                log.error("토큰 유효 -> DB 추가 정보 조회시 에러 발생");
+                log.error("Token validated -> DB Error");
             }
 
             UserDetails userDetails = new CustomUser(user);

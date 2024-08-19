@@ -11,4 +11,5 @@ public interface AuthService {
     ResponseEntity<? super JoinResponseDto> checkDuplicateId(String loginId);
 
     ResponseEntity<? super JoinResponseDto> checkDuplicateName(String name);
+
 }
