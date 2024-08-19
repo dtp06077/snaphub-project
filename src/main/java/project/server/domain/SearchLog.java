@@ -7,7 +7,8 @@ import lombok.Setter;
 @Entity
 @Getter @Setter
 @Table(name = "search_log")
-public class searchLog {
+public class SearchLog {
+
     @Id @GeneratedValue
     private int sequence;
 

@@ -18,7 +18,7 @@ public class Comment {
     @Lob
     private String content;
 
-    private LocalDateTime commentDatetime;
+    private String commentDatetime;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")

@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,8 +48,8 @@ public class User {
     @Column(nullable = false)
     private boolean agreedPersonal;
 
-    //LocalDateTime 으로 변경
-    private LocalDateTime createdAt;
+    //String 으로 변경
+    private String createdAt;
 
     //자식 엔티티 영속화
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
