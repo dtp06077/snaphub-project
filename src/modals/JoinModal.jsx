@@ -99,52 +99,63 @@ const JoinModal = ({ show, onHide, onJoinComplete }) => {
   }
 
   //아이디 중복 확인
-  const idCheck = async () => {
-
-    let response;
-    let message;
+  const checkDuplicateLoginId = async () => {
 
     try {
-      response = await checkLoginId(loginId);
-      message = await response.data;
-      setLoginIdError(message);
-      setIsLoginIdChecked(message === '사용 가능한 아이디입니다.'); // 중복 확인 성공 여부 설정
-    } catch (error) {
-      if (error.response) {
-        // 서버가 응답한 경우
-        message = error.response.data;
-        setLoginIdError(message);
-      } else if (error.request) {
-        // 요청이 이루어졌으나 응답이 없는 경우
-        setLoginIdError('서버에 연결할 수 없습니다.');
-      } else {
-        // 다른 오류
-        setLoginIdError('알 수 없는 오류가 발생했습니다.');
+      const response = await checkLoginId(loginId); // 로그인 ID 체크 API 호출
+      const message = response.data; // 응답 데이터
 
-      }
+      handleResponseMessage(message, 'loginId');
+    } catch (error) {
+      handleError(error, 'loginId');
     }
-  }
+  };
 
   //닉네임 중복 확인
-  const nameCheck = async () => {
-
-    let response;
-    let message;
+  const checkDuplicateName = async () => {
 
     try {
-      response = await checkName(name);
-      message = await response.data;
-      setNameError(message);
-      setIsNameChecked(message === '사용 가능한 닉네임입니다.'); // 중복 확인 성공 여부 설정
-    } catch (error) {
-      if (error.response) {
-        message = error.response.data;
-        setNameError(message);
-      } else if (error.request) {
-        setNameError('서버에 연결할 수 없습니다.');
-      } else {
-        setNameError('알 수 없는 오류가 발생했습니다.');
+      const response = await checkName(name); // 로그인 ID 체크 API 호출
+      const message = response.data; // 응답 데이터
 
+      handleResponseMessage(message, 'name');
+    } catch (error) {
+      handleError(error, 'name');
+    }
+  };
+
+  // 응답 상태에 따라 메시지 처리
+  const handleResponseMessage = (message, type) => {
+    if (type === 'loginId') {
+      setLoginIdError('사용 가능한 아이디입니다.');
+      setIsLoginIdChecked(message.code === 'SU');
+    } else if (type === 'name') {
+      setNameError('사용 가능한 닉네임입니다.');
+      setIsNameChecked(message.code === 'SU');
+    }
+  };
+
+  // 응답 상태에 따라 메시지 처리
+  const handleError = (error, type) => {
+    //서버가 응답한 경우
+    if (error.response.status === 400) {
+      if (type === 'loginId') {
+        setLoginIdError('이미 사용 중인 아이디입니다.');
+      } else if (type === 'name') {
+        setNameError('이미 사용 중인 닉네임입니다.');
+      }
+    } else if (error.request) {
+      // 요청이 이루어졌으나 응답이 없는 경우
+      if (type === 'loginId') {
+        setLoginIdError('서버에 연결할 수 없습니다.')
+      } else if (type === 'name') {
+        setNameError('서버에 연결할 수 없습니다.')
+      }
+    } else {
+      if (type === 'loginId') {
+        setLoginIdError('알 수 없는 오류가 발생했습니다.')
+      } else if (type === 'name') {
+        setNameError('알 수 없는 오류가 발생했습니다..')
       }
     }
   }
@@ -212,7 +223,7 @@ const JoinModal = ({ show, onHide, onJoinComplete }) => {
                 value={loginId}
                 onChange={(e) => setLoginId(e.target.value)} // 아이디 상태 업데이트
               />
-              <Button variant="outline-secondary" id="button-addon2" size='sm' onClick={idCheck}>
+              <Button variant="outline-secondary" id="button-addon2" size='sm' onClick={checkDuplicateLoginId}>
                 중복 확인
               </Button>
             </InputGroup>
@@ -232,9 +243,9 @@ const JoinModal = ({ show, onHide, onJoinComplete }) => {
                 placeholder="Enter name"
                 name="name"
                 value={name}
-                onChange={(e) => setName(e.target.value)} // 아이디 상태 업데이트
+                onChange={(e) => setName(e.target.value)} //닉네임 상태 업데이트
               />
-              <Button variant="outline-secondary" id="button-addon2" size='sm' onClick={nameCheck}>
+              <Button variant="outline-secondary" id="button-addon2" size='sm' onClick={checkDuplicateName}>
                 중복 확인
               </Button>
             </InputGroup>
@@ -256,7 +267,7 @@ const JoinModal = ({ show, onHide, onJoinComplete }) => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)} // 비밀번호 상태 업데이트
               />
-              <div className='icon-button' style={{marginLeft: -40}}>
+              <div className='icon-button' style={{ marginLeft: -40 }}>
                 <div className='icon eye-light-off-icon'></div>
               </div>
             </div>
@@ -273,7 +284,7 @@ const JoinModal = ({ show, onHide, onJoinComplete }) => {
                 onChange={(e) => setPasswordCheck(e.target.value)} //비밀번호 확인 상태 업데이트
               />
               {passwordError && <Form.Text className='text-danger'>{passwordError}</Form.Text>}
-              <div className='icon-button' style={{marginLeft: -40}}>
+              <div className='icon-button' style={{ marginLeft: -40 }}>
                 <div className='icon eye-light-off-icon'></div>
               </div>
             </div>
