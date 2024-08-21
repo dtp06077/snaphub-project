@@ -9,7 +9,9 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import project.server.dto.response.auth.LoginResponseDto;
 import project.server.security.jwt.constants.JwtConstants;
 import project.server.security.domain.CustomUser;
@@ -57,23 +59,35 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         log.info("loginId : " + loginId);
         log.info("password : " + password);
 
-        // 사용자 인증정보 객체 생성
-        Authentication authentication = new UsernamePasswordAuthenticationToken(loginId, password);
+        //AuthenticationManager
+        //아이디, 패스워드 인증 토큰 생성
+        UsernamePasswordAuthenticationToken token
+                = new UsernamePasswordAuthenticationToken(loginId, password);
 
-        // 사용자 인증 (로그인)
-        authentication = authenticationManager.authenticate(authentication);
+        // 토큰에 요청정보 등록
+        token.setDetails(new WebAuthenticationDetails(request));
 
-        log.info("Authentication Status : " + authentication.isAuthenticated());
+        // 토큰을 이용하여 인증 요청 - 로그인
+        Authentication authentication = authenticationManager.authenticate(token);
 
-        //인증 실패 (loginId, password 불일치)
-        //TODO 인증 실패 상태 코드 변경
-        if (!authentication.isAuthenticated()) {
-            log.info("Authentication failed: id or password does not match.");
+        try {
+            log.info("Authentication Status : " + authentication.isAuthenticated());
 
-            LoginResponseDto.authorizationFail(response);  //401 UNAUTHORIZED (인증 실패)
+            //인증 실패 (loginId, password 불일치)
+            if (!authentication.isAuthenticated()) {
+                log.info("Authentication failed: id or password does not match.");
+
+                LoginResponseDto.authorizationFail(response);  //401 UNAUTHORIZED (인증 실패)
+            }
+            return authentication;
+        }   catch (Exception e) {
+            e.printStackTrace();
+            log.error(e.getMessage());
+
+            LoginResponseDto.databaseError(response);
+
+            return authentication;
         }
-
-        return authentication;
     }
 
     /**
@@ -84,14 +98,17 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
                                             Authentication authentication) throws IOException {
-
+        //인증 성공
         log.info("Authentication success");
+
+        //시큐리티 컨텍스트에 인증 사용자 등록
+        SecurityContextHolder.getContext().setAuthentication(authentication);
 
         CustomUser user = (CustomUser) authentication.getPrincipal();
         //회원 정보
         int userId = user.getUser().getId();
         String loginId = user.getUser().getLoginId();
-    
+
         //회원 권한
         List<String> roles = user.getUser().getAuths().stream()
                 .map( (auth) -> auth.getAuth())

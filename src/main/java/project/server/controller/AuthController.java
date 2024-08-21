@@ -28,7 +28,7 @@ public class AuthController {
     /**
      * 중복 아이디 조회
      */
-    @GetMapping("join/check-loginId")
+    @GetMapping("/join/check-loginId")
     public ResponseEntity<? super JoinResponseDto> checkLoginId (
             @RequestParam String loginId) {
         return authService.checkDuplicateId(loginId);
@@ -36,7 +36,7 @@ public class AuthController {
     /**
      * 중복 닉네임 조회
      */
-    @GetMapping("join/check-name")
+    @GetMapping("/join/check-name")
     public ResponseEntity<? super JoinResponseDto> checkName (
             @RequestParam String name) {
         return authService.checkDuplicateName(name);

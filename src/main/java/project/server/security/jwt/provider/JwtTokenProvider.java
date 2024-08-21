@@ -107,11 +107,16 @@ public class JwtTokenProvider {
                     .map(auth -> new SimpleGrantedAuthority( (String) auth ))
                     .collect( Collectors.toList() );
 
-            //토큰 유효하면 password, name 도  담아주기
+            //토큰 유효하면 사용자 정보 담아주기
             try {
                 User userInfo = userRepository.findById(userId);
                 user.setPassword(userInfo.getPassword());
                 user.setName(userInfo.getName());
+                user.setEmail(userInfo.getEmail());
+                user.setProfileImage(userInfo.getProfileImage());
+                user.setAddress(userInfo.getAddress());
+                user.setAddressDetail(userInfo.getAddressDetail());
+                user.setTelNumber(userInfo.getTelNumber());
 
             } catch (Exception e) {
                 log.error(e.getMessage());

@@ -1,31 +1,11 @@
 package project.server.service;
 
-import jakarta.servlet.http.HttpServletRequest;
-import project.server.domain.User;
-import project.server.dto.request.UserInfoRequest;
-import project.server.dto.request.UserLoginRequest;
-import project.server.dto.request.auth.JoinRequestDto;
-import project.server.dto.request.UserUpdateRequest;
+import org.springframework.http.ResponseEntity;
+import project.server.dto.response.user.UserInfoResponseDto;
+import project.server.security.domain.CustomUser;
 
 public interface UserService {
-    //회원 등록
-    public int insert(JoinRequestDto userRequest) throws Exception;
+    //회원 정보 조회
+    ResponseEntity<? super UserInfoResponseDto> getUserInfo(CustomUser customUser);
 
-    //회원 조회
-    public UserInfoRequest select(User user);
-
-    //로그인 아이디로 회원 조회
-    public User selectByLoginId(String loginId);
-
-    //회원 이름으로 회원 조회
-    public User selectByName(String name);
-
-    //로그인
-    public void login(UserLoginRequest loginRequest, HttpServletRequest request) throws Exception;
-
-    //회원 수정
-    public int update(UserUpdateRequest request) throws Exception;
-
-    //회원 삭제
-    public int delete(String loginId) throws Exception;
 }

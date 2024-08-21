@@ -47,4 +47,15 @@ public class LoginResponseDto extends ResponseDto {
         objectMapper.writeValue(response.getOutputStream(), dto);
     }
 
+    //HTTP Status 500
+    public static void databaseError(HttpServletResponse response) throws IOException {
+        response.setContentType("application/json");
+
+        response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+
+        ResponseDto dto = new ResponseDto(ResponseCode.DATABASE_ERROR, ResponseMessage.DATABASE_ERROR);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.writeValue(response.getOutputStream(), dto);
+    }
 }

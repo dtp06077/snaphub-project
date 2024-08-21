@@ -15,6 +15,7 @@ import project.server.repository.UserRepository;
 import project.server.service.AuthService;
 
 @Service
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 @Slf4j
 public class AuthServiceImpl implements AuthService {
@@ -76,13 +77,17 @@ public class AuthServiceImpl implements AuthService {
         User user = userRepository.findByLoginId(loginId);
 
         if(user != null) {
-            log.info(loginId + " already exists");
+            log.info("'" + loginId + "' already exists.");
             return JoinResponseDto.duplicateId();
         }
 
+        log.info("'" + loginId + "' does not exist.");
+
         return JoinResponseDto.success();
     }
-
+    /**
+     * 중복 닉네임 조회
+     */
     @Override
     public ResponseEntity<? super JoinResponseDto> checkDuplicateName(String name) {
         if(name.isEmpty()) {
@@ -90,12 +95,14 @@ public class AuthServiceImpl implements AuthService {
             return JoinResponseDto.missingName();
         }
 
-        User user = userRepository.findByLoginId(name);
+        User user = userRepository.findByName(name);
 
         if(user != null) {
-            log.info(name + " already exists");
+            log.info("'" + name + "' already exists.");
             return JoinResponseDto.duplicateName();
         }
+
+        log.info("'" + name + "' does not exist.");
 
         return JoinResponseDto.success();
     }
