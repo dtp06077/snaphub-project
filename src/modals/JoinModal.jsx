@@ -23,37 +23,37 @@ const JoinModal = ({ show, onHide, onJoinComplete }) => {
 
     // 아이디 입력 체크
     if (!loginId) {
-      alert('아이디를 입력하세요.');
+      alert('아이디를 입력해 주시길 바랍니다.');
       return;
     }
 
     // 아이디 중복 확인 체크
     else if (!isLoginIdChecked) {
-      alert('아이디 중복 확인을 해주세요.');
+      alert('아이디 중복 확인을 해 주시길 바랍니다.');
       return;
     }
 
     // 닉네임 입력 체크
     else if (!name) {
-      alert('닉네임을 입력하세요.');
+      alert('닉네임을 입력해 주시길 바랍니다.');
       return;
     }
 
     // 닉네임 중복 확인 체크
     else if (!isNameChecked) {
-      alert('닉네임 중복 확인을 해주세요.');
+      alert('닉네임 중복 확인을 해 주시길 바랍니다.');
       return;
     }
 
     // 비밀번호 일치 여부 체크
     else if (!password) {
-      alert(`비밀번호를 입력하세요.`);
+      alert(`비밀번호를 입력해 주시길 바랍니다.`);
       return;
     }
 
     // 비밀번호 확인 입력 체크
     else if (!passwordCheck) {
-      alert(`비밀번호 확인을 입력하세요.`);
+      alert(`비밀번호 확인을 입력해 주시길 바랍니다.`);
       return;
     }
 

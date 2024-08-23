@@ -4,6 +4,7 @@ import Cookies from 'js-cookie';
 import * as auth from '../apis/auth';
 import { useNavigate } from 'react-router-dom';
 import defaultImage from '../assets/image/default-profile-image.png';
+import { loginRequest } from '../apis'
 
 export const LoginContext = createContext();
 LoginContext.displayName = 'LoginContextName';
@@ -47,38 +48,55 @@ const LoginContextProvider = ({ children }) => {
         console.log(`loginId : ${loginId}`);
         console.log(`password : ${password}`);
 
-        try {
-            const response = await auth.login(loginId, password);
-            const data = response.data;
-            const status = response.status;
-            const headers = response.headers;
-            const authorization = headers.authorization;
-            const accessToken = authorization.replace("Bearer ", ""); //JWT
 
-            console.log(`data : ${data}`);
-            console.log(`headers : ${headers}`);
-            console.log(`status : ${status}`);
-            console.log(`jwt : ${accessToken}`);
+        const result = await loginRequest(loginId, password);
 
-            // 로그인 성공
-            if (status === 200) {
+        if (result) {
+            const { response, responseBody } = result;
+
+            if (response) {
+                const status = response.status;
+                const headers = response.headers;
+                const accessToken = responseBody.token; //JWT
+
+                console.log(`data : ${response}`);
+                console.log(`headers : ${headers}`);
+                console.log(`status : ${status}`);
+                console.log(`jwt : ${accessToken}`);
+
                 //쿠키에 accessToken(jwt) 저장
                 Cookies.set("accessToken", accessToken);
 
                 // 로그인 체크 ( /users/{userId} <--- userData)
+                //TODO
                 loginCheck();
 
-                alert("로그인 성공");
+                alert("로그인에 성공하였습니다.");
 
                 // 모달창 닫기
                 onHide();
                 resetForm();
+
             }
-        } catch (error) {
-            // 로그인 실패
-            alert("아이디 또는 비밀번호가 일치하지 않습니다.");
+            else {
+                if (responseBody.code == 'AF') {
+                    console.log('인증 실패')
+                    alert("아이디 또는 비밀번호가 일치하지 않습니다.")
+                }
+                else if (responseBody.code == 'DE') {
+                    console.log('데이터베이스 에러')
+                    alert("데이터베이스에 접근하는 데 문제가 발생했습니다.")
+                }
+                return;
+            }
+        }
+
+        else {
+            console.log('네트워크 오류 또는 서버 응답 없음');
+            alert("네트워크 또는 서버에 오류가 발생하였습니다.");
             return;
         }
+
     }
 
     /*
@@ -154,7 +172,7 @@ const LoginContextProvider = ({ children }) => {
         //웹 서버 배포 시`http://snaphub.com/.../로 변경
         setProfileImage(`${profile}`);
         console.log(`${profile}`);
-    
+
 
         //유저정보
         const updateUserInfo = { userId, loginId, auths };
@@ -206,7 +224,7 @@ const LoginContextProvider = ({ children }) => {
         setRoles(null);
     }
 
-    useEffect( () => {
+    useEffect(() => {
         // 로그인 체크
         loginCheck()
     }, [])
