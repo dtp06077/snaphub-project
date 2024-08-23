@@ -13,6 +13,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import project.server.dto.response.auth.LoginResponseDto;
+
 import project.server.security.jwt.constants.JwtConstants;
 import project.server.security.domain.CustomUser;
 import project.server.security.jwt.provider.JwtTokenProvider;
@@ -34,8 +35,8 @@ import java.util.stream.Collectors;
 @Slf4j
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
-    private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider jwtTokenProvider;
+    private final AuthenticationManager authenticationManager;
 
     //생성자에서 AuthenticationManager, JwtTokenProvider 설정
     public JwtAuthenticationFilter(AuthenticationManager authenticationManager, JwtTokenProvider jwtTokenProvider) {
@@ -59,15 +60,12 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         log.info("loginId : " + loginId);
         log.info("password : " + password);
 
-        //AuthenticationManager
         //아이디, 패스워드 인증 토큰 생성
-        UsernamePasswordAuthenticationToken token
-                = new UsernamePasswordAuthenticationToken(loginId, password);
+        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(loginId, password);
 
         // 토큰에 요청정보 등록
         token.setDetails(new WebAuthenticationDetails(request));
 
-        // 토큰을 이용하여 인증 요청 - 로그인
         Authentication authentication = authenticationManager.authenticate(token);
 
         try {
@@ -117,7 +115,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         // jwt 토큰 발급 요청
         String jwt = jwtTokenProvider.createToken(userId, loginId, roles);
 
-        // jwt 응답 헤더에 설정 { Authorization : Bearer + {jwt} }
+        //response body에 jwt 설정
         LoginResponseDto.success(response, jwt);
     }
 }

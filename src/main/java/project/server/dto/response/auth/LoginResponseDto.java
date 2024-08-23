@@ -6,7 +6,6 @@ import lombok.Getter;
 import project.server.common.ResponseCode;
 import project.server.common.ResponseMessage;
 import project.server.dto.response.ResponseDto;
-import project.server.security.jwt.constants.JwtConstants;
 
 import java.io.IOException;
 
@@ -26,7 +25,6 @@ public class LoginResponseDto extends ResponseDto {
     public static void success(HttpServletResponse response, String token) throws IOException {
         response.setContentType("application/json");
 
-        response.addHeader(JwtConstants.TOKEN_HEADER, JwtConstants.TOKEN_PREFIX + token);
         response.setStatus(HttpServletResponse.SC_OK);
 
         LoginResponseDto dto = new LoginResponseDto(token);

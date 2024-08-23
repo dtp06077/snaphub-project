@@ -1,6 +1,5 @@
 package project.server.config;
 
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -46,6 +45,7 @@ public class SecurityConfig {
      */
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+
         log.info("시큐리티 설정");
 
         http
@@ -98,12 +98,11 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-    //AuthenticationManager 빈 등록
     private AuthenticationManager authenticationManager;
 
     @Bean
     public AuthenticationManager authenticationManager
-                    (AuthenticationConfiguration authenticationConfiguration) throws Exception {
+            (AuthenticationConfiguration authenticationConfiguration) throws Exception {
 
         this.authenticationManager = authenticationConfiguration.getAuthenticationManager();
         return authenticationManager;
@@ -114,10 +113,11 @@ public class SecurityConfig {
 class FailedAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
     @Override
-    public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
+    public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException {
 
         response.setContentType("application/json");
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.getWriter().write("{ \"code\": \"AF\", \"message\": \"Authorization Failed.\" }");
     }
 }
+

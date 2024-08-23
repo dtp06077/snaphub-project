@@ -3,6 +3,7 @@ package project.server.service.Implement;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,6 +12,7 @@ import project.server.domain.UserAuth;
 import project.server.dto.request.auth.JoinRequestDto;
 import project.server.dto.response.ResponseDto;
 import project.server.dto.response.auth.JoinResponseDto;
+import project.server.dto.response.auth.LoginResponseDto;
 import project.server.repository.UserRepository;
 import project.server.service.AuthService;
 
@@ -23,6 +25,9 @@ public class AuthServiceImpl implements AuthService {
     private final UserRepository userRepository;
     //비밀번호 암호화 객체
     private final PasswordEncoder passwordEncoder;
+
+    //TODO : AuthenticationManager DI 이슈 해결
+    private final AuthenticationManager authenticationManager;
 
     /**
      * 회원 등록 (회원 가입)
@@ -105,6 +110,16 @@ public class AuthServiceImpl implements AuthService {
         log.info("'" + name + "' does not exist.");
 
         return JoinResponseDto.success();
+    }
+
+    /**
+     * 회원 로그인
+     * JwtAuthenticationFilter에서 모든 로그인 인증이 완료 되므로 명시적으로 생성
+     */
+    @Override
+    public ResponseEntity<? super LoginResponseDto> login(String loginId, String password) {
+
+        return null;
     }
 
 }
