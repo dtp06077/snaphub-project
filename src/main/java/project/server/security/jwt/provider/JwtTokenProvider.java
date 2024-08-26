@@ -117,6 +117,7 @@ public class JwtTokenProvider {
                 user.setAddress(userInfo.getAddress());
                 user.setAddressDetail(userInfo.getAddressDetail());
                 user.setTelNumber(userInfo.getTelNumber());
+                user.setAuths(userInfo.getAuths());
 
             } catch (Exception e) {
                 log.error(e.getMessage());

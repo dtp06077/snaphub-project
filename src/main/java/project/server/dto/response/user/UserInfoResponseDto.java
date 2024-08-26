@@ -8,9 +8,12 @@ import project.server.common.ResponseMessage;
 import project.server.domain.User;
 import project.server.dto.response.ResponseDto;
 
+import java.util.List;
+
 @Getter
 public class UserInfoResponseDto extends ResponseDto {
 
+    private int userId;
     private String loginId;
     private String email;
     private String name;
@@ -18,9 +21,11 @@ public class UserInfoResponseDto extends ResponseDto {
     private String telNumber;
     private String address;
     private String addressDetail;
+    private List<String> roles;
 
     private UserInfoResponseDto(User user) {
         super(ResponseCode.SUCCESS, ResponseMessage.SUCCESS);
+        this.userId = user.getId();
         this.loginId = user.getLoginId();
         this.email = user.getEmail();
         this.name = user.getName();
@@ -28,6 +33,7 @@ public class UserInfoResponseDto extends ResponseDto {
         this.telNumber = user.getTelNumber();
         this.address = user.getAddress();
         this.addressDetail = user.getAddressDetail();
+        this.roles = user.getRoles();
     }
 
     //HTTP Status 200
