@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Modal, Button, Form, InputGroup } from 'react-bootstrap'
 import { checkName, checkLoginId, join } from '../apis/auth';
 import defaultImage from '../assets/image/default-profile-image.png';
+import { loginIdCheckRequest, nameCheckRequest } from '../apis';
 
 const JoinModal = ({ show, onHide, onJoinComplete }) => {
 
@@ -101,26 +102,38 @@ const JoinModal = ({ show, onHide, onJoinComplete }) => {
   //아이디 중복 확인
   const checkDuplicateLoginId = async () => {
 
-    try {
-      const response = await checkLoginId(loginId); // 로그인 ID 체크 API 호출
-      const message = response.data; // 응답 데이터
-
-      handleResponseMessage(message, 'loginId');
-    } catch (error) {
-      handleError(error, 'loginId');
+    const response = await loginIdCheckRequest(loginId); // 로그인 ID 체크 API 호출
+    
+    if(response) {
+      if(response.status === 200) {
+        const message = response.data; // 응답 데이터
+        handleResponseMessage(message, 'loginId');
+      }
+      else {
+        handleError(response, 'loginId');
+      }
+    }
+    else {
+      setLoginIdError('서버에 연결할 수 없습니다.')
     }
   };
 
   //닉네임 중복 확인
   const checkDuplicateName = async () => {
 
-    try {
-      const response = await checkName(name); // 로그인 ID 체크 API 호출
-      const message = response.data; // 응답 데이터
+    const response = await nameCheckRequest(name); // 닉네임 체크 API 호출
 
-      handleResponseMessage(message, 'name');
-    } catch (error) {
-      handleError(error, 'name');
+    if(response) {
+      if(response.status === 200) {
+        const message = response.data; // 응답 데이터
+        handleResponseMessage(message, 'name');
+      }
+      else {
+        handleError(response, 'name');
+      }
+    }
+    else {
+      setLoginIdError('서버에 연결할 수 없습니다.')
     }
   };
 
@@ -136,26 +149,20 @@ const JoinModal = ({ show, onHide, onJoinComplete }) => {
   };
 
   // 응답 상태에 따라 메시지 처리
-  const handleError = (error, type) => {
+  const handleError = (response, type) => {
     //서버가 응답한 경우
-    if (error.response.status === 400) {
+    if (response.status === 400) {
       if (type === 'loginId') {
         setLoginIdError('이미 사용 중인 아이디입니다.');
       } else if (type === 'name') {
         setNameError('이미 사용 중인 닉네임입니다.');
       }
-    } else if (error.request) {
-      // 요청이 이루어졌으나 응답이 없는 경우
-      if (type === 'loginId') {
-        setLoginIdError('서버에 연결할 수 없습니다.')
-      } else if (type === 'name') {
-        setNameError('서버에 연결할 수 없습니다.')
-      }
-    } else {
+    } 
+     else {
       if (type === 'loginId') {
         setLoginIdError('알 수 없는 오류가 발생했습니다.')
       } else if (type === 'name') {
-        setNameError('알 수 없는 오류가 발생했습니다..')
+        setNameError('알 수 없는 오류가 발생했습니다.')
       }
     }
   }

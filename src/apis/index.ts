@@ -1,5 +1,5 @@
 import { JoinRequestDto } from "./request/auth";
-import { LoginResponseDto } from "./response/auth";
+import { JoinResponseDto, LoginResponseDto } from "./response/auth";
 import { ResponseDto } from "./response";
 import api from "./api";
 import { UserInfoResponseDto } from "./response/user";
@@ -26,14 +26,48 @@ export const loginRequest = async (loginId: string, password: string) => {
         })
     return result;
 }
+
 //회원가입 리퀘스트
 export const joinRequest = async (requestBody: JoinRequestDto) => {
-    const result = await api.post(`${JOIN_URL()}`)
+    const result = await api.post(`${JOIN_URL()}`, requestBody)
         .then(response => {
-            const responseBody: UserInfoResponseDto = response.data;
-            return responseBody;
+            const responseBody: JoinResponseDto = response.data;
+            return {response, responseBody};
         })
+        .catch(error => {
+            if (!error.response.data) return null;
+            const responseBody: ResponseDto = error.response.data;
+            return { response: error.response, responseBody };
+        })
+        return result;
 }
+
+//로그인 아이디 중복 확인 리퀘스트
+export const loginIdCheckRequest = async (loginId: string) => {
+    const result = await api.get(`${JOIN_URL()}/check-loginId?loginId=${loginId}`)
+    .then(response => {
+        return response;
+    })
+    .catch(error => {
+        if(!error.response) return null;
+        return error.response;
+    })
+    return result; 
+}
+
+//닉네임 중복 확인 리퀘스트
+export const nameCheckRequest = async (name: string) => {
+    const result = await api.get(`${JOIN_URL()}/check-name?name=${name}`)
+    .then(response => {
+        return response;
+    })
+    .catch(error => {
+        if(!error.response) return null;
+        return error.response;
+    })
+    return result; 
+}
+
 //사용자 정보 리퀘스트
 export const userInfoRequest = async (accessToken: string) => {
     // header에 jwt 담기
