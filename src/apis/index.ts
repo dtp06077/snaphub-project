@@ -17,24 +17,37 @@ export const loginRequest = async (loginId: string, password: string) => {
     const result = await api.post(`${LOGIN_URL()}?loginId=${loginId}&password=${password}`)
         .then(response => {
             const responseBody: LoginResponseDto = response.data;
-            return {response, responseBody};
+            return { response, responseBody };
         })
         .catch(error => {
             if (!error.response.data) return null;
             const responseBody: ResponseDto = error.response.data;
-            return {response: error.response, responseBody};
+            return { response: error.response, responseBody };
         })
     return result;
 }
-
+//회원가입 리퀘스트
 export const joinRequest = async (requestBody: JoinRequestDto) => {
-    const result = await api.get(`${USER_INFO_URL()}`)
+    const result = await api.post(`${JOIN_URL()}`)
         .then(response => {
             const responseBody: UserInfoResponseDto = response.data;
             return responseBody;
         })
 }
-
+//사용자 정보 리퀘스트
 export const userInfoRequest = async (accessToken: string) => {
-
+    // header에 jwt 담기
+    api.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
+    
+    const result = await api.get(`${USER_INFO_URL()}`)
+        .then(response => {
+            const responseBody: UserInfoResponseDto = response.data;
+            return { response, responseBody };
+        })
+        .catch(error => {
+            if (!error.response.data) return null;
+            const responseBody: ResponseDto = error.response.data;
+            return { response: error.response, responseBody };
+        })
+    return result;
 }

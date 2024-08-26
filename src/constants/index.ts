@@ -5,3 +5,6 @@ export const POST_PATH = () => `/post`;
 export const POST_DETAIL_PATH = (postId: string | number) => `detail/${postId}`;
 export const POST_WRITE_PATH = () => 'write';
 export const POST_UPDATE_PATH = (postId : string | number) => `update/${postId}`;
+export const TOKEN_HEADER = () => "authorization";
+export const TOKEN_PREFIX = () => "Bearer ";
+export const TOKEN_TYPE = () => "JWT";

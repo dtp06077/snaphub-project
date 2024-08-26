@@ -4,7 +4,8 @@ import Cookies from 'js-cookie';
 import * as auth from '../apis/auth';
 import { useNavigate } from 'react-router-dom';
 import defaultImage from '../assets/image/default-profile-image.png';
-import { loginRequest } from '../apis'
+import { loginRequest, userInfoRequest } from '../apis'
+import { TOKEN_PREFIX } from '../constants';
 
 export const LoginContext = createContext();
 LoginContext.displayName = 'LoginContextName';
@@ -45,38 +46,32 @@ const LoginContextProvider = ({ children }) => {
     // 로그인
     const login = async (loginId, password, onHide, resetForm) => {
 
-        console.log(`loginId : ${loginId}`);
-        console.log(`password : ${password}`);
-
-
         const result = await loginRequest(loginId, password);
 
         if (result) {
             const { response, responseBody } = result;
 
-            if (response) {
-                const status = response.status;
+            if (response.status === 200) {
                 const headers = response.headers;
-                const accessToken = responseBody.token; //JWT
-
-                console.log(`data : ${response}`);
-                console.log(`headers : ${headers}`);
-                console.log(`status : ${status}`);
-                console.log(`jwt : ${accessToken}`);
+                const accessToken = headers.authorization; //JWT
 
                 //쿠키에 accessToken(jwt) 저장
-                Cookies.set("accessToken", accessToken);
+                Cookies.set("accessToken", accessToken.replace(TOKEN_PREFIX(), ""));
 
-                // 로그인 체크 ( /users/{userId} <--- userData)
+                // 로그인 체크 
                 //TODO
-                loginCheck();
+                try {
+                    loginCheck();
 
-                alert("로그인에 성공하였습니다.");
+                    alert("로그인에 성공하였습니다.");
 
-                // 모달창 닫기
-                onHide();
-                resetForm();
-
+                    // 모달창 닫기
+                    onHide();
+                    resetForm();
+                } catch (error) {
+                    console.error(error.message);
+                    return;
+                }
             }
             else {
                 if (responseBody.code == 'AF') {
@@ -108,62 +103,46 @@ const LoginContextProvider = ({ children }) => {
 
         // 쿠키에서 jwt 토큰 가져오기
         const accessToken = Cookies.get("accessToken");
-        console.log(`accessToken : ${accessToken}`);
 
         // accessToken (jwt) 이 부재
         if (!accessToken) {
-            console.log(`쿠키에 jwt가 없음`)
-            // 로그아웃 세팅
-            logoutSetting();
-            return
+            console.log(`쿠키에 jwt 부재`)
+            // 에러 메시지 출력
+            throw new Error("JWT 토큰이 쿠키에 존재하지 않습니다.");
         }
 
         // accessToken (jwt) 이 존재
+        const result = await userInfoRequest(accessToken);
 
-        // header에 jwt 담기
-        api.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
+        if (result) {
+            const { response, responseBody } = result;
 
-        // 사용자 정보 요청
-        let response
-        let data
-
-        try {
-            response = await auth.info();
-        } catch (error) {
-            console.log(`error : ${error}`);
-            console.log(`status : ${response.status}`);
-            return;
+            if (response) {
+                //인증 성공
+                console.log(`사용자 인증정보 요청 성공`);
+                //로그인 세팅
+                loginSetting(responseBody, accessToken);
+            }
+            else {
+                throw new Error("존재하지 않는 사용자입니다.");
+            }
         }
-
-        data = response.data;
-        console.log(`data : ${data}`);
-
-        //인증 실패
-        if (data == 'UNAUTHRIZED' || response.status == 401) {
-            console.log('사용자 인증정보 요청 실패');
-            return;
+        else {
+            throw new Error("네트워크 또는 서버에 오류가 발생하였습니다.");
         }
-
-        //인증 성공
-        console.log(`사용자 인증정보 요청 성공`);
-        //로그인 세팅
-        loginSetting(data, accessToken);
     }
 
     //로그인 세팅
     // userData, accessToken (jwt)
     const loginSetting = (userData, accessToken) => {
 
-        const { userId, loginId, email, profile, auths } = userData
+        const { userId, loginId, email, name, profile, telNumber, address, addressDetail, roles } = userData
 
         console.log(`userId : ${userId}`);
+        console.log(`name : ${name}`);
         console.log(`loginId : ${loginId}`);
         console.log(`email : ${email}`);
-        console.log(`auths : ${auths}`);
-
-
-        //axios 객체의 헤더(Authorization : 'Bearer ${accessToken}')
-        api.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
+        console.log(`roles : ${roles}`);
 
         //로그인 여부 : true
         setLogin(true);
@@ -175,13 +154,13 @@ const LoginContextProvider = ({ children }) => {
 
 
         //유저정보
-        const updateUserInfo = { userId, loginId, auths };
+        const updateUserInfo = { userId, loginId, roles };
         setUserInfo(updateUserInfo);
 
         //권한정보
         const updatedRoles = { isUser: false, isAdmin: false }
 
-        auths.forEach((role) => {
+        roles.forEach((role) => {
             if (role == 'ROLE_USER') updatedRoles.isUser = true;
             if (role == 'ROLE_ADMIN') updatedRoles.isAdmin = true;
         });
