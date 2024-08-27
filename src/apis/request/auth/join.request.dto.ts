@@ -4,8 +4,7 @@ export default interface JoinRequestDto {
     email: string | null;
     name: string;
     profile: string | null;
-    telNumber: string | null;
+    telNumber: string;
     address: string | null;
-    addressDetail: string | null;
     agreedPersonal: boolean;
 }
