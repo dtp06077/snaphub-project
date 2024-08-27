@@ -115,7 +115,6 @@ public class JwtTokenProvider {
                 user.setEmail(userInfo.getEmail());
                 user.setProfileImage(userInfo.getProfileImage());
                 user.setAddress(userInfo.getAddress());
-                user.setAddressDetail(userInfo.getAddressDetail());
                 user.setTelNumber(userInfo.getTelNumber());
                 user.setAuths(userInfo.getAuths());
 

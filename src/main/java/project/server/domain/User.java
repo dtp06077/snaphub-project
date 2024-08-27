@@ -45,8 +45,6 @@ public class User {
 
     private String address;
 
-    private String addressDetail;
-
     @Column(nullable = false)
     private boolean agreedPersonal;
 
@@ -74,7 +72,6 @@ public class User {
         this.profileImage=request.getProfileImage();
         this.telNumber=request.getTelNumber();
         this.address=request.getAddress();
-        this.addressDetail=request.getAddressDetail();
         this.agreedPersonal=request.getAgreedPersonal();
         this.createdAt= LocalDateTime.now().toString();
     }

@@ -20,7 +20,6 @@ public class UserInfoResponseDto extends ResponseDto {
     private String profile;
     private String telNumber;
     private String address;
-    private String addressDetail;
     private List<String> roles;
 
     private UserInfoResponseDto(User user) {
@@ -32,7 +31,6 @@ public class UserInfoResponseDto extends ResponseDto {
         this.profile = user.getProfileImage();
         this.telNumber = user.getTelNumber();
         this.address = user.getAddress();
-        this.addressDetail = user.getAddressDetail();
         this.roles = user.getRoles();
     }
 

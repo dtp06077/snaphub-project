@@ -17,15 +17,13 @@ public class JoinRequestDto {
     @NotBlank
     @Size(min = 7, max = 18)
     private String password;
-
-    private String profileImage;
-    @Pattern(regexp = "^[0-9]{11,13}$")
+    @Pattern(regexp = "^010-\\d{4}-\\d{4}$")
     private String telNumber;
 
-    private String address;
+    private String profileImage;
 
-    private String addressDetail;
-    @NotNull @AssertTrue
+    private String address;
+    @NotNull
     private Boolean agreedPersonal;
 
 }
