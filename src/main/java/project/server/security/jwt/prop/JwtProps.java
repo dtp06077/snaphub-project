@@ -1,4 +1,4 @@
-package project.server.prop;
+package project.server.security.jwt.prop;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

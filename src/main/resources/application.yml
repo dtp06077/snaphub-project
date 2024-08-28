@@ -32,3 +32,8 @@ logging:
 # 사이트에서 길이:64 로 생성함.
 jwt:
   secret: ${SPRING_JWT_SECRET_KEY}
+
+# 파일 업로드
+file:
+  path: ${UPLOAD_FILE_PATH}
+  url: ${UPLIAD_FILE_URL}
