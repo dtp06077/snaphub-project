@@ -2,12 +2,17 @@ package project.server.domain;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import project.server.dto.request.post.WritePostRequestDto;
+
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Getter @Setter
+@NoArgsConstructor
 public class Post {
 
     @Id @GeneratedValue
@@ -18,6 +23,9 @@ public class Post {
     //외래키
     @JoinColumn(name = "user_id")
     private User author;
+
+    @Column(nullable = false)
+    private String authorId;
 
     //자식 엔티티 영속화
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -44,13 +52,18 @@ public class Post {
 
     private int viewCnt;
 
-    //생성 시 카운트 초기화
-    public Post() {
+    //생성자
+    public Post(WritePostRequestDto request, User user) {
+        this.title = request.getTitle();
+        this.content = request.getContent();
+        this.postDatetime = LocalDateTime.now().toString();
         this.happyEmoCnt = 0;
         this.sadEmoCnt = 0;
         this.angryEmoCnt = 0;
         this.commentCnt = 0;
         this.viewCnt = 0;
+        this.authorId = user.getLoginId();
+        setAuthor(user);
     }
 
     //게시글과 생명주기를 함께하므로 영속화

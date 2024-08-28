@@ -2,6 +2,7 @@ package project.server.domain;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import project.server.dto.request.auth.JoinRequestDto;
 
@@ -13,6 +14,7 @@ import java.util.List;
 //user는 많은 데이터베이스에서 예약어로 사용되므로, 테이블 이름은 다른 이름으로 변경
 @Table(name = "users")
 @Getter @Setter
+@NoArgsConstructor
 public class User {
 
     @Id @GeneratedValue
@@ -74,10 +76,6 @@ public class User {
         this.address=request.getAddress();
         this.agreedPersonal=request.getAgreedPersonal();
         this.createdAt= LocalDateTime.now().toString();
-    }
-
-    public User() {
-
     }
 
     //=====연관관계 메서드=======
