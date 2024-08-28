@@ -13,10 +13,10 @@ import java.util.UUID;
 @Service
 public class FileServiceImpl implements FileService {
 
-    @Value("file.path")
+    @Value("${file.path}")
     private String filePath;
 
-    @Value("file.url")
+    @Value("${file.url}")
     private String fileUrl;
 
     @Override
@@ -36,7 +36,7 @@ public class FileServiceImpl implements FileService {
             e.printStackTrace();
             return null;
         }
-        String url = fileUrl + saveFilePath;
+        String url = fileUrl + saveFileName;
         return url;
     }
 
