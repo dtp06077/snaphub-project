@@ -13,6 +13,7 @@ import project.server.dto.response.post.WritePostResponseDto;
 import project.server.repository.PostImageRepository;
 import project.server.repository.PostRepository;
 import project.server.repository.UserRepository;
+import project.server.security.domain.CustomUser;
 import project.server.service.PostService;
 
 import java.util.ArrayList;
@@ -23,14 +24,14 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class PostServiceImpl implements PostService {
 
-    private final UserRepository userRepository;
     private final PostRepository postRepository;
     private final PostImageRepository postImageRepository;
-    @Override
+
     @Transactional
-    public ResponseEntity<? super WritePostResponseDto> writePost(WritePostRequestDto request, String loginId) {
+    @Override
+    public ResponseEntity<? super WritePostResponseDto> writePost(WritePostRequestDto request, CustomUser customUser) {
         try {
-            User user = userRepository.findByLoginId(loginId);
+            User user = customUser.getUser();
             if(user == null) {
                 return WritePostResponseDto.notExistUser();
             }

@@ -16,7 +16,7 @@ public class PostImage {
     private int sequence;
 
     @ManyToOne
-    @JoinColumn(name = "post_id", insertable = false, updatable = false)
+    @JoinColumn(name = "post_id")
     private Post post;
 
     @Lob
