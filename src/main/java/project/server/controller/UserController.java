@@ -2,15 +2,10 @@ package project.server.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import project.server.domain.User;
-import project.server.dto.request.auth.JoinRequestDto;
-import project.server.dto.request.UserUpdateRequest;
 import project.server.dto.response.user.UserInfoResponseDto;
 import project.server.security.domain.CustomUser;
 import project.server.service.UserService;

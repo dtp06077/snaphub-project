@@ -36,4 +36,4 @@ jwt:
 # 파일 업로드
 file:
   path: ${UPLOAD_FILE_PATH}
-  url: ${UPLIAD_FILE_URL}
+  url: ${UPLOAD_FILE_URL}
