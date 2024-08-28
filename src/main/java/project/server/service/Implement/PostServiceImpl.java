@@ -10,6 +10,7 @@ import project.server.domain.User;
 import project.server.dto.request.post.WritePostRequestDto;
 import project.server.dto.response.ResponseDto;
 import project.server.dto.response.post.WritePostResponseDto;
+import project.server.repository.PostImageRepository;
 import project.server.repository.PostRepository;
 import project.server.repository.UserRepository;
 import project.server.service.PostService;
@@ -24,7 +25,7 @@ public class PostServiceImpl implements PostService {
 
     private final UserRepository userRepository;
     private final PostRepository postRepository;
-
+    private final PostImageRepository postImageRepository;
     @Override
     @Transactional
     public ResponseEntity<? super WritePostResponseDto> writePost(WritePostRequestDto request, String loginId) {
@@ -44,6 +45,7 @@ public class PostServiceImpl implements PostService {
                 PostImage postImage = new PostImage(post, image);
                 postImages.add(postImage);
             }
+            postImageRepository.saveAll(postImages);
 
         } catch (Exception e) {
             e.printStackTrace();
