@@ -9,6 +9,7 @@ import PostWrite from './pages/Post/Write';
 import LoginContextProvider from './contexts/LoginContextProvider';
 import Wrapper from './layouts/wrapper/Wrapper';
 import { MAIN_PATH, USER_PATH, SEARCH_PATH, POST_PATH, POST_DETAIL_PATH, POST_WRITE_PATH, POST_UPDATE_PATH } from './constants'
+import EventModalContextProvider from './contexts/EventModalProvider';
 
 //component: Application 컴포넌트
 function App() {
@@ -25,7 +26,8 @@ function App() {
      */
     return (
         <BrowserRouter>
-            <LoginContextProvider>
+        <EventModalContextProvider>
+        <LoginContextProvider>
                 <Routes>
                     <Route element={<Wrapper />}>
                         <Route path={MAIN_PATH()} element={<Home />}></Route>
@@ -40,6 +42,7 @@ function App() {
                     </Route>
                 </Routes>
             </LoginContextProvider>
+        </EventModalContextProvider>
         </BrowserRouter>
     );
 }

@@ -19,10 +19,9 @@ const EventModal = ({show, onHide, title, message}) => {
           {message}
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={()=>onHide()}>
+          <Button className="modal-button" variant="primary" onClick={()=>onHide()}>
             Close
           </Button>
-          <Button variant="primary">Understood</Button>
         </Modal.Footer>
       </Modal>
   );

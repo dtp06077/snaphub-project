@@ -1,8 +1,8 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { Modal, Button, Form, InputGroup } from 'react-bootstrap'
 import defaultImage from '../assets/image/default-profile-image.png';
 import { joinRequest, loginIdCheckRequest, nameCheckRequest } from '../apis';
-import EventModal from './EventModal';
+import { EventModalContext } from '../contexts/EventModalProvider';
 
 const JoinModal = ({ show, onHide, onJoinComplete }) => {
 
@@ -21,19 +21,14 @@ const JoinModal = ({ show, onHide, onJoinComplete }) => {
   const [profileImage, setProfileImage] = useState(defaultImage);
   const [previewImage, setPreviewImage] = useState(defaultImage);
 
-  const [eventModalOn, setEventModalOn] = useState(false);
-  const [title, setTitle] = useState("");
-  const [message, setMessage] = useState("");
-
-
+  const { showModal } = useContext(EventModalContext);
+  
   const onJoin = async (e) => {
     e.preventDefault();
 
     // 아이디 입력 체크
     if (!loginId) {
-      setTitle("아이디 미입력");
-      setMessage("아이디를 입력 해 주시길 바랍니다.")
-      setEventModalOn(true);
+      showModal("아이디 미입력", "아이디를 입력해 주시길 바랍니다.")
       return;
     }
 
@@ -240,13 +235,6 @@ const JoinModal = ({ show, onHide, onJoinComplete }) => {
   };
 
   return (
-    <>
-      <EventModal
-        show={eventModalOn}
-        onHide={() => setEventModalOn()}
-        title={title}
-        message={message}
-      />
       <Modal
         show={show}
         onHide={handleClose}
@@ -400,7 +388,6 @@ const JoinModal = ({ show, onHide, onJoinComplete }) => {
         <Modal.Footer>
         </Modal.Footer>
       </Modal>
-    </>
   )
 }
 
