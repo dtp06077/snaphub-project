@@ -3,6 +3,7 @@ import { Modal, Button, Form } from 'react-bootstrap'
 import { LoginContext } from '../contexts/LoginContextProvider'
 import JoinModal from './JoinModal';
 import './style.css';
+import { EventModalContext } from '../contexts/EventModalProvider';
 
 const LoginModal = ({ show, onHide, handleJoinComplete }) => {
 
@@ -11,10 +12,22 @@ const LoginModal = ({ show, onHide, handleJoinComplete }) => {
     const [loginId, setLoginId] = useState('');
     const [password, setPassword] = useState('');
 
+    const { showModal } = useContext(EventModalContext);
+
     const onLogin = (e) => {
         //데이터 셋팅
 
         e.preventDefault();
+
+        if(!loginId) {
+            showModal("ID Required", "아이디를 입력해 주시길 바랍니다.");
+            return;
+        }
+
+        else if(!password) {
+            showModal("Password Required", "비밀번호를 입력해 주시길 바랍니다.");
+            return;
+        } 
 
         // 로그인 함수 호출 후 성공 여부를 확인
         login(loginId, password, onHide, resetForm);
@@ -56,7 +69,6 @@ const LoginModal = ({ show, onHide, handleJoinComplete }) => {
                                 name="loginId"
                                 value={loginId}
                                 onChange={(e) => setLoginId(e.target.value)} // onChange 핸들러 추가
-                                required
                                 autoComplete="loginId"
                             // defaultValue={} // 필요시 추가
                             />
@@ -70,7 +82,6 @@ const LoginModal = ({ show, onHide, handleJoinComplete }) => {
                                 name="password"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)} // onChange 핸들러 추가
-                                required
                                 autoComplete="password"
                             // defaultValue={} // 필요시 추가
                             />

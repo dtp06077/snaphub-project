@@ -25,7 +25,7 @@ export const loginRequest = async (loginId: string, password: string) => {
             return { response, responseBody };
         })
         .catch(error => {
-            if (!error.response.data) return null;
+            if (!error.response) return null;
             const responseBody: ResponseDto = error.response.data;
             return { response: error.response, responseBody };
         })
@@ -40,7 +40,7 @@ export const joinRequest = async (requestBody: JoinRequestDto) => {
             return { response, responseBody };
         })
         .catch(error => {
-            if (!error.response.data) return null;
+            if (!error.response) return null;
             const responseBody: ResponseDto = error.response.data;
             return { response: error.response, responseBody };
         })
@@ -82,7 +82,7 @@ export const userInfoRequest = async (accessToken: string) => {
             return { response, responseBody };
         })
         .catch(error => {
-            if (!error.response.data) return null;
+            if (!error.response) return null;
             const responseBody: ResponseDto = error.response.data;
             return { response: error.response, responseBody };
         })

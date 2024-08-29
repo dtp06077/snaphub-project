@@ -1,10 +1,11 @@
-import React, { createContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 import api from '../apis/api';
 import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
 import defaultImage from '../assets/image/default-profile-image.png';
 import { loginRequest, userInfoRequest } from '../apis'
 import { TOKEN_PREFIX } from '../constants';
+import { EventModalContext } from './EventModalProvider';
 
 export const LoginContext = createContext();
 LoginContext.displayName = 'LoginContextName';
@@ -37,6 +38,9 @@ const LoginContextProvider = ({ children }) => {
 
     // 아이디 저장
     const [rememberUserId, setRememberUserId] = useState();
+
+    const { showModal } = useContext(EventModalContext);
+
     /*==============*/
 
     // 페이지 이동
@@ -62,7 +66,7 @@ const LoginContextProvider = ({ children }) => {
                 try {
                     loginCheck();
 
-                    alert("로그인에 성공하였습니다.");
+                    showModal("Login Success","로그인에 성공하였습니다.");
 
                     // 모달창 닫기
                     onHide();
@@ -75,11 +79,11 @@ const LoginContextProvider = ({ children }) => {
             else {
                 if (responseBody.code == 'AF') {
                     console.log('인증 실패')
-                    alert("아이디 또는 비밀번호가 일치하지 않습니다.")
+                    showModal("Login Fail", "아이디 또는 비밀번호가 일치하지 않습니다.")
                 }
                 else if (responseBody.code == 'DE') {
                     console.log('데이터베이스 에러')
-                    alert("데이터베이스에 접근하는 데 문제가 발생했습니다.")
+                    showModal("Database Error", "데이터베이스에 접근하는 데 문제가 발생했습니다.")
                 }
                 return;
             }
@@ -87,7 +91,7 @@ const LoginContextProvider = ({ children }) => {
 
         else {
             console.log('네트워크 오류 또는 서버 응답 없음');
-            alert("네트워크 또는 서버에 오류가 발생하였습니다.");
+            showModal("Server Error","네트워크 또는 서버에 오류가 발생하였습니다.");
             return;
         }
 
