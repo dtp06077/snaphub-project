@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { Modal, Button, Form, InputGroup } from 'react-bootstrap'
-import { checkName, checkLoginId, join } from '../apis/auth';
 import defaultImage from '../assets/image/default-profile-image.png';
 import { joinRequest, loginIdCheckRequest, nameCheckRequest } from '../apis';
+import EventModal from './EventModal';
 
 const JoinModal = ({ show, onHide, onJoinComplete }) => {
 
@@ -21,12 +21,19 @@ const JoinModal = ({ show, onHide, onJoinComplete }) => {
   const [profileImage, setProfileImage] = useState(defaultImage);
   const [previewImage, setPreviewImage] = useState(defaultImage);
 
+  const [eventModalOn, setEventModalOn] = useState(false);
+  const [title, setTitle] = useState("");
+  const [message, setMessage] = useState("");
+
+
   const onJoin = async (e) => {
     e.preventDefault();
 
     // 아이디 입력 체크
     if (!loginId) {
-      alert('아이디를 입력해 주시길 바랍니다.');
+      setTitle("아이디 미입력");
+      setMessage("아이디를 입력 해 주시길 바랍니다.")
+      setEventModalOn(true);
       return;
     }
 
@@ -78,7 +85,7 @@ const JoinModal = ({ show, onHide, onJoinComplete }) => {
       return;
     }
 
-    if(!validatePhoneNumber(telNumber)) {
+    if (!validatePhoneNumber(telNumber)) {
       alert('휴대폰 번호는 010-xxxx-xxxx 형식이어야 합니다.');
       return;
     }
@@ -233,159 +240,167 @@ const JoinModal = ({ show, onHide, onJoinComplete }) => {
   };
 
   return (
-    <Modal
-      show={show}
-      onHide={handleClose}
-      size="lg"
-      aria-labelledby="contained-modal-title-vcenter"
-      centered
-    >
-      <Modal.Header closeButton>
-        <Modal.Title id="contained-modal-title-vcenter">
-          join
-        </Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        <Form onSubmit={(e) => onJoin(e)}>
-          <Form.Group className="mb-3" controlId="formBasicLoginId">
-            <Form.Label>아이디</Form.Label>
-            <InputGroup>
-              <Form.Control
-                type="text"
-                placeholder="Enter login ID"
-                name="loginId"
-                value={loginId}
-                onChange={(e) => setLoginId(e.target.value)} // 아이디 상태 업데이트
-              />
-              <Button variant="outline-secondary" id="button-addon2" size='sm' onClick={checkDuplicateLoginId}>
-                중복 확인
-              </Button>
-            </InputGroup>
-            {loginIdError && <Form.Text className='text-danger'>{loginIdError}</Form.Text>}
-            {!loginIdError && (
-              <Form.Text className="text-muted">
-                아이디 중복확인을 해주세요.
-              </Form.Text>
-            )}
-          </Form.Group>
-
-          <Form.Group className="mb-3" controlId="formBasicName">
-            <Form.Label>닉네임</Form.Label>
-            <InputGroup>
-              <Form.Control
-                type="text"
-                placeholder="Enter name"
-                name="name"
-                value={name}
-                onChange={(e) => setName(e.target.value)} //닉네임 상태 업데이트
-              />
-              <Button variant="outline-secondary" id="button-addon2" size='sm' onClick={checkDuplicateName}>
-                중복 확인
-              </Button>
-            </InputGroup>
-            {nameError && <Form.Text className='text-danger'>{nameError}</Form.Text>}
-            {!nameError && (
-              <Form.Text className="text-muted">
-                닉네임 중복확인을 해주세요.
-              </Form.Text>
-            )}
-          </Form.Group>
-
-          <Form.Group className="mb-3" controlId="formBasicPassword">
-            <Form.Label>비밀번호</Form.Label>
-            <div className="inputbox">
-              <Form.Control
-                type="password"
-                placeholder="Enter Password"
-                name="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)} // 비밀번호 상태 업데이트
-              />
-              <div className='icon-button' style={{ marginLeft: -40 }}>
-                <div className='icon eye-light-off-icon'></div>
-              </div>
-            </div>
-          </Form.Group>
-
-          <Form.Group className="mb-3" controlId="formBasicPasswordCheck">
-            <Form.Label>비밀번호 확인</Form.Label>
-            <div className='inputbox'>
-              <Form.Control
-                type="password"
-                placeholder="Enter Password"
-                name="passwordCheck"
-                value={passwordCheck}
-                onChange={(e) => setPasswordCheck(e.target.value)} // 비밀번호 확인 상태 업데이트
-              />
-              <div className='icon-button' style={{ marginLeft: -40 }}>
-                <div className='icon eye-light-off-icon'></div>
-              </div>
-            </div>
-            {/* 에러 메시지를 입력란 아래에 위치 */}
-            {passwordError && <Form.Text className='text-danger'>{passwordError}</Form.Text>}
-          </Form.Group>
-
-          <Form.Group className="mb-3" controlId="formBasicEmail">
-            <Form.Label>휴대폰 번호</Form.Label>
-            <Form.Control
-              type="tel"
-              placeholder="Enter phone number (ex. 010-xxxx-xxxx)"
-              name="telNumber"
-              value={telNumber}
-              onChange={(e) => setTelNumber(e.target.value)} // 휴대폰 번호 상태 업데이트
-            />
-          </Form.Group>
-          
-          <Form.Group className="mb-3" controlId="formBasicEmail">
-            <Form.Label>이메일 주소</Form.Label>
-            <Form.Control
-              type="email"
-              placeholder="Enter email"
-              name="email"
-            />
-          </Form.Group>
-
-          <Form.Group className="mb-3" controlId="formBasicEmail">
-            <Form.Label>주소</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="Enter address"
-              name="address"
-            />
-          </Form.Group>
-
-          <Form.Group className="mb-3" controlId="formBasicProfileImage">
-            <Form.Label>프로필 이미지</Form.Label>
-            <input type="file" accept="image/*" name="profileImage" onChange={handleImageChange} />
-            {previewImage && (
-              <div>
-                <img src={previewImage} alt="Profile Preview" style={{ width: '100px', height: '100px', objectFit: 'cover', marginTop: '10px' }} />
-                <Button variant="outline-danger" onClick={handleRemoveImage} style={{ marginTop: '10px' }}>
-                  Remove Image
+    <>
+      <EventModal
+        show={eventModalOn}
+        onHide={() => setEventModalOn()}
+        title={title}
+        message={message}
+      />
+      <Modal
+        show={show}
+        onHide={handleClose}
+        size="lg"
+        aria-labelledby="contained-modal-title-vcenter"
+        centered
+      >
+        <Modal.Header closeButton>
+          <Modal.Title id="contained-modal-title-vcenter">
+            join
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form onSubmit={(e) => onJoin(e)}>
+            <Form.Group className="mb-3" controlId="formBasicLoginId">
+              <Form.Label>아이디</Form.Label>
+              <InputGroup>
+                <Form.Control
+                  type="text"
+                  placeholder="Enter login ID"
+                  name="loginId"
+                  value={loginId}
+                  onChange={(e) => setLoginId(e.target.value)} // 아이디 상태 업데이트
+                />
+                <Button variant="outline-secondary" id="button-addon2" size='sm' onClick={checkDuplicateLoginId}>
+                  중복 확인
                 </Button>
+              </InputGroup>
+              {loginIdError && <Form.Text className='text-danger'>{loginIdError}</Form.Text>}
+              {!loginIdError && (
+                <Form.Text className="text-muted">
+                  아이디 중복확인을 해주세요.
+                </Form.Text>
+              )}
+            </Form.Group>
+
+            <Form.Group className="mb-3" controlId="formBasicName">
+              <Form.Label>닉네임</Form.Label>
+              <InputGroup>
+                <Form.Control
+                  type="text"
+                  placeholder="Enter name"
+                  name="name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)} //닉네임 상태 업데이트
+                />
+                <Button variant="outline-secondary" id="button-addon2" size='sm' onClick={checkDuplicateName}>
+                  중복 확인
+                </Button>
+              </InputGroup>
+              {nameError && <Form.Text className='text-danger'>{nameError}</Form.Text>}
+              {!nameError && (
+                <Form.Text className="text-muted">
+                  닉네임 중복확인을 해주세요.
+                </Form.Text>
+              )}
+            </Form.Group>
+
+            <Form.Group className="mb-3" controlId="formBasicPassword">
+              <Form.Label>비밀번호</Form.Label>
+              <div className="inputbox">
+                <Form.Control
+                  type="password"
+                  placeholder="Enter Password"
+                  name="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)} // 비밀번호 상태 업데이트
+                />
+                <div className='icon-button' style={{ marginLeft: -40 }}>
+                  <div className='icon eye-light-off-icon'></div>
+                </div>
               </div>
-            )}
-          </Form.Group>
+            </Form.Group>
 
-          <Form.Group className="mb-3">
-            <Form.Check
-              type="checkbox"
-              label="개인정보 제공에 동의합니다."
-              name="isAgreed"
-              checked={isAgreed} // 상태에 따라 체크 여부 설정
-              onChange={(e) => setIsAgreed(e.target.checked)} // 체크된 상태에 따라 true/false 설정
-            />
-          </Form.Group>
+            <Form.Group className="mb-3" controlId="formBasicPasswordCheck">
+              <Form.Label>비밀번호 확인</Form.Label>
+              <div className='inputbox'>
+                <Form.Control
+                  type="password"
+                  placeholder="Enter Password"
+                  name="passwordCheck"
+                  value={passwordCheck}
+                  onChange={(e) => setPasswordCheck(e.target.value)} // 비밀번호 확인 상태 업데이트
+                />
+                <div className='icon-button' style={{ marginLeft: -40 }}>
+                  <div className='icon eye-light-off-icon'></div>
+                </div>
+              </div>
+              {/* 에러 메시지를 입력란 아래에 위치 */}
+              {passwordError && <Form.Text className='text-danger'>{passwordError}</Form.Text>}
+            </Form.Group>
+
+            <Form.Group className="mb-3" controlId="formBasicEmail">
+              <Form.Label>휴대폰 번호</Form.Label>
+              <Form.Control
+                type="tel"
+                placeholder="Enter phone number (ex. 010-xxxx-xxxx)"
+                name="telNumber"
+                value={telNumber}
+                onChange={(e) => setTelNumber(e.target.value)} // 휴대폰 번호 상태 업데이트
+              />
+            </Form.Group>
+
+            <Form.Group className="mb-3" controlId="formBasicEmail">
+              <Form.Label>이메일 주소</Form.Label>
+              <Form.Control
+                type="email"
+                placeholder="Enter email"
+                name="email"
+              />
+            </Form.Group>
+
+            <Form.Group className="mb-3" controlId="formBasicEmail">
+              <Form.Label>주소</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter address"
+                name="address"
+              />
+            </Form.Group>
+
+            <Form.Group className="mb-3" controlId="formBasicProfileImage">
+              <Form.Label>프로필 이미지</Form.Label>
+              <input type="file" accept="image/*" name="profileImage" onChange={handleImageChange} />
+              {previewImage && (
+                <div>
+                  <img src={previewImage} alt="Profile Preview" style={{ width: '100px', height: '100px', objectFit: 'cover', marginTop: '10px' }} />
+                  <Button variant="outline-danger" onClick={handleRemoveImage} style={{ marginTop: '10px' }}>
+                    Remove Image
+                  </Button>
+                </div>
+              )}
+            </Form.Group>
+
+            <Form.Group className="mb-3">
+              <Form.Check
+                type="checkbox"
+                label="개인정보 제공에 동의합니다."
+                name="isAgreed"
+                checked={isAgreed} // 상태에 따라 체크 여부 설정
+                onChange={(e) => setIsAgreed(e.target.checked)} // 체크된 상태에 따라 true/false 설정
+              />
+            </Form.Group>
 
 
-          <Button className='modal-button' variant="primary" type="submit">
-            Submit
-          </Button>
-        </Form>
-      </Modal.Body>
-      <Modal.Footer>
-      </Modal.Footer>
-    </Modal>
+            <Button className='modal-button' variant="primary" type="submit">
+              Submit
+            </Button>
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+        </Modal.Footer>
+      </Modal>
+    </>
   )
 }
 

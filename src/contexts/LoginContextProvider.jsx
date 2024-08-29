@@ -1,7 +1,6 @@
 import React, { createContext, useEffect, useState } from 'react';
 import api from '../apis/api';
 import Cookies from 'js-cookie';
-import * as auth from '../apis/auth';
 import { useNavigate } from 'react-router-dom';
 import defaultImage from '../assets/image/default-profile-image.png';
 import { loginRequest, userInfoRequest } from '../apis'
