@@ -10,9 +10,20 @@ import LoginContextProvider from './contexts/LoginContextProvider';
 import Wrapper from './layouts/wrapper/Wrapper';
 import { MAIN_PATH, USER_PATH, SEARCH_PATH, POST_PATH, POST_DETAIL_PATH, POST_WRITE_PATH, POST_UPDATE_PATH } from './constants'
 import EventModalContextProvider from './contexts/EventModalProvider';
+import { useEffect } from 'react';
+import { useCookies } from 'react-cookie';
 
 //component: Application 컴포넌트
 function App() {
+    //state: cookie 상태
+    const [cookies, setCookie] = useCookies();
+
+    //effect: accessToken cookie 값이 변경 될 때 마다 실행할 함수
+    useEffect(()=> {
+        if (!cookies.accessToken) {
+            
+        }
+    }, []);
 
     //render: Application 렌더링
     /**
