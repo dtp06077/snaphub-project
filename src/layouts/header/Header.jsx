@@ -94,17 +94,17 @@ const Header = () => {
 
     //event handler: 업로드 버튼 클릭 이벤트 처리 함수
     const onUploadButtonClickHandler = () => {
-      setUploadOn(true);
+      setUploadOn(!uploadOn);
       navigate(POST_WRITE_PATH());
     }
 
-    if(!uploadOn) {
+    if(uploadOn==false) {
       return <div className='header-nav-link' onClick={onUploadButtonClickHandler}>
         write
       </div>
     }
     else {
-      return <div className='header-nav-link'>
+      return <div className='header-nav-link' onClick={() => setUploadOn(!uploadOn)}>
         upload
       </div>
     }

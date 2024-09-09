@@ -3,9 +3,11 @@ import { Modal, Button, Form, InputGroup } from 'react-bootstrap'
 import defaultImage from '../assets/image/default-profile-image.png';
 import { joinRequest, loginIdCheckRequest, nameCheckRequest } from '../apis';
 import { EventModalContext } from '../contexts/EventModalProvider';
+import DaumPostcode from 'react-daum-postcode';
 
 const JoinModal = ({ show, onHide, onJoinComplete }) => {
 
+  //state
   const [loginId, setLoginId] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
@@ -18,11 +20,14 @@ const JoinModal = ({ show, onHide, onJoinComplete }) => {
   const [isNameChecked, setIsNameChecked] = useState(false);
   const [isAgreed, setIsAgreed] = useState(false);
 
+  const [address, setAddress] = useState('');
+  const [isPostcodeOpen, setIsPostcodeOpen] = useState(false);
+
   const [profileImage, setProfileImage] = useState(defaultImage);
   const [previewImage, setPreviewImage] = useState(defaultImage);
 
   const { showModal } = useContext(EventModalContext);
-  
+
   const onJoin = async (e) => {
     e.preventDefault();
 
@@ -76,12 +81,12 @@ const JoinModal = ({ show, onHide, onJoinComplete }) => {
 
     // 휴대폰 번호 입력 체크
     else if (!telNumber) {
-      showModal('Tel Number Required',`휴대폰 번호를 입력해 주시길 바랍니다.`);
+      showModal('Tel Number Required', `휴대폰 번호를 입력해 주시길 바랍니다.`);
       return;
     }
 
     if (!validatePhoneNumber(telNumber)) {
-      showModal('Tel Number Check','휴대폰 번호는 010-xxxx-xxxx 형식이어야 합니다.');
+      showModal('Tel Number Check', '휴대폰 번호는 010-xxxx-xxxx 형식이어야 합니다.');
       return;
     }
 
@@ -104,19 +109,19 @@ const JoinModal = ({ show, onHide, onJoinComplete }) => {
 
       if (response.status === 200 && responseBody.code === 'SU') {
         console.log(`회원가입 성공!`);
-        showModal('Join Success',`회원가입에 성공하였습니다.`);
+        showModal('Join Success', `회원가입에 성공하였습니다.`);
         onJoinComplete();
         handleClose(); // 회원가입 모달 닫기
       }
       else if (response.status === 400) {
         console.log(`회원가입 실패`);
-        showModal('Join Fail',`입력 형식에 맞추어서 다시 작성해 주시기 바랍니다.`);
+        showModal('Join Fail', `입력 형식에 맞추어서 다시 작성해 주시기 바랍니다.`);
       }
     }
 
     else {
       console.log('네트워크 오류 또는 서버 응답 없음');
-      showModal('Server Error',"네트워크 또는 서버에 오류가 발생하였습니다.");
+      showModal('Server Error', "네트워크 또는 서버에 오류가 발생하였습니다.");
       return;
     }
   }
@@ -194,6 +199,16 @@ const JoinModal = ({ show, onHide, onJoinComplete }) => {
     return regex.test(number);
   };
 
+  //다음 주소 검색 팝업 오픈 함수
+  const handleComplete = (data) => {
+    setAddress(data.address); // 선택한 주소로 상태 업데이트
+    setIsPostcodeOpen(false); // 주소 검색 팝업 닫기
+  };
+
+  const openPostcode = () => {
+    setIsPostcodeOpen(true);
+  };
+
   //프로필 이미지 변경
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -226,6 +241,7 @@ const JoinModal = ({ show, onHide, onJoinComplete }) => {
     setName('');
     setIsNameChecked(false);
     setNameError('');
+    setAddress('');
     setPreviewImage(defaultImage);
   };
 
@@ -235,159 +251,169 @@ const JoinModal = ({ show, onHide, onJoinComplete }) => {
   };
 
   return (
-      <Modal
-        show={show}
-        onHide={handleClose}
-        size="lg"
-        aria-labelledby="contained-modal-title-vcenter"
-        centered
-      >
-        <Modal.Header closeButton>
-          <Modal.Title id="contained-modal-title-vcenter">
-            join
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form onSubmit={(e) => onJoin(e)}>
-            <Form.Group className="mb-3" controlId="formBasicLoginId">
-              <Form.Label>아이디</Form.Label>
-              <InputGroup>
-                <Form.Control
-                  type="text"
-                  placeholder="Enter login ID"
-                  name="loginId"
-                  value={loginId}
-                  onChange={(e) => setLoginId(e.target.value)} // 아이디 상태 업데이트
-                />
-                <Button variant="outline-secondary" id="button-addon2" size='sm' onClick={checkDuplicateLoginId}>
-                  중복 확인
-                </Button>
-              </InputGroup>
-              {loginIdError && <Form.Text className='text-danger'>{loginIdError}</Form.Text>}
-              {!loginIdError && (
-                <Form.Text className="text-muted">
-                  아이디 중복확인을 해주세요.
-                </Form.Text>
-              )}
-            </Form.Group>
-
-            <Form.Group className="mb-3" controlId="formBasicName">
-              <Form.Label>닉네임</Form.Label>
-              <InputGroup>
-                <Form.Control
-                  type="text"
-                  placeholder="Enter name"
-                  name="name"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)} //닉네임 상태 업데이트
-                />
-                <Button variant="outline-secondary" id="button-addon2" size='sm' onClick={checkDuplicateName}>
-                  중복 확인
-                </Button>
-              </InputGroup>
-              {nameError && <Form.Text className='text-danger'>{nameError}</Form.Text>}
-              {!nameError && (
-                <Form.Text className="text-muted">
-                  닉네임 중복확인을 해주세요.
-                </Form.Text>
-              )}
-            </Form.Group>
-
-            <Form.Group className="mb-3" controlId="formBasicPassword">
-              <Form.Label>비밀번호</Form.Label>
-              <div className="inputbox">
-                <Form.Control
-                  type="password"
-                  placeholder="Enter Password"
-                  name="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)} // 비밀번호 상태 업데이트
-                />
-                <div className='icon-button' style={{ marginLeft: -40 }}>
-                  <div className='icon eye-light-off-icon'></div>
-                </div>
-              </div>
-            </Form.Group>
-
-            <Form.Group className="mb-3" controlId="formBasicPasswordCheck">
-              <Form.Label>비밀번호 확인</Form.Label>
-              <div className='inputbox'>
-                <Form.Control
-                  type="password"
-                  placeholder="Enter Password"
-                  name="passwordCheck"
-                  value={passwordCheck}
-                  onChange={(e) => setPasswordCheck(e.target.value)} // 비밀번호 확인 상태 업데이트
-                />
-                <div className='icon-button' style={{ marginLeft: -40 }}>
-                  <div className='icon eye-light-off-icon'></div>
-                </div>
-              </div>
-              {/* 에러 메시지를 입력란 아래에 위치 */}
-              {passwordError && <Form.Text className='text-danger'>{passwordError}</Form.Text>}
-            </Form.Group>
-
-            <Form.Group className="mb-3" controlId="formBasicEmail">
-              <Form.Label>휴대폰 번호</Form.Label>
-              <Form.Control
-                type="tel"
-                placeholder="Enter phone number (ex. 010-xxxx-xxxx)"
-                name="telNumber"
-                value={telNumber}
-                onChange={(e) => setTelNumber(e.target.value)} // 휴대폰 번호 상태 업데이트
-              />
-            </Form.Group>
-
-            <Form.Group className="mb-3" controlId="formBasicEmail">
-              <Form.Label>이메일 주소</Form.Label>
-              <Form.Control
-                type="email"
-                placeholder="Enter email"
-                name="email"
-              />
-            </Form.Group>
-
-            <Form.Group className="mb-3" controlId="formBasicEmail">
-              <Form.Label>주소</Form.Label>
+    <Modal
+      show={show}
+      onHide={handleClose}
+      size="lg"
+      aria-labelledby="contained-modal-title-vcenter"
+      centered
+    >
+      <Modal.Header closeButton>
+        <Modal.Title id="contained-modal-title-vcenter">
+          join
+        </Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <Form onSubmit={(e) => onJoin(e)}>
+          <Form.Group className="mb-3" controlId="formBasicLoginId">
+            <Form.Label>아이디</Form.Label>
+            <InputGroup>
               <Form.Control
                 type="text"
-                placeholder="Enter address"
-                name="address"
+                placeholder="Enter login ID"
+                name="loginId"
+                value={loginId}
+                onChange={(e) => setLoginId(e.target.value)} // 아이디 상태 업데이트
               />
-            </Form.Group>
+              <Button variant="outline-secondary" id="button-addon2" size='sm' onClick={checkDuplicateLoginId}>
+                중복 확인
+              </Button>
+            </InputGroup>
+            {loginIdError && <Form.Text className='text-danger'>{loginIdError}</Form.Text>}
+            {!loginIdError && (
+              <Form.Text className="text-muted">
+                아이디 중복확인을 해주세요.
+              </Form.Text>
+            )}
+          </Form.Group>
 
-            <Form.Group className="mb-3" controlId="formBasicProfileImage">
-              <Form.Label>프로필 이미지</Form.Label>
-              <input type="file" accept="image/*" name="profileImage" onChange={handleImageChange} />
-              {previewImage && (
-                <div>
-                  <img src={previewImage} alt="Profile Preview" style={{ width: '100px', height: '100px', objectFit: 'cover', marginTop: '10px' }} />
-                  <Button variant="outline-danger" onClick={handleRemoveImage} style={{ marginTop: '10px' }}>
-                    Remove Image
-                  </Button>
-                </div>
-              )}
-            </Form.Group>
-
-            <Form.Group className="mb-3">
-              <Form.Check
-                type="checkbox"
-                label="개인정보 제공에 동의합니다."
-                name="isAgreed"
-                checked={isAgreed} // 상태에 따라 체크 여부 설정
-                onChange={(e) => setIsAgreed(e.target.checked)} // 체크된 상태에 따라 true/false 설정
+          <Form.Group className="mb-3" controlId="formBasicName">
+            <Form.Label>닉네임</Form.Label>
+            <InputGroup>
+              <Form.Control
+                type="text"
+                placeholder="Enter name"
+                name="name"
+                value={name}
+                onChange={(e) => setName(e.target.value)} //닉네임 상태 업데이트
               />
-            </Form.Group>
+              <Button variant="outline-secondary" id="button-addon2" size='sm' onClick={checkDuplicateName}>
+                중복 확인
+              </Button>
+            </InputGroup>
+            {nameError && <Form.Text className='text-danger'>{nameError}</Form.Text>}
+            {!nameError && (
+              <Form.Text className="text-muted">
+                닉네임 중복확인을 해주세요.
+              </Form.Text>
+            )}
+          </Form.Group>
+
+          <Form.Group className="mb-3" controlId="formBasicPassword">
+            <Form.Label>비밀번호</Form.Label>
+            <div className="inputbox">
+              <Form.Control
+                type="password"
+                placeholder="Enter Password"
+                name="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)} // 비밀번호 상태 업데이트
+              />
+              <div className='icon-button' style={{ marginLeft: -40 }}>
+                <div className='icon eye-light-off-icon'></div>
+              </div>
+            </div>
+          </Form.Group>
+
+          <Form.Group className="mb-3" controlId="formBasicPasswordCheck">
+            <Form.Label>비밀번호 확인</Form.Label>
+            <div className='inputbox'>
+              <Form.Control
+                type="password"
+                placeholder="Enter Password"
+                name="passwordCheck"
+                value={passwordCheck}
+                onChange={(e) => setPasswordCheck(e.target.value)} // 비밀번호 확인 상태 업데이트
+              />
+              <div className='icon-button' style={{ marginLeft: -40 }}>
+                <div className='icon eye-light-off-icon'></div>
+              </div>
+            </div>
+            {/* 에러 메시지를 입력란 아래에 위치 */}
+            {passwordError && <Form.Text className='text-danger'>{passwordError}</Form.Text>}
+          </Form.Group>
+
+          <Form.Group className="mb-3" controlId="formBasicEmail">
+            <Form.Label>휴대폰 번호</Form.Label>
+            <Form.Control
+              type="tel"
+              placeholder="Enter phone number (ex. 010-xxxx-xxxx)"
+              name="telNumber"
+              value={telNumber}
+              onChange={(e) => setTelNumber(e.target.value)} // 휴대폰 번호 상태 업데이트
+            />
+          </Form.Group>
+
+          <Form.Group className="mb-3" controlId="formBasicEmail">
+            <Form.Label>이메일 주소</Form.Label>
+            <Form.Control
+              type="email"
+              placeholder="Enter email"
+              name="email"
+            />
+          </Form.Group>
+
+          <Form.Group className="mb-3" controlId="formBasicEmail">
+            <Form.Label>주소</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="주소를 입력하세요"
+              name="address"
+              value={address}
+              readOnly // 주소 입력란을 읽기 전용으로 설정
+            />
+            <Button className='modal-button' onClick={openPostcode}>우편번호 검색</Button>
+
+            {isPostcodeOpen && (
+              <DaumPostcode
+                onComplete={handleComplete}
+                autoClose={false} // 주소 선택 후 자동으로 닫지 않도록 설정
+              />
+            )}
+          </Form.Group>
+
+          <Form.Group className="mb-3" controlId="formBasicProfileImage">
+            <Form.Label>프로필 이미지</Form.Label>
+            <input type="file" accept="image/*" name="profileImage" onChange={handleImageChange} />
+            {previewImage && (
+              <div>
+                <img src={previewImage} alt="Profile Preview" style={{ width: '100px', height: '100px', objectFit: 'cover', marginTop: '10px' }} />
+                <Button variant="outline-danger" onClick={handleRemoveImage} style={{ marginTop: '10px' }}>
+                  Remove Image
+                </Button>
+              </div>
+            )}
+          </Form.Group>
+
+          <Form.Group className="mb-3">
+            <Form.Check
+              type="checkbox"
+              label="개인정보 제공에 동의합니다."
+              name="isAgreed"
+              checked={isAgreed} // 상태에 따라 체크 여부 설정
+              onChange={(e) => setIsAgreed(e.target.checked)} // 체크된 상태에 따라 true/false 설정
+            />
+          </Form.Group>
 
 
-            <Button className='modal-button' variant="primary" type="submit">
-              Submit
-            </Button>
-          </Form>
-        </Modal.Body>
-        <Modal.Footer>
-        </Modal.Footer>
-      </Modal>
+          <Button className='modal-button' variant="primary" type="submit">
+            Submit
+          </Button>
+        </Form>
+      </Modal.Body>
+      <Modal.Footer>
+      </Modal.Footer>
+    </Modal>
   )
 }
 
