@@ -13,6 +13,7 @@ public interface ResponseMessage {
     String MISSING_PASSWORD = "Password is missing.";
     String NOT_EXISTED_POST = "This post does not exist.";
     String NOT_EXISTED_USER = "This user does not exist.";
+    String VALIDATION_FAILED = "Validation failed.";
 
     //HTTP Status 401
     String AUTHORIZATION_FAIL = "Authorization failed.";

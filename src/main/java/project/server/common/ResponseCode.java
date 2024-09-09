@@ -13,6 +13,7 @@ public interface ResponseCode {
     String MISSING_PASSWORD = "MP";
     String NOT_EXISTED_POST = "NP";
     String NOT_EXISTED_USER = "NU";
+    String VALIDATION_FAILED = "VF";
 
     //HTTP Status 401
     String AUTHORIZATION_FAIL = "AF";
