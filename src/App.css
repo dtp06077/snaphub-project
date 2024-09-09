@@ -3,6 +3,11 @@
   margin: 50px auto;
 }
 
+.divider {
+  border-top: 1px solid rgba(0, 0, 0, 0.2);
+  width: 100%;
+}
+
 .icon-box {
   width: 24px;
   height: 24px;
@@ -38,3 +43,11 @@
 }
 
 hr {margin-bottom: 50px; }
+
+.image-box-light-icon {
+  background-image: url(assets/image/image-box-light.png);
+}
+
+.close-icon {
+  background-image: url(assets/image/close.png);
+}
