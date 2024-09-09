@@ -124,7 +124,7 @@ const LoginContextProvider = ({ children }) => {
                 //인증 성공
                 console.log(`사용자 인증정보 요청 성공`);
                 //로그인 세팅
-                loginSetting(responseBody, accessToken);
+                loginSetting(responseBody);
             }
             else {
                 throw new Error("존재하지 않는 사용자입니다.");
@@ -137,9 +137,9 @@ const LoginContextProvider = ({ children }) => {
 
     //로그인 세팅
     // userData, accessToken (jwt)
-    const loginSetting = (userData, accessToken) => {
+    const loginSetting = (userData) => {
 
-        const { userId, loginId, email, name, profile, telNumber, address, addressDetail, roles } = userData
+        const { userId, loginId, email, name, profile, telNumber, address, roles } = userData
 
         console.log(`userId : ${userId}`);
         console.log(`name : ${name}`);
@@ -157,7 +157,7 @@ const LoginContextProvider = ({ children }) => {
 
 
         //유저정보
-        const updateUserInfo = { userId, loginId, roles };
+        const updateUserInfo = { userId, loginId, email, name, profile, telNumber, address};
         setUserInfo(updateUserInfo);
 
         //권한정보
