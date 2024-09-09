@@ -25,12 +25,14 @@
     width: 100%;
 }
 
-.post-write-title-input {
+.post-write-title-textarea {
     width: 100%;
 
     border: none;
     outline: none;
     background: none;
+
+    resize: none;
 
     color: rgba(0, 0, 0, 1);
     font-size: 32px;
