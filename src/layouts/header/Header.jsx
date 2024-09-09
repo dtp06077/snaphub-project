@@ -3,7 +3,7 @@ import { LoginContext } from '../../contexts/LoginContextProvider'
 import LoginModal from '../../modals/LoginModal'
 import { Container, Nav, Navbar } from 'react-bootstrap'
 import './style.css';
-import { MAIN_PATH, SEARCH_PATH, USER_PATH } from '../../constants';
+import { MAIN_PATH, SEARCH_PATH, USER_PATH, POST_WRITE_PATH } from '../../constants';
 import { useNavigate, useParams } from 'react-router-dom';
 import { usePostStore } from '../../stores';
 
@@ -15,6 +15,8 @@ const Header = () => {
   const { isLogin, logout, profileImage, userInfo } = useContext(LoginContext);
   //logout() : 로그아웃 함수 -> setLogin(false)
   const [loginModalOn, setLoginModalOn] = useState(false);
+  //state: 게시물 작성 창 상태
+  const [uploadOn, setUploadOn] = useState(false);
 
   //function: 네비게이트 함수
   const navigate = useNavigate();
@@ -92,11 +94,13 @@ const Header = () => {
 
     //event handler: 업로드 버튼 클릭 이벤트 처리 함수
     const onUploadButtonClickHandler = () => {
-
+      setUploadOn(true);
+      navigate(POST_WRITE_PATH());
     }
-    if (title && content) {
+
+    if(!uploadOn) {
       return <div className='header-nav-link' onClick={onUploadButtonClickHandler}>
-        upload
+        write
       </div>
     }
     else {
