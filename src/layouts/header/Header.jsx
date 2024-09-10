@@ -6,6 +6,9 @@ import './style.css';
 import { MAIN_PATH, SEARCH_PATH, USER_PATH, POST_WRITE_PATH } from '../../constants';
 import { useNavigate, useParams } from 'react-router-dom';
 import { usePostStore } from '../../stores';
+import { useCookies } from 'react-cookie';
+import { fileUploadRequest, postUploadRequest } from '../../apis';
+import { EventModalContext } from '../../contexts/EventModalProvider';
 
 
 //component: 헤더 레이아웃
@@ -17,6 +20,11 @@ const Header = () => {
   const [loginModalOn, setLoginModalOn] = useState(false);
   //state: 게시물 작성 창 상태
   const [uploadOn, setUploadOn] = useState(false);
+  //state: 쿠키 상태
+  const [cookies] = useCookies();
+
+  //context: 이벤트 모달 창
+  const { showModal } = useContext(EventModalContext);
 
   //function: 네비게이트 함수
   const navigate = useNavigate();
@@ -58,7 +66,7 @@ const Header = () => {
       }
     }, [searchWord]);
 
-    if(searchOn) {
+    if (searchOn) {
       return (
         <div className='header-search-input-box'>
           <input
@@ -77,12 +85,12 @@ const Header = () => {
     }
     else {
       return (
-        <div className='header-nav-link' onClick={() => {setSearchOn(true)}}>
+        <div className='header-nav-link' onClick={() => { setSearchOn(true) }}>
           search
         </div>
       )
-        
-      
+
+
     }
   }
 
@@ -92,25 +100,71 @@ const Header = () => {
     //state: 게시물 상태
     const { title, content, postImageFileList, resetPost } = usePostStore();
 
-    //event handler: 쓰기 버튼 클릭 이벤트 처리 함수
-    const onWriteButtonClickHandler = () => {
-      setUploadOn(!uploadOn);
-      navigate(POST_WRITE_PATH());
+    //function: post upload response 처리 함수
+    const postUploadResponse = (responseBody) => {
+      if (!responseBody) return;
+
+      const { code } = responseBody;
+      if (code === 'AF' || code === "NU") {
+        showModal('AUTHORIZATION Fail', '인증되지 않은 사용자 입니다.');
+        navigate(MAIN_PATH());
+        return;
+      }
+
+      if (code === 'VF') {
+        showModal('Database Error', '데이터베이스에서 오류가 발생했습니다.');
+        return;
+      }
+
+      if (code === 'DE') {
+        showModal('Content Error', '제목과 내용은 필수입니다.');
+        return;
+      }
+
+      resetPost();
+      if (!isLogin) return;
+      const { loginId } = userInfo;
+
+      setUploadOn(false);
+      navigate(USER_PATH(loginId));
     }
 
     //event handler: 업로드 버튼 클릭 이벤트 처리 함수
-    const onUploadButtonClickHandler = () => {
-      
+    const onUploadButtonClickHandler = async () => {
+      const accessToken = cookies.accessToken;
+
+      if (!accessToken) return;
+
+      const postImageList = [];
+
+      for (const file of postImageFileList) {
+        const data = new FormData();
+        data.append('file', file);
+
+        const url = await fileUploadRequest(data);
+        if (url) postImageList.push(url);
+      }
+
+      const requestBody = {
+        title, content, postImageList
+      }
+
+      postUploadRequest(requestBody, accessToken).then(postUploadResponse);
     }
 
+    //event handler: 쓰기 버튼 클릭 이벤트 처리 함수
+    const onWriteButtonClickHandler = () => {
+      setUploadOn(true);
+      navigate(POST_WRITE_PATH());
+    }
 
-    if(uploadOn==false) {
+    if (uploadOn === false) {
       return <div className='header-nav-link' onClick={onWriteButtonClickHandler}>
         write
       </div>
     }
     else {
-      return <div className='header-nav-link' onClick={() => setUploadOn(!uploadOn)}>
+      return <div className='header-nav-link' onClick={onUploadButtonClickHandler}>
         upload
       </div>
     }

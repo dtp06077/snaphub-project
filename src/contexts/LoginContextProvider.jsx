@@ -4,7 +4,7 @@ import Cookies from 'js-cookie';
 import { useNavigate, useLocation } from 'react-router-dom';
 import defaultImage from '../assets/image/default-profile-image.png';
 import { loginRequest, userInfoRequest } from '../apis'
-import { TOKEN_PREFIX } from '../constants';
+import { MAIN_PATH, TOKEN_PREFIX } from '../constants';
 import { EventModalContext } from './EventModalProvider';
 
 export const LoginContext = createContext();
@@ -114,7 +114,7 @@ const LoginContextProvider = ({ children }) => {
             // 에러 메시지 출력
             showModal("Login","로그인이 필요합니다.");
             //메인 페이지로 이동
-            navigate("/")
+            navigate(MAIN_PATH())
             return;
         }
 
@@ -185,7 +185,7 @@ const LoginContextProvider = ({ children }) => {
             logoutSetting();
 
             //메인 페이지로 이동
-            navigate("/")
+            navigate(MAIN_PATH())
         }
     }
 
@@ -212,7 +212,7 @@ const LoginContextProvider = ({ children }) => {
 
     useEffect(() => {
         // '/' 경로가 아닐 때만 로그인 체크
-        if (location.pathname !== '/') {
+        if (location.pathname !== MAIN_PATH()) {
             loginCheck();
         }
     }, [location.pathname]); // 경로가 변경될 때마다 실행

@@ -106,6 +106,7 @@ export const postUploadRequest = async (requestBody: PostUploadRequestDto, acces
             return responseBody;
         })
         .catch(error => {
+            if (!error.response) return null;
             const responseBody: ResponseDto = error.response.data;
             return responseBody
         })
