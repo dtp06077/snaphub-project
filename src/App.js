@@ -33,7 +33,6 @@ function App() {
         }
         const loginUser = { ...responseBody };
         setLoginUser(loginUser);
-        console.log(loginUser);
     }
     //effect: accessToken cookie 값이 변경 될 때 마다 실행할 함수
     useEffect(()=> {

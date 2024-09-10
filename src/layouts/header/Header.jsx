@@ -125,6 +125,7 @@ const Header = () => {
       if (!isLogin) return;
       const { loginId } = userInfo;
 
+      showModal('Upload Success', '게시물 작성이 완료되었습니다.');
       setUploadOn(false);
       navigate(USER_PATH(loginId));
     }
@@ -134,7 +135,11 @@ const Header = () => {
       const accessToken = cookies.accessToken;
 
       if (!accessToken) return;
-
+      
+      if (!title || !content) {
+      showModal('Content Error', '제목과 내용은 필수입니다.');
+      return;
+      }
       const postImageList = [];
 
       for (const file of postImageFileList) {

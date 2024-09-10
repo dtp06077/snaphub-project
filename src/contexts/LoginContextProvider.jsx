@@ -67,11 +67,14 @@ const LoginContextProvider = ({ children }) => {
                 try {
                     loginCheck();
 
-                    showModal("Login Success","로그인에 성공하였습니다.");
+                    showModal("Login Success", "로그인에 성공하였습니다.");
 
                     // 모달창 닫기
                     onHide();
                     resetForm();
+
+                    //메인 페이지로 이동
+                    navigate(MAIN_PATH())
                 } catch (error) {
                     console.error(error.message);
                     return;
@@ -92,7 +95,7 @@ const LoginContextProvider = ({ children }) => {
 
         else {
             console.log('네트워크 오류 또는 서버 응답 없음');
-            showModal("Server Error","네트워크 또는 서버에 오류가 발생하였습니다.");
+            showModal("Server Error", "네트워크 또는 서버에 오류가 발생하였습니다.");
             return;
         }
 
@@ -112,7 +115,7 @@ const LoginContextProvider = ({ children }) => {
         if (!accessToken) {
             console.log(`쿠키에 jwt 부재`)
             // 에러 메시지 출력
-            showModal("Login","로그인이 필요합니다.");
+            showModal("Login", "로그인이 필요합니다.");
             //메인 페이지로 이동
             navigate(MAIN_PATH())
             return;
@@ -143,13 +146,7 @@ const LoginContextProvider = ({ children }) => {
     // userData, accessToken (jwt)
     const loginSetting = (userData) => {
 
-        const { userId, loginId, email, name, profile, telNumber, address, roles } = userData
-
-        console.log(`userId : ${userId}`);
-        console.log(`name : ${name}`);
-        console.log(`loginId : ${loginId}`);
-        console.log(`email : ${email}`);
-        console.log(`roles : ${roles}`);
+        const { userId, loginId, email, name, profile, telNumber, address, roles } = userData;
 
         //로그인 여부 : true
         setLogin(true);
@@ -157,11 +154,9 @@ const LoginContextProvider = ({ children }) => {
         //프로필 이미지 업데이트
         //웹 서버 배포 시`http://snaphub.com/.../로 변경
         setProfileImage(`${profile}`);
-        console.log(`${profile}`);
-
 
         //유저정보
-        const updateUserInfo = { userId, loginId, email, name, profile, telNumber, address};
+        const updateUserInfo = { userId, loginId, email, name, profile, telNumber, address };
         setUserInfo(updateUserInfo);
 
         //권한정보
@@ -211,12 +206,10 @@ const LoginContextProvider = ({ children }) => {
     }
 
     useEffect(() => {
-        // '/' 경로가 아닐 때만 로그인 체크
-        if (location.pathname !== MAIN_PATH()) {
-            loginCheck();
-        }
+        loginCheck();
+
     }, [location.pathname]); // 경로가 변경될 때마다 실행
-    
+
     return (
         <LoginContext.Provider value={{ profileImage, isLogin, userInfo, roles, login, logout }}>
             {children}
