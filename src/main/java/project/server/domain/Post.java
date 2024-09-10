@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import project.server.dto.request.post.WritePostRequestDto;
+import project.server.dto.request.post.PostUploadRequestDto;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -53,7 +53,7 @@ public class Post {
     private int viewCnt;
 
     //생성자
-    public Post(WritePostRequestDto request, User user) {
+    public Post(PostUploadRequestDto request, User user) {
         this.title = request.getTitle();
         this.content = request.getContent();
         this.postDatetime = LocalDateTime.now().toString();

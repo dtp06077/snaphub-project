@@ -9,7 +9,7 @@ import java.util.List;
 
 @Data
 @NoArgsConstructor
-public class WritePostRequestDto {
+public class PostUploadRequestDto {
 
     @NotBlank
     private String title;

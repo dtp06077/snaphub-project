@@ -7,12 +7,11 @@ import org.springframework.transaction.annotation.Transactional;
 import project.server.domain.Post;
 import project.server.domain.PostImage;
 import project.server.domain.User;
-import project.server.dto.request.post.WritePostRequestDto;
+import project.server.dto.request.post.PostUploadRequestDto;
 import project.server.dto.response.ResponseDto;
-import project.server.dto.response.post.WritePostResponseDto;
+import project.server.dto.response.post.PostUploadResponseDto;
 import project.server.repository.PostImageRepository;
 import project.server.repository.PostRepository;
-import project.server.repository.UserRepository;
 import project.server.security.domain.CustomUser;
 import project.server.service.PostService;
 
@@ -29,11 +28,11 @@ public class PostServiceImpl implements PostService {
 
     @Transactional
     @Override
-    public ResponseEntity<? super WritePostResponseDto> writePost(WritePostRequestDto request, CustomUser customUser) {
+    public ResponseEntity<? super PostUploadResponseDto> writePost(PostUploadRequestDto request, CustomUser customUser) {
         try {
             User user = customUser.getUser();
             if(user == null) {
-                return WritePostResponseDto.notExistUser();
+                return PostUploadResponseDto.notExistUser();
             }
 
             Post post = new Post(request, user);
@@ -53,6 +52,6 @@ public class PostServiceImpl implements PostService {
             return ResponseDto.databaseError();
         }
 
-        return WritePostResponseDto.success();
+        return PostUploadResponseDto.success();
     }
 }
