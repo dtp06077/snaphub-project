@@ -21,7 +21,6 @@ export default function PostWrite() {
     //state: 게시물 이미지 미리보기 URL 상태
     const [imageUrls, setImageUrls] = useState<string[]>([]);
 
-
     //event handler: 제목 변경 이벤트 처리
     const onTitleChangeHandler = (event: ChangeEvent<HTMLTextAreaElement>) => {
         const { value } = event.target;
