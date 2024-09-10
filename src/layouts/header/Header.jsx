@@ -92,14 +92,20 @@ const Header = () => {
     //state: 게시물 상태
     const { title, content, postImageFileList, resetPost } = usePostStore();
 
-    //event handler: 업로드 버튼 클릭 이벤트 처리 함수
-    const onUploadButtonClickHandler = () => {
+    //event handler: 쓰기 버튼 클릭 이벤트 처리 함수
+    const onWriteButtonClickHandler = () => {
       setUploadOn(!uploadOn);
       navigate(POST_WRITE_PATH());
     }
 
+    //event handler: 업로드 버튼 클릭 이벤트 처리 함수
+    const onUploadButtonClickHandler = () => {
+      
+    }
+
+
     if(uploadOn==false) {
-      return <div className='header-nav-link' onClick={onUploadButtonClickHandler}>
+      return <div className='header-nav-link' onClick={onWriteButtonClickHandler}>
         write
       </div>
     }

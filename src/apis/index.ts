@@ -3,6 +3,9 @@ import { JoinResponseDto, LoginResponseDto } from "./response/auth";
 import { ResponseDto } from "./response";
 import api from "./api";
 import { UserInfoResponseDto } from "./response/user";
+import { PostUploadRequestDto } from "./request/post";
+import { PostUploadResponseDto } from "./response/post";
+import axios from "axios";
 
 const DOMAIN = 'http://localhost:4000';
 
@@ -18,6 +21,8 @@ const LOGIN_URL = () => `${API_DOMAIN}/auth/login`;
 const JOIN_URL = () => `${API_DOMAIN}/auth/join`;
 const USER_INFO_URL = () => `${API_DOMAIN}/users/info`;
 const FILE_UPLOAD_URL = () => `${FILE_DOMAIN}/upload`;
+const POST_UPLOAD_URL = () => `${API_DOMAIN}/post`;
+
 
 const multipartFormData = { headers: { 'Content-Type': 'multipart/form-data' } };
 
@@ -93,6 +98,21 @@ export const userInfoRequest = async (accessToken: string) => {
     return result;
 }
 
+//게시물 업로드 리퀘스트
+export const postUploadRequest = async (requestBody: PostUploadRequestDto, accessToken: string) => {
+    const result = axios.post(POST_UPLOAD_URL(), requestBody, authorization(accessToken))
+        .then(response => {
+            const responseBody: PostUploadResponseDto = response.data;
+            return responseBody;
+        })
+        .catch(error => {
+            const responseBody: ResponseDto = error.response.data;
+            return responseBody
+        })
+    return result;
+}
+
+//파일 업로드 리퀘스트
 export const fileUploadRequest = async (data: FormData) => {
     const result = await api.post(FILE_UPLOAD_URL(), data, multipartFormData)
         .then(response => {
