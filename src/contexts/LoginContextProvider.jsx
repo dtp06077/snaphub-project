@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import api from '../apis/api';
 import Cookies from 'js-cookie';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import defaultImage from '../assets/image/default-profile-image.png';
 import { loginRequest, userInfoRequest } from '../apis'
 import { TOKEN_PREFIX } from '../constants';
@@ -45,6 +45,7 @@ const LoginContextProvider = ({ children }) => {
 
     // 페이지 이동
     const navigate = useNavigate();
+    const location = useLocation();
 
     // 로그인
     const login = async (loginId, password, onHide, resetForm) => {
@@ -111,7 +112,10 @@ const LoginContextProvider = ({ children }) => {
         if (!accessToken) {
             console.log(`쿠키에 jwt 부재`)
             // 에러 메시지 출력
-            throw new Error("JWT 토큰이 쿠키에 존재하지 않습니다.");
+            showModal("Login","로그인이 필요합니다.");
+            //메인 페이지로 이동
+            navigate("/")
+            return;
         }
 
         // accessToken (jwt) 이 존재
@@ -207,9 +211,11 @@ const LoginContextProvider = ({ children }) => {
     }
 
     useEffect(() => {
-        // 로그인 체크
-        loginCheck()
-    }, [])
+        // '/' 경로가 아닐 때만 로그인 체크
+        if (location.pathname !== '/') {
+            loginCheck();
+        }
+    }, [location.pathname]); // 경로가 변경될 때마다 실행
     
     return (
         <LoginContext.Provider value={{ profileImage, isLogin, userInfo, roles, login, logout }}>

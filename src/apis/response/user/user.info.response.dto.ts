@@ -6,7 +6,7 @@ export default interface UserInfoResponseDto extends ResponseDto {
     email: string | null;
     name: string;
     profile: string | null;
-    telNumber: string | null;
+    telNumber: string;
     address: string | null;
     roles: string[];
 }

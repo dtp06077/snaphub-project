@@ -1,10 +1,10 @@
-export default interface User {
+export default interface UserInfo {
     userId: number;
     loginId: string;
     email: string | null;
     name: string;
     profile: string | null;
-    telNumber: string | null;
+    telNumber: string;
     address: string | null;
     roles: string[];
 }

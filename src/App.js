@@ -12,17 +12,36 @@ import { MAIN_PATH, USER_PATH, SEARCH_PATH, POST_PATH, POST_DETAIL_PATH, POST_WR
 import EventModalContextProvider from './contexts/EventModalProvider';
 import { useEffect } from 'react';
 import { useCookies } from 'react-cookie';
+import { useLoginUserStore } from './stores';
+import { userInfoRequest } from './apis';
 
 //component: Application 컴포넌트
 function App() {
+    // state: 로그인 유저 전역 상태
+    const {setLoginUser, resetLoginUser} = useLoginUserStore();
     //state: cookie 상태
     const [cookies, setCookie] = useCookies();
 
+    const getUserResponse = ({ response, responseBody }) => {
+        if(!responseBody) return;
+        
+        const {code} = responseBody;
+
+        if(code==='AF' || code==='NU'||code==='DE') {
+            resetLoginUser();
+            return;
+        }
+        const loginUser = { ...responseBody };
+        setLoginUser(loginUser);
+        console.log(loginUser);
+    }
     //effect: accessToken cookie 값이 변경 될 때 마다 실행할 함수
     useEffect(()=> {
         if (!cookies.accessToken) {
-            
+            resetLoginUser();
+            return;
         }
+        userInfoRequest(cookies.accessToken).then(getUserResponse);
     }, []);
 
     //render: Application 렌더링
