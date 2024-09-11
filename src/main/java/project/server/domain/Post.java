@@ -27,6 +27,11 @@ public class Post {
     @Column(nullable = false)
     private String authorId;
 
+    @Column(nullable = false)
+    private String authorName;
+
+    private String authorProfile;
+
     //자식 엔티티 영속화
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PostImage> images = new ArrayList<>();
@@ -63,6 +68,8 @@ public class Post {
         this.commentCnt = 0;
         this.viewCnt = 0;
         this.authorId = user.getLoginId();
+        this.authorName = user.getName();
+        this.authorProfile = user.getProfileImage();
         setAuthor(user);
     }
 
@@ -80,5 +87,21 @@ public class Post {
     public void setAuthor(User user) {
         this.author = user;
         user.getPosts().add(this);
+    }
+
+    //PostImage 의 String 이미지를 반환
+    public List<String> getImageList() {
+        List<String> imageList = new ArrayList<>();
+
+        for(PostImage image : images) {
+            imageList.add(image.getImage());
+        }
+
+        return imageList;
+    }
+
+    //조회수 증가 메서드
+    public void addViewCount() {
+        this.viewCnt+=1;
     }
 }

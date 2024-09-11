@@ -9,6 +9,7 @@ import project.server.domain.PostImage;
 import project.server.domain.User;
 import project.server.dto.request.post.PostUploadRequestDto;
 import project.server.dto.response.ResponseDto;
+import project.server.dto.response.post.GetPostResponseDto;
 import project.server.dto.response.post.PostUploadResponseDto;
 import project.server.repository.PostImageRepository;
 import project.server.repository.PostRepository;
@@ -25,6 +26,27 @@ public class PostServiceImpl implements PostService {
 
     private final PostRepository postRepository;
     private final PostImageRepository postImageRepository;
+
+    @Override
+    public ResponseEntity<? super GetPostResponseDto> getPost(int postId) {
+
+        Post post;
+
+        try {
+            post = postRepository.findById(postId);
+
+            if (post == null) {
+                return GetPostResponseDto.noExistPost();
+            }
+
+            post.addViewCount();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+
+        return GetPostResponseDto.success(post);
+    }
 
     @Transactional
     @Override
