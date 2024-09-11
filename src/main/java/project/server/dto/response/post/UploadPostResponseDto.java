@@ -8,15 +8,15 @@ import project.server.common.ResponseMessage;
 import project.server.dto.response.ResponseDto;
 
 @Getter
-public class PostUploadResponseDto extends ResponseDto {
+public class UploadPostResponseDto extends ResponseDto {
 
-    private PostUploadResponseDto() {
+    private UploadPostResponseDto() {
         super(ResponseCode.SUCCESS, ResponseMessage.SUCCESS);
     }
 
     //Http Status 200
-    public static ResponseEntity<PostUploadResponseDto> success() {
-        PostUploadResponseDto result = new PostUploadResponseDto();
+    public static ResponseEntity<UploadPostResponseDto> success() {
+        UploadPostResponseDto result = new UploadPostResponseDto();
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
