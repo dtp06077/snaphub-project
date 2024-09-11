@@ -28,6 +28,7 @@ public class PostServiceImpl implements PostService {
     private final PostImageRepository postImageRepository;
 
     @Override
+    @Transactional
     public ResponseEntity<? super GetPostResponseDto> getPost(int postId) {
 
         Post post;
