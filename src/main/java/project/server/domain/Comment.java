@@ -2,12 +2,15 @@ package project.server.domain;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import project.server.dto.request.post.WriteCommentRequestDto;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Getter @Setter
+@NoArgsConstructor
 public class Comment {
 
     @Id @GeneratedValue
@@ -27,6 +30,14 @@ public class Comment {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id")
     private Post post;
+
+    //생성자
+    public Comment(WriteCommentRequestDto request, Post post, User user) {
+        this.content = request.getComment();
+        this.commentDatetime = LocalDateTime.now().toString();
+        setAuthor(user);
+        setPost(post);
+    }
 
     //==연관관계 편의 메서드==//
 

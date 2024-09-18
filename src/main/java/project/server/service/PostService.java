@@ -2,10 +2,8 @@ package project.server.service;
 
 import org.springframework.http.ResponseEntity;
 import project.server.dto.request.post.UploadPostRequestDto;
-import project.server.dto.response.post.GetEmotionsResponseDto;
-import project.server.dto.response.post.GetPostResponseDto;
-import project.server.dto.response.post.PutEmotionResponseDto;
-import project.server.dto.response.post.UploadPostResponseDto;
+import project.server.dto.request.post.WriteCommentRequestDto;
+import project.server.dto.response.post.*;
 import project.server.security.domain.CustomUser;
 
 public interface PostService {
@@ -21,4 +19,7 @@ public interface PostService {
 
     //감정표현 리스트 불러오기 Response
     ResponseEntity<? super GetEmotionsResponseDto> getEmotions(int postId);
+
+    //댓글 리스트 불러오기 Response
+    ResponseEntity<? super WriteCommentResponseDto> writeComment(WriteCommentRequestDto requestDto, int postId, CustomUser customUser);
 }

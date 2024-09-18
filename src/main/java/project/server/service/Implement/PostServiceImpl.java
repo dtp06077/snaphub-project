@@ -9,11 +9,9 @@ import project.server.domain.Post;
 import project.server.domain.PostImage;
 import project.server.domain.User;
 import project.server.dto.request.post.UploadPostRequestDto;
+import project.server.dto.request.post.WriteCommentRequestDto;
 import project.server.dto.response.ResponseDto;
-import project.server.dto.response.post.GetEmotionsResponseDto;
-import project.server.dto.response.post.GetPostResponseDto;
-import project.server.dto.response.post.PutEmotionResponseDto;
-import project.server.dto.response.post.UploadPostResponseDto;
+import project.server.dto.response.post.*;
 import project.server.repository.EmotionRepository;
 import project.server.repository.PostImageRepository;
 import project.server.repository.PostRepository;
@@ -135,5 +133,26 @@ public class PostServiceImpl implements PostService {
         }
 
         return GetEmotionsResponseDto.success(post);
+    }
+
+    @Override
+    @Transactional
+    public ResponseEntity<? super WriteCommentResponseDto> writeComment(WriteCommentRequestDto requestDto, int postId, CustomUser customUser) {
+        try {
+            User user = customUser.getUser();
+            if(user == null) {
+                return WriteCommentResponseDto.noExistUser();
+            }
+            Post post = postRepository.findById(postId);
+            if(post==null) {
+                return WriteCommentResponseDto.noExistPost();
+            }
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+
+        return null;
     }
 }
