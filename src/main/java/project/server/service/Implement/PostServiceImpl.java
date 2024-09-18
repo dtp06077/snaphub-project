@@ -120,13 +120,20 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public ResponseEntity<? super GetEmotionsResponseDto> getEmotions(int postId) {
+
+        Post post;
+
         try {
+            post = postRepository.findById(postId);
+            if (post == null) {
+                return GetEmotionsResponseDto.noExistPost();
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseDto.databaseError();
         }
 
-        return GetEmotionsResponseDto.success();
+        return GetEmotionsResponseDto.success(post);
     }
 }
