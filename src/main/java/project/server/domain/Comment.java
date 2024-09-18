@@ -33,7 +33,7 @@ public class Comment {
 
     //생성자
     public Comment(WriteCommentRequestDto request, Post post, User user) {
-        this.content = request.getComment();
+        this.content = request.getContent();
         this.commentDatetime = LocalDateTime.now().toString();
         setAuthor(user);
         setPost(post);

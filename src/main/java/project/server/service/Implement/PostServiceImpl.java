@@ -155,6 +155,6 @@ public class PostServiceImpl implements PostService {
             return ResponseDto.databaseError();
         }
 
-        return null;
+        return WriteCommentResponseDto.success();
     }
 }

@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 public class WriteCommentRequestDto {
 
     @NotBlank
-    private String comment;
+    private String content;
 
 }
