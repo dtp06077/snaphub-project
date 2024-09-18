@@ -45,6 +45,7 @@ public class Comment {
     public void setPost(Post post) {
         this.post = post;
         post.getComments().add(this);
+        post.setCommentCnt(post.getCommentCnt()+1);
     }
 
     //다대일 관계인 사용자 엔티티를 지정하면 해당 사용자의 댓글 리스트에 댓글 추가

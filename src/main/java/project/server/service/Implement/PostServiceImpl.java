@@ -4,14 +4,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import project.server.domain.Emotion;
-import project.server.domain.Post;
-import project.server.domain.PostImage;
-import project.server.domain.User;
+import project.server.domain.*;
 import project.server.dto.request.post.UploadPostRequestDto;
 import project.server.dto.request.post.WriteCommentRequestDto;
 import project.server.dto.response.ResponseDto;
 import project.server.dto.response.post.*;
+import project.server.repository.CommentRepository;
 import project.server.repository.EmotionRepository;
 import project.server.repository.PostImageRepository;
 import project.server.repository.PostRepository;
@@ -29,6 +27,7 @@ public class PostServiceImpl implements PostService {
     private final PostRepository postRepository;
     private final PostImageRepository postImageRepository;
     private final EmotionRepository emotionRepository;
+    private final CommentRepository commentRepository;
 
     @Override
     @Transactional
@@ -147,7 +146,10 @@ public class PostServiceImpl implements PostService {
             if(post==null) {
                 return WriteCommentResponseDto.noExistPost();
             }
-            
+
+            Comment comment = new Comment(requestDto, post, user);
+            commentRepository.save(comment);
+
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseDto.databaseError();
