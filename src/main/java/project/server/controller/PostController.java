@@ -7,6 +7,7 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import project.server.dto.request.post.UploadPostRequestDto;
+import project.server.dto.response.post.GetEmotionsResponseDto;
 import project.server.dto.response.post.GetPostResponseDto;
 import project.server.dto.response.post.PutEmotionResponseDto;
 import project.server.dto.response.post.UploadPostResponseDto;
@@ -46,5 +47,13 @@ public class PostController {
             @AuthenticationPrincipal CustomUser customUser
             ) {
         return postService.putEmotion(postId, emotionStatus, customUser);
+    }
+
+    //감정표현리스트 검색
+    @GetMapping("/{postId}/emotion-list")
+    public ResponseEntity<? super GetEmotionsResponseDto> getEmotions(
+            @PathVariable("postId") int postId
+    ) {
+        return postService.getEmotions(postId);
     }
 }

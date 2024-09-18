@@ -16,11 +16,13 @@ public class EmotionListItem {
     private String loginId;
     private String name;
     private String profileImage;
+    private String status;
 
     public EmotionListItem(Emotion emotion) {
         this.loginId = emotion.getUser().getLoginId();
         this.name = emotion.getUser().getName();
         this.profileImage = emotion.getUser().getProfileImage();
+        this.status = emotion.getStatus().toString();
     }
 
     public static List<EmotionListItem> copyList(Post post) {
