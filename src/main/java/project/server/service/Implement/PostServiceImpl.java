@@ -10,6 +10,7 @@ import project.server.domain.PostImage;
 import project.server.domain.User;
 import project.server.dto.request.post.UploadPostRequestDto;
 import project.server.dto.response.ResponseDto;
+import project.server.dto.response.post.GetEmotionsResponseDto;
 import project.server.dto.response.post.GetPostResponseDto;
 import project.server.dto.response.post.PutEmotionResponseDto;
 import project.server.dto.response.post.UploadPostResponseDto;
@@ -115,5 +116,17 @@ public class PostServiceImpl implements PostService {
         }
 
         return PutEmotionResponseDto.success();
+    }
+
+    @Override
+    public ResponseEntity<? super GetEmotionsResponseDto> getEmotions(int postId) {
+        try {
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+
+        return GetEmotionsResponseDto.success();
     }
 }
