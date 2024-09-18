@@ -4,6 +4,7 @@ import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import project.server.domain.Emotion;
+import project.server.domain.id.EmotionId;
 
 import java.util.List;
 
@@ -13,23 +14,17 @@ public class EmotionRepository {
 
     private final EntityManager em;
 
-    public int save(Emotion emotion) {
+    public void save(Emotion emotion) {
         em.persist(emotion);
-        return emotion.getPost().getId();
     }
 
-    public Emotion findById(int id) {
-        return em.find(Emotion.class, id);
+    public Emotion findById(int postId, int userId) {
+        EmotionId emotionId = new EmotionId(postId, userId);
+        return em.find(Emotion.class, emotionId);
     }
 
-    public List<Emotion> findByPostId(int id) {
-        return em.createQuery("select e from Emotion e where e.post.id = :postId", Emotion.class)
-                .setParameter("postId", id)
-                .getResultList();
-    }
-
-    public void delete(int id) {
-        Emotion emotion = em.find(Emotion.class, id);
+    public void delete(int postId, int userId) {
+        Emotion emotion = findById(postId, userId);
         if(emotion != null) {
             em.remove(emotion);
         }

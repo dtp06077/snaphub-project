@@ -4,13 +4,16 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import project.server.domain.Emotion;
 import project.server.domain.Post;
 import project.server.domain.PostImage;
 import project.server.domain.User;
 import project.server.dto.request.post.UploadPostRequestDto;
 import project.server.dto.response.ResponseDto;
 import project.server.dto.response.post.GetPostResponseDto;
+import project.server.dto.response.post.PutEmotionResponseDto;
 import project.server.dto.response.post.UploadPostResponseDto;
+import project.server.repository.EmotionRepository;
 import project.server.repository.PostImageRepository;
 import project.server.repository.PostRepository;
 import project.server.security.domain.CustomUser;
@@ -26,6 +29,7 @@ public class PostServiceImpl implements PostService {
 
     private final PostRepository postRepository;
     private final PostImageRepository postImageRepository;
+    private final EmotionRepository emotionRepository;
 
     @Override
     @Transactional
@@ -49,13 +53,13 @@ public class PostServiceImpl implements PostService {
         return GetPostResponseDto.success(post);
     }
 
-    @Transactional
     @Override
+    @Transactional
     public ResponseEntity<? super UploadPostResponseDto> uploadPost(UploadPostRequestDto request, CustomUser customUser) {
         try {
             User user = customUser.getUser();
             if(user == null) {
-                return UploadPostResponseDto.notExistUser();
+                return UploadPostResponseDto.noExistUser();
             }
 
             Post post = new Post(request, user);
@@ -76,5 +80,39 @@ public class PostServiceImpl implements PostService {
         }
 
         return UploadPostResponseDto.success();
+    }
+
+    @Override
+    @Transactional
+    public ResponseEntity<? super PutEmotionResponseDto> putEmotion(int postId, String emotionStatus, CustomUser customUser) {
+        try{
+            User user = customUser.getUser();
+
+            if(user == null) {
+                return PutEmotionResponseDto.noExistUser();
+            }
+
+            Post post = postRepository.findById(postId);
+
+            if(post==null) {
+                return PutEmotionResponseDto.noExistPost();
+            }
+
+            Emotion emotion = emotionRepository.findById(postId, user.getId());
+
+            if(emotion==null) {
+                emotion = new Emotion(user, post, emotionStatus);
+                emotionRepository.save(emotion);
+            }
+            else {
+                emotionRepository.delete(postId, user.getId());
+            }
+
+        }  catch (Exception e) {
+            e.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+
+        return PutEmotionResponseDto.success();
     }
 }

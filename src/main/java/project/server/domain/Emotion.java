@@ -2,11 +2,13 @@ package project.server.domain;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import project.server.domain.id.EmotionId;
 
 @Entity
 @Getter @Setter
+@NoArgsConstructor
 @IdClass(EmotionId.class)
 public class Emotion {
 
@@ -29,6 +31,15 @@ public class Emotion {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private EmotionStatus status;
+
+    //생성자
+    public Emotion(User user, Post post, String status) {
+        this.postId = post.getId();
+        this.userId = user.getId();
+        this.status = EmotionStatus.valueOf(status);
+        setPost(post);
+        setUser(user);
+    }
 
     //==연관관계 편의 메서드==//
 

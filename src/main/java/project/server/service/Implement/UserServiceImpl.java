@@ -33,7 +33,7 @@ public class UserServiceImpl implements UserService {
 
         try {
             if (user == null) {
-                return UserInfoResponseDto.notExistUser();
+                return UserInfoResponseDto.noExistUser();
             }
         } catch (Exception e) {
             e.printStackTrace();
