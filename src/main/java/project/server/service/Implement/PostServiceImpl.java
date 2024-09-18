@@ -105,6 +105,7 @@ public class PostServiceImpl implements PostService {
                 emotionRepository.save(emotion);
             }
             else {
+                emotion.removeEmotion();
                 emotionRepository.delete(postId, user.getId());
             }
 

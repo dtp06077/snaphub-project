@@ -8,6 +8,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import project.server.dto.request.post.UploadPostRequestDto;
 import project.server.dto.response.post.GetPostResponseDto;
+import project.server.dto.response.post.PutEmotionResponseDto;
 import project.server.dto.response.post.UploadPostResponseDto;
 import project.server.security.domain.CustomUser;
 import project.server.service.PostService;
@@ -34,5 +35,16 @@ public class PostController {
             @AuthenticationPrincipal CustomUser customUser
             ) {
         return postService.uploadPost(request, customUser);
+    }
+
+    //감정표현 등록
+    @PutMapping("/{postId}/emotion")
+    @Secured("ROLE_USER")
+    public ResponseEntity<? super PutEmotionResponseDto> putEmotion(
+            @PathVariable("postId") int postId,
+            @RequestParam String emotionStatus,
+            @AuthenticationPrincipal CustomUser customUser
+            ) {
+        return postService.putEmotion(postId, emotionStatus, customUser);
     }
 }

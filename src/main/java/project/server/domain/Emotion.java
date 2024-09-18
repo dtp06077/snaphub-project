@@ -53,9 +53,19 @@ public class Emotion {
         }
         post.getEmotions().add(this);
     }
+
     //감정표현한 사용자의 감정표현 리스트에 감정표현 추가
     public void setUser(User user) {
         this.user = user;
         user.getEmotions().add(this);
+    }
+
+    //게시물 감정표현 감소 메서드
+    public void removeEmotion() {
+        switch (this.status) {
+            case ANGRY -> post.setAngryEmoCnt(post.getAngryEmoCnt()-1);
+            case HAPPY -> post.setHappyEmoCnt(post.getHappyEmoCnt()-1);
+            case SAD -> post.setSadEmoCnt(post.getSadEmoCnt()-1);
+        }
     }
 }
