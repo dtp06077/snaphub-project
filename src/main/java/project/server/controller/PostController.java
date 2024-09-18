@@ -7,10 +7,8 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import project.server.dto.request.post.UploadPostRequestDto;
-import project.server.dto.response.post.GetEmotionsResponseDto;
-import project.server.dto.response.post.GetPostResponseDto;
-import project.server.dto.response.post.PutEmotionResponseDto;
-import project.server.dto.response.post.UploadPostResponseDto;
+import project.server.dto.request.post.WriteCommentRequestDto;
+import project.server.dto.response.post.*;
 import project.server.security.domain.CustomUser;
 import project.server.service.PostService;
 
@@ -55,5 +53,15 @@ public class PostController {
             @PathVariable("postId") int postId
     ) {
         return postService.getEmotions(postId);
+    }
+
+    //댓글 작성
+    @PostMapping("/{postId}/comment")
+    public ResponseEntity<? super WriteCommentResponseDto> writeComment(
+            @RequestBody @Valid WriteCommentRequestDto request,
+            @PathVariable("postId") int postId,
+            @AuthenticationPrincipal CustomUser customUser
+    ) {
+        return postService.writeComment(request, postId, customUser);
     }
 }
