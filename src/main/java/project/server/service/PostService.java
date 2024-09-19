@@ -20,6 +20,9 @@ public interface PostService {
     //감정표현 리스트 불러오기 Response
     ResponseEntity<? super GetEmotionsResponseDto> getEmotions(int postId);
 
-    //댓글 리스트 불러오기 Response
+    //댓글 등록하기 Response
     ResponseEntity<? super WriteCommentResponseDto> writeComment(WriteCommentRequestDto requestDto, int postId, CustomUser customUser);
+
+    //댓글 리스트 불러오기 Response
+    ResponseEntity<? super GetCommentsResponseDto> getComments(int postId);
 }

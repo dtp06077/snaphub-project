@@ -157,4 +157,22 @@ public class PostServiceImpl implements PostService {
 
         return WriteCommentResponseDto.success();
     }
+
+    @Override
+    public ResponseEntity<? super GetCommentsResponseDto> getComments(int postId) {
+        Post post;
+
+        try {
+            post = postRepository.findById(postId);
+            if (post == null) {
+                return GetCommentsResponseDto.noExistPost();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+
+        return GetCommentsResponseDto.success(post);
+    }
 }
