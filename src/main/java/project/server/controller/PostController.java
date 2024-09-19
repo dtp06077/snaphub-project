@@ -64,4 +64,12 @@ public class PostController {
     ) {
         return postService.writeComment(request, postId, customUser);
     }
+
+    //댓글리스트 검색
+    @GetMapping("/{postId}/comment-list")
+    public ResponseEntity<? super GetCommentsResponseDto> getComments(
+            @PathVariable("postId") int postId
+    ) {
+        return postService.getComments(postId);
+    }
 }
