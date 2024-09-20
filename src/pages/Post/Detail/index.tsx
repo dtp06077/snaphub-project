@@ -3,6 +3,7 @@ import EmotionItem from '../../../components/EmotionItem';
 import { CommentListItem, EmotionListItem } from '../../../types/interface';
 import { commentListMock, emotionListMock } from '../../../mocks';
 import CommentItem from '../../../components/CommentItem';
+import Pagination from '../../../components/Pagination';
 
 //component: 게시물 상세 화면 컴포넌트
 export default function PostDetail() {
@@ -91,7 +92,9 @@ export default function PostDetail() {
                         </div>
                     </div>
                     <div className='divider'></div>
-                    <div className='post-detail-bottom-comment-pagination-box'></div>
+                    <div className='post-detail-bottom-comment-pagination-box'>
+                        <Pagination/>
+                    </div>
                     <div className='post-detail-bottom-comment-input-container'>
                         <div className='post-detail-bottom-comment-input-container'>
                             <textarea className="post-detail-bottom-comment-textarea" placeholder='댓글을 작성해주세요.'></textarea>
