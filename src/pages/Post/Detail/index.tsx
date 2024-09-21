@@ -7,7 +7,7 @@ import Pagination from '../../../components/Pagination';
 import './style.css';
 import { useLoginUserStore } from '../../../stores';
 import { useNavigate, useParams } from 'react-router-dom';
-import { USER_PATH } from '../../../constants';
+import { POST_PATH, POST_UPDATE_PATH, USER_PATH } from '../../../constants';
 import defaultImage from '../assets/image/default-profile-image.png';
 
 //component: 게시물 상세 화면 컴포넌트
@@ -41,9 +41,11 @@ export default function PostDetail() {
             setShowMore(!showMore);
         }
 
-        //event handler: more 버튼 클릭 이벤트 처리
+        //event handler: 수정 버튼 클릭 이벤트 처리
         const onUpdateButtonClickHandler = () => {
-            setShowMore(!showMore);
+            if(!post || !loginUser) return;
+            if(loginUser.loginId !== post.posterId) return;
+            navigator(POST_PATH() + '/' + POST_UPDATE_PATH(post.postId));
         }
 
         //render: 게시물 상세 상단 컴포넌트 렌더링
@@ -64,7 +66,7 @@ export default function PostDetail() {
                         </div>
                         {showMore &&
                         <div className='post-detail-more-box'>
-                            <div className='post-detail-update-button'>{`수정`}</div>
+                            <div className='post-detail-update-button' onClick={onUpdateButtonClickHandler}>{`수정`}</div>
                             <div className='divider'></div>
                             <div className='post-detail-delete-button'>{`삭제`}</div>
                         </div> }
