@@ -153,7 +153,9 @@ const LoginContextProvider = ({ children }) => {
 
         //프로필 이미지 업데이트
         //웹 서버 배포 시`http://snaphub.com/.../로 변경
-        setProfileImage(`${profile}`);
+        if(profile) {
+            setProfileImage(profile);
+        }
 
         //유저정보
         const updateUserInfo = { userId, loginId, email, name, profile, telNumber, address };

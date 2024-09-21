@@ -1,35 +1,63 @@
 import React, { useEffect, useState } from 'react'
 import EmotionItem from '../../../components/EmotionItem';
-import { CommentListItem, EmotionListItem } from '../../../types/interface';
+import { CommentListItem, EmotionListItem, Post } from '../../../types/interface';
 import { commentListMock, emotionListMock } from '../../../mocks';
 import CommentItem from '../../../components/CommentItem';
 import Pagination from '../../../components/Pagination';
 import './style.css';
+import { useLoginUserStore } from '../../../stores';
+import { useNavigate, useParams } from 'react-router-dom';
+import { USER_PATH } from '../../../constants';
+import defaultImage from '../assets/image/default-profile-image.png';
 
 //component: 게시물 상세 화면 컴포넌트
 export default function PostDetail() {
 
+    //state: 게시물 번호 path variable 상태
+    const { postId } = useParams();
+    //state: 로그인 유저 상태
+    const { loginUser } = useLoginUserStore();
+
+    //function: 네비게이트 함수
+    const navigator = useNavigate();
+
     //component: 게시물 상세 상단 컴포넌트
     const PostDetailTop = () => {
 
+        //state: post 상태
+        const [post, setPost] = useState<Post | null>(null);
+
         //state: more 버튼 상태
         const [showMore, setShowMore] = useState<boolean>(false);
+
+        //event handler: 닉네임 클릭 이벤트 처리
+        const onNicknameClickHandler = () => {
+            if(!post) return;
+            navigator(USER_PATH(post.posterId));
+        }
         
         //event handler: more 버튼 클릭 이벤트 처리
         const onMoreButtonClickHandler = () => {
             setShowMore(!showMore);
         }
+
+        //event handler: more 버튼 클릭 이벤트 처리
+        const onUpdateButtonClickHandler = () => {
+            setShowMore(!showMore);
+        }
+
         //render: 게시물 상세 상단 컴포넌트 렌더링
+        if(!post) return <></>;
         return(
             <div id = 'post-detail-top'>
                 <div className='post-detail-top-header'>
-                    <div className='post-detail-title'></div>
+                    <div className='post-detail-title'>{post.title}</div>
                     <div className='post-detail-top-sub-box'>
                         <div className='post-detail-write-info-box'>
-                            <div className='post-detail-writer-profile-image'></div>
-                            <div className='post-detail-writer-nickname'>{`kimhuiseong`}</div>
+                            <div className='post-detail-writer-profile-image' style={{backgroundImage: `url(${post.posterProfileImage ? post.posterProfileImage : defaultImage})`}}></div>
+                            <div className='post-detail-writer-nickname' onClick={onNicknameClickHandler}>{post.posterName}</div>
                             <div className='post-detail-info-divider'>{`\|`}</div>
-                            <div className='post-detail-write-date'>{`2023.05.05`}</div>
+                            <div className='post-detail-write-date'>{post.postDateTime}</div>
                         </div>
                         <div className='icon-button' onClick={onMoreButtonClickHandler}>
                             <div className='icon more-icon'></div>
@@ -44,8 +72,8 @@ export default function PostDetail() {
                 </div>
                 <div className='divider'></div>
                 <div className='post-detail-top-main'>
-                    <div className='post-detail-main-text'></div>
-                    <div className='post-detail-main-image'></div>
+                    <div className='post-detail-main-text'>{post.content}</div>
+                    {post.imageList.map(image => <img className='post-detail-main-image' src={image}/>)}
                 </div>
             </div>
         );
