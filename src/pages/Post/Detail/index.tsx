@@ -104,7 +104,7 @@ export default function PostDetail() {
                     <div className='post-detail-bottom-comment-pagination-box'>
                         <Pagination/>
                     </div>
-                    <div className='post-detail-bottom-comment-input-container'>
+                    <div className='post-detail-bottom-comment-input-box'>
                         <div className='post-detail-bottom-comment-input-container'>
                             <textarea className="post-detail-bottom-comment-textarea" placeholder='댓글을 작성해주세요.'></textarea>
                             <div className='post-detail-bottom-comment-button-box'>

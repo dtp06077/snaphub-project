@@ -153,6 +153,104 @@
 .post-detail-bottom-button-group {
     display: flex;
     align-items: center;
-    gap: 6px;
-    
+    gap: 6px;   
+}
+
+.post-detail-bottom-button-text {
+    color: rgba(0, 0, 0, 0.7);
+
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 140%;
+}
+
+.post-detail-bottom-emotion-box {
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    padding: 20px 20px 40px;
+}
+
+.post-detail-bottom-emotion-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.post-detail-bottom-emotion-title {
+    color: rgba(0, 0, 0, 1);
+
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 140%;
+}
+
+.post-detail-bottom-emotion-contents {
+    display: flex;
+    flex-wrap: wrap;
+
+    row-gap: 20px;
+    column-gap: 30px;
+}
+
+.post-detail-bottom-comment-box {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.post-detail-bottom-comment-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    padding: 0 20px;
+}
+
+.post-detail-bottom-comment-title {
+    color: rgba(0, 0, 0, 1);
+
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 140%;
+}
+
+.post-detail-bottom-comment-list-container {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.post-detail-bottom-comment-pagination-box {
+    display: flex;
+    justify-content: center;
+}
+
+.post-detail-bottom-comment-input-box {
+    border: 1px solid rgba(0,0,0,0.2);
+    padding: 20px;
+}
+
+.post-detail-bottom-comment-input-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.post-detail-bottom-comment-textarea {
+    border: none;
+    outline: none;
+    background: none;
+    resize: none;
+
+    overflow: hidden;
+
+    color: rgba(0, 0, 0, 1);
+
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 150%;
+}
+
+.post-detail-bottom-comment-button-box {
+    display: flex;
+    justify-content: flex-end;
 }
