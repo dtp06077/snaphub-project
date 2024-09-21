@@ -52,7 +52,7 @@
     height: 32px;
 
     background-position: 50% 50%;
-    background-image: 100% 100%;
+    background-size: 100% 100%;
 }
 
 .post-detail-writer-nickname {
@@ -61,6 +61,8 @@
     font-size: 16px;
     font-weight: 500;
     line-height: 140%;
+
+    cursor: pointer;
 }
 
 .post-detail-info-divider, .post-detail-write-date {
@@ -135,4 +137,22 @@
 
 .post-detail-main-image {
     width: 100%;
+}
+
+#post-detail-bottom {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.post-detail-bottom-button-box {
+    display: flex;
+    gap: 12px;
+}
+
+.post-detail-bottom-button-group {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    
 }
