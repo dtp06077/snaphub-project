@@ -4,6 +4,7 @@ import { CommentListItem, EmotionListItem } from '../../../types/interface';
 import { commentListMock, emotionListMock } from '../../../mocks';
 import CommentItem from '../../../components/CommentItem';
 import Pagination from '../../../components/Pagination';
+import './style.css';
 
 //component: 게시물 상세 화면 컴포넌트
 export default function PostDetail() {
@@ -11,6 +12,13 @@ export default function PostDetail() {
     //component: 게시물 상세 상단 컴포넌트
     const PostDetailTop = () => {
 
+        //state: more 버튼 상태
+        const [showMore, setShowMore] = useState<boolean>(false);
+        
+        //event handler: more 버튼 클릭 이벤트 처리
+        const onMoreButtonClickHandler = () => {
+            setShowMore(!showMore);
+        }
         //render: 게시물 상세 상단 컴포넌트 렌더링
         return(
             <div id = 'post-detail-top'>
@@ -19,18 +27,19 @@ export default function PostDetail() {
                     <div className='post-detail-top-sub-box'>
                         <div className='post-detail-write-info-box'>
                             <div className='post-detail-writer-profile-image'></div>
-                            <div className='post-detail-writer-nickname'></div>
-                            <div className='post-detail-info-divider'></div>
-                            <div className='post-detail-write-date'></div>
+                            <div className='post-detail-writer-nickname'>{`kimhuiseong`}</div>
+                            <div className='post-detail-info-divider'>{`\|`}</div>
+                            <div className='post-detail-write-date'>{`2023.05.05`}</div>
                         </div>
-                        <div className='icon-button'>
+                        <div className='icon-button' onClick={onMoreButtonClickHandler}>
                             <div className='icon more-icon'></div>
                         </div>
+                        {showMore &&
                         <div className='post-detail-more-box'>
-                            <div className='post-detail-update-button'></div>
+                            <div className='post-detail-update-button'>{`수정`}</div>
                             <div className='divider'></div>
-                            <div className='post-detail-delete-button'></div>
-                        </div>
+                            <div className='post-detail-delete-button'>{`삭제`}</div>
+                        </div> }
                     </div>
                 </div>
                 <div className='divider'></div>
