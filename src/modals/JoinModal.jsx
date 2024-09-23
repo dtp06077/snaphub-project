@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react'
 import { Modal, Button, Form, InputGroup } from 'react-bootstrap'
 import defaultImage from '../assets/image/default-profile-image.png';
-import { joinRequest, loginIdCheckRequest, nameCheckRequest } from '../apis';
+import { joinRequest, checkLoginIdRequest, checkNameRequest } from '../apis';
 import { EventModalContext } from '../contexts/EventModalProvider';
 import DaumPostcode from 'react-daum-postcode';
 
@@ -129,7 +129,7 @@ const JoinModal = ({ show, onHide, onJoinComplete }) => {
   //아이디 중복 확인
   const checkDuplicateLoginId = async () => {
 
-    const response = await loginIdCheckRequest(loginId); // 로그인 ID 체크 API 호출
+    const response = await checkLoginIdRequest(loginId); // 로그인 ID 체크 API 호출
 
     if (response) {
       if (response.status === 200) {
@@ -148,7 +148,7 @@ const JoinModal = ({ show, onHide, onJoinComplete }) => {
   //닉네임 중복 확인
   const checkDuplicateName = async () => {
 
-    const response = await nameCheckRequest(name); // 닉네임 체크 API 호출
+    const response = await checkNameRequest(name); // 닉네임 체크 API 호출
 
     if (response) {
       if (response.status === 200) {

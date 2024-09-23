@@ -3,8 +3,8 @@ import { JoinResponseDto, LoginResponseDto } from "./response/auth";
 import { ResponseDto } from "./response";
 import api from "./api";
 import { UserInfoResponseDto } from "./response/user";
-import { PostUploadRequestDto } from "./request/post";
-import { PostUploadResponseDto } from "./response/post";
+import { UploadPostRequestDto } from "./request/post";
+import { UploadPostResponseDto } from "./response/post";
 import axios from "axios";
 
 const DOMAIN = 'http://localhost:4000';
@@ -57,7 +57,7 @@ export const joinRequest = async (requestBody: JoinRequestDto) => {
 }
 
 //로그인 아이디 중복 확인 리퀘스트
-export const loginIdCheckRequest = async (loginId: string) => {
+export const checkLoginIdRequest = async (loginId: string) => {
     const result = await api.get(JOIN_URL() + `/check-loginId?loginId=${loginId}`)
         .then(response => {
             return response;
@@ -70,7 +70,7 @@ export const loginIdCheckRequest = async (loginId: string) => {
 }
 
 //닉네임 중복 확인 리퀘스트
-export const nameCheckRequest = async (name: string) => {
+export const checkNameRequest = async (name: string) => {
     const result = await api.get(JOIN_URL() + `/check-name?name=${name}`)
         .then(response => {
             return response;
@@ -99,10 +99,10 @@ export const userInfoRequest = async (accessToken: string) => {
 }
 
 //게시물 업로드 리퀘스트
-export const postUploadRequest = async (requestBody: PostUploadRequestDto, accessToken: string) => {
+export const uploadPostRequest = async (requestBody: UploadPostRequestDto, accessToken: string) => {
     const result = axios.post(POST_UPLOAD_URL(), requestBody, authorization(accessToken))
         .then(response => {
-            const responseBody: PostUploadResponseDto = response.data;
+            const responseBody: UploadPostResponseDto = response.data;
             return responseBody;
         })
         .catch(error => {
@@ -114,7 +114,7 @@ export const postUploadRequest = async (requestBody: PostUploadRequestDto, acces
 }
 
 //파일 업로드 리퀘스트
-export const fileUploadRequest = async (data: FormData) => {
+export const uploadFileRequest = async (data: FormData) => {
     const result = await api.post(FILE_UPLOAD_URL(), data, multipartFormData)
         .then(response => {
             const responseBody: string = response.data;

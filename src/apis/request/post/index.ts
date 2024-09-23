@@ -1,5 +1,5 @@
-import PostUploadRequestDto from "./post-upload.request.dto";
+import UploadPostRequestDto from "./upload-post.request.dto"
 
 export type {
-    PostUploadRequestDto
+    UploadPostRequestDto
 }

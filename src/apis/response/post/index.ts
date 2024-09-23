@@ -1,5 +1,5 @@
-import PostUploadResponseDto from "./post-upload.response.dto";
+import UploadPostResponseDto from "./upload-post.response.dto"
 
 export type {
-    PostUploadResponseDto
+    UploadPostResponseDto
 }
