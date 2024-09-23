@@ -131,7 +131,7 @@ export const GetPostRequest = async (postId: number | string) => {
 
 //게시물 조회수 증가 리퀘스트
 export const IncreaseViewCountRequest = async(postId: number | string) => {
-    const result = await api.patch(INCREASE_VIEW_COUNT_URL(postId))
+    const result = await api.get(INCREASE_VIEW_COUNT_URL(postId))
     .then(response => {
         const responseBody: IncreaseViewCountResponseDto = response.data;
         return responseBody;

@@ -38,13 +38,13 @@ export default function PostDetail() {
 
     //function: increaseViewCountResponse 처리 함수
     const increaseViewCountResponse = (responseBody: IncreaseViewCountResponseDto | ResponseDto | null) => {
-        if(!responseBody) return;
-        const {code} = responseBody;
-        if(code === 'NP') {
-            showModal('Post Error','존재하지 않는 게시물입니다.');
+        if (!responseBody) return;
+        const { code } = responseBody;
+        if (code === 'NP') {
+            showModal('Post Error', '존재하지 않는 게시물입니다.');
             return;
         }
-        if(code === 'DE') {
+        if (code === 'DE') {
             showModal('Database Error', '데이터베이스에서 오류가 발생했습니다.');
             return;
         }
@@ -52,6 +52,9 @@ export default function PostDetail() {
 
     //component: 게시물 상세 상단 컴포넌트
     const PostDetailTop = () => {
+
+        //state: 작성자 여부 상태
+        const [isWriter, setWriter] = useState<boolean>(false);
 
         //state: post 상태
         const [post, setPost] = useState<Post | null>(null);
@@ -64,21 +67,28 @@ export default function PostDetail() {
         const getPostResponse = (responseBody: GetPostResponseDto | ResponseDto | null) => {
             if (!responseBody) return;
             const { code } = responseBody;
-            if(code === 'NP') {
-                showModal('Post Error','존재하지 않는 게시물입니다.');
+            if (code === 'NP') {
+                showModal('Post Error', '존재하지 않는 게시물입니다.');
                 return;
             }
-            if(code === 'DE') {
+            if (code === 'DE') {
                 showModal('Database Error', '데이터베이스에서 오류가 발생했습니다.');
                 return;
             }
-            if(code !== 'SU') {
+            if (code !== 'SU') {
                 navigator(MAIN_PATH());
                 return;
             }
 
-            const post: Post = {...responseBody as GetPostResponseDto};
+            const post: Post = { ...responseBody as GetPostResponseDto };
             setPost(post);
+
+            if (!loginUser) {
+                setWriter(false);
+                return;
+            }
+            const isWriter = loginUser.loginId === post.posterId;
+            setWriter(isWriter);
         }
 
         //event handler: 닉네임 클릭 이벤트 처리
@@ -109,7 +119,7 @@ export default function PostDetail() {
 
         //effect: 게시물 번호 path variable 바뀔 때 마다 게시물 불러오기
         useEffect(() => {
-            if(!postId) {
+            if (!postId) {
                 navigator(MAIN_PATH());
                 return;
             }
@@ -129,9 +139,11 @@ export default function PostDetail() {
                             <div className='post-detail-info-divider'>{`\|`}</div>
                             <div className='post-detail-write-date'>{post.postDateTime}</div>
                         </div>
-                        <div className='icon-button' onClick={onMoreButtonClickHandler}>
-                            <div className='icon more-icon'></div>
-                        </div>
+                        {isWriter &&
+                            <div className='icon-button' onClick={onMoreButtonClickHandler}>
+                                <div className='icon more-icon'></div>
+                            </div>
+                        }
                         {showMore &&
                             <div className='post-detail-more-box'>
                                 <div className='post-detail-update-button' onClick={onUpdateButtonClickHandler}>{`수정`}</div>
@@ -193,7 +205,7 @@ export default function PostDetail() {
         const onCommentChangeHandler = (event: ChangeEvent<HTMLTextAreaElement>) => {
             const { value } = event.target;
             setComment(value);
-            if(!commentRef.current) return;
+            if (!commentRef.current) return;
             commentRef.current.style.height = 'auto';
             commentRef.current.style.height = `${commentRef.current.scrollHeight}px`;
         }
@@ -275,16 +287,16 @@ export default function PostDetail() {
 
     //effect: 게시물 id path variable이 바뀔 때 마다 게시물 조회 수 증가
     let effectFlag = true;
-    useEffect(()=> {
-        if(!postId) return;
-        if(effectFlag) {
+    useEffect(() => {
+        if (!postId) return;
+        if (effectFlag) {
             effectFlag = false;
             return;
         }
 
         IncreaseViewCountRequest(postId).then(increaseViewCountResponse);
     }, [postId])
-    
+
 
     //render: 게시물 상세 화면 컴포넌트 렌더링
     return (
