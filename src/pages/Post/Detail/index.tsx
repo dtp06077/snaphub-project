@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useRef, useState } from 'react'
+import React, { ChangeEvent, useContext, useEffect, useRef, useState } from 'react'
 import EmotionItem from '../../../components/EmotionItem';
 import { CommentListItem, EmotionListItem, Post } from '../../../types/interface';
 import { commentListMock, emotionListMock } from '../../../mocks';
@@ -12,6 +12,7 @@ import defaultImage from '../../../assets/image/default-profile-image.png';
 import { GetPostRequest } from '../../../apis';
 import GetPostResponseDto from '../../../apis/response/post/get-post.response.dto';
 import { ResponseDto } from '../../../apis/response';
+import { EventModalContext } from '../../../contexts/EventModalProvider';
 
 //component: 게시물 상세 화면 컴포넌트
 export default function PostDetail() {
@@ -20,6 +21,16 @@ export default function PostDetail() {
     const { postId } = useParams();
     //state: 로그인 유저 상태
     const { loginUser } = useLoginUserStore();
+
+    //context: 이벤트 모달 창
+    const eventContext = useContext(EventModalContext);
+
+    // eventContext가 undefined일 경우
+    if (!eventContext) {
+        throw new Error("이벤트 모달 창이 존재하지 않습니다.");
+    }
+
+    const { showModal } = eventContext;
 
     //function: 네비게이트 함수
     const navigator = useNavigate();
@@ -33,13 +44,20 @@ export default function PostDetail() {
         //state: more 버튼 상태
         const [showMore, setShowMore] = useState<boolean>(false);
 
+
         //function: getPostResponse 처리 함수
         const getPostResponse = (responseBody: GetPostResponseDto | ResponseDto | null) => {
             if (!responseBody) return;
             const { code } = responseBody;
-            if(code === 'NP') return;
+            if(code === 'NP') showModal('Post Error','존재하지 않는 게시물입니다.');
+            if(code === 'DE') showModal('Database Error', '데이터베이스에서 오류가 발생했습니다.');
+            if(code !== 'SU') {
+                navigator(MAIN_PATH());
+                return;
+            }
 
-            
+            const post: Post = {...responseBody as GetPostResponseDto};
+            setPost(post);
         }
 
         //event handler: 닉네임 클릭 이벤트 처리

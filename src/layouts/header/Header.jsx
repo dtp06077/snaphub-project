@@ -101,7 +101,7 @@ const Header = () => {
     const { title, content, postImageFileList, resetPost } = usePostStore();
 
     //function: post upload response 처리 함수
-    const postUploadResponse = (responseBody) => {
+    const uploadPostResponse = (responseBody) => {
       if (!responseBody) return;
 
       const { code } = responseBody;
@@ -112,12 +112,12 @@ const Header = () => {
       }
 
       if (code === 'VF') {
-        showModal('Database Error', '데이터베이스에서 오류가 발생했습니다.');
+        showModal('Validation Fail', '검증되지 않은 게시물 입니다.');
         return;
       }
 
       if (code === 'DE') {
-        showModal('Content Error', '제목과 내용은 필수입니다.');
+        showModal('Database Error', '데이터베이스에서 오류가 발생했습니다.');
         return;
       }
 
@@ -154,7 +154,7 @@ const Header = () => {
         title, content, postImageList
       }
 
-      uploadPostRequest(requestBody, accessToken).then(postUploadResponse);
+      uploadPostRequest(requestBody, accessToken).then(uploadPostResponse);
     }
 
     //event handler: 쓰기 버튼 클릭 이벤트 처리 함수
