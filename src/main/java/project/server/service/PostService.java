@@ -25,4 +25,7 @@ public interface PostService {
 
     //댓글 리스트 불러오기 Response
     ResponseEntity<? super GetCommentsResponseDto> getComments(int postId);
+
+    //게시물 조회수 증가 Response
+    ResponseEntity<? super IncreaseViewCountResponseDto> increaseViewCount(int postId);
 }

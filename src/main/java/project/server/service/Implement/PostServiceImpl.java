@@ -42,7 +42,8 @@ public class PostServiceImpl implements PostService {
                 return GetPostResponseDto.noExistPost();
             }
 
-            post.addViewCount();
+            //클라이언트에서 접근할 때 4번의 렌더링을 거친다.
+            //post.addViewCount();
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseDto.databaseError();
@@ -174,5 +175,27 @@ public class PostServiceImpl implements PostService {
         }
 
         return GetCommentsResponseDto.success(post);
+    }
+
+    @Override
+    @Transactional
+    public ResponseEntity<? super IncreaseViewCountResponseDto> increaseViewCount(int postId) {
+
+        Post post;
+
+        try {
+            post = postRepository.findById(postId);
+
+            if (post == null) {
+                return IncreaseViewCountResponseDto.noExistPost();
+            }
+
+            post.addViewCount();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+
+        return IncreaseViewCountResponseDto.success();
     }
 }

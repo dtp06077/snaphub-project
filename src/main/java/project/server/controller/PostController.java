@@ -72,4 +72,12 @@ public class PostController {
     ) {
         return postService.getComments(postId);
     }
+
+    @PatchMapping("/{postId}/increase-view-count")
+    public ResponseEntity<? super IncreaseViewCountResponseDto> increaseViewCount(
+            @PathVariable("postId") int postId
+    ) {
+        return postService.increaseViewCount(postId);
+    }
+
 }
