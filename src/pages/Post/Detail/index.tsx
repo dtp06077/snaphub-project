@@ -9,15 +9,16 @@ import { useLoginUserStore } from '../../../stores';
 import { useNavigate, useParams } from 'react-router-dom';
 import { MAIN_PATH, POST_PATH, POST_UPDATE_PATH, USER_PATH } from '../../../constants';
 import defaultImage from '../../../assets/image/default-profile-image.png';
-import { GetPostRequest } from '../../../apis';
+import { GetPostRequest, IncreaseViewCountRequest } from '../../../apis';
 import GetPostResponseDto from '../../../apis/response/post/get-post.response.dto';
 import { ResponseDto } from '../../../apis/response';
 import { EventModalContext } from '../../../contexts/EventModalProvider';
+import { IncreaseViewCountResponseDto } from '../../../apis/response/post';
 
 //component: 게시물 상세 화면 컴포넌트
 export default function PostDetail() {
 
-    //state: 게시물 번호 path variable 상태
+    //state: 게시물 id path variable 상태
     const { postId } = useParams();
     //state: 로그인 유저 상태
     const { loginUser } = useLoginUserStore();
@@ -35,6 +36,20 @@ export default function PostDetail() {
     //function: 네비게이트 함수
     const navigator = useNavigate();
 
+    //function: increaseViewCountResponse 처리 함수
+    const increaseViewCountResponse = (responseBody: IncreaseViewCountResponseDto | ResponseDto | null) => {
+        if(!responseBody) return;
+        const {code} = responseBody;
+        if(code === 'NP') {
+            showModal('Post Error','존재하지 않는 게시물입니다.');
+            return;
+        }
+        if(code === 'DE') {
+            showModal('Database Error', '데이터베이스에서 오류가 발생했습니다.');
+            return;
+        }
+    }
+
     //component: 게시물 상세 상단 컴포넌트
     const PostDetailTop = () => {
 
@@ -49,8 +64,14 @@ export default function PostDetail() {
         const getPostResponse = (responseBody: GetPostResponseDto | ResponseDto | null) => {
             if (!responseBody) return;
             const { code } = responseBody;
-            if(code === 'NP') showModal('Post Error','존재하지 않는 게시물입니다.');
-            if(code === 'DE') showModal('Database Error', '데이터베이스에서 오류가 발생했습니다.');
+            if(code === 'NP') {
+                showModal('Post Error','존재하지 않는 게시물입니다.');
+                return;
+            }
+            if(code === 'DE') {
+                showModal('Database Error', '데이터베이스에서 오류가 발생했습니다.');
+                return;
+            }
             if(code !== 'SU') {
                 navigator(MAIN_PATH());
                 return;
@@ -250,6 +271,21 @@ export default function PostDetail() {
             </div>
         );
     };
+
+
+    //effect: 게시물 id path variable이 바뀔 때 마다 게시물 조회 수 증가
+    let effectFlag = true;
+    useEffect(()=> {
+        if(!postId) return;
+        if(effectFlag) {
+            effectFlag = false;
+            return;
+        }
+
+        IncreaseViewCountRequest(postId).then(increaseViewCountResponse);
+    }, [postId])
+    
+
     //render: 게시물 상세 화면 컴포넌트 렌더링
     return (
         <div id='post-detail-wrapper'>
