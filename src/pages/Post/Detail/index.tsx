@@ -9,6 +9,9 @@ import { useLoginUserStore } from '../../../stores';
 import { useNavigate, useParams } from 'react-router-dom';
 import { MAIN_PATH, POST_PATH, POST_UPDATE_PATH, USER_PATH } from '../../../constants';
 import defaultImage from '../../../assets/image/default-profile-image.png';
+import { GetPostRequest } from '../../../apis';
+import GetPostResponseDto from '../../../apis/response/post/get-post.response.dto';
+import { ResponseDto } from '../../../apis/response';
 
 //component: 게시물 상세 화면 컴포넌트
 export default function PostDetail() {
@@ -29,6 +32,15 @@ export default function PostDetail() {
 
         //state: more 버튼 상태
         const [showMore, setShowMore] = useState<boolean>(false);
+
+        //function: getPostResponse 처리 함수
+        const getPostResponse = (responseBody: GetPostResponseDto | ResponseDto | null) => {
+            if (!responseBody) return;
+            const { code } = responseBody;
+            if(code === 'NP') return;
+
+            
+        }
 
         //event handler: 닉네임 클릭 이벤트 처리
         const onNicknameClickHandler = () => {
@@ -55,6 +67,15 @@ export default function PostDetail() {
             //TODO: Delete Request
             navigator(MAIN_PATH());
         }
+
+        //effect: 게시물 번호 path variable 바뀔 때 마다 게시물 불러오기
+        useEffect(() => {
+            if(!postId) {
+                navigator(MAIN_PATH());
+                return;
+            }
+            GetPostRequest(postId).then(getPostResponse);
+        }, [postId]);
 
         //render: 게시물 상세 상단 컴포넌트 렌더링
         if (!post) return <></>;

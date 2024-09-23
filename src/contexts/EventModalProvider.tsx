@@ -1,14 +1,20 @@
-import { createContext, useState } from "react";
-import EventModal from "../modals/EventModal";
+import React, { createContext, useState, ReactNode } from "react";
+import EventModal from "../modals/EventModal"
 
 // 모든 컴포넌트에서 활용 가능한 event modal
-export const EventModalContext = createContext();
+export const EventModalContext = createContext<{
+  showModal: (title: string, message: string) => void;
+} | undefined>(undefined);
 
-const EventModalContextProvider = ({ children }) => {
+interface EventModalContextProviderProps {
+  children: ReactNode;
+}
+
+const EventModalContextProvider: React.FC<EventModalContextProviderProps> = ({ children }) => {
     const [eventModalOn, setEventModalOn] = useState(false);
-    const [modalContent, setModalContent] = useState({ title: '', message: '' });
+    const [modalContent, setModalContent] = useState<{ title: string; message: string }>({ title: '', message: '' });
 
-    const showModal = (title, message) => {
+    const showModal = (title: string, message: string) => {
         setModalContent({ title, message });
         setEventModalOn(true);
     };
