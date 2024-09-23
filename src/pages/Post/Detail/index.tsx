@@ -8,7 +8,7 @@ import './style.css';
 import { useLoginUserStore } from '../../../stores';
 import { useNavigate, useParams } from 'react-router-dom';
 import { MAIN_PATH, POST_PATH, POST_UPDATE_PATH, USER_PATH } from '../../../constants';
-import defaultImage from '../assets/image/default-profile-image.png';
+import defaultImage from '../../../assets/image/default-profile-image.png';
 
 //component: 게시물 상세 화면 컴포넌트
 export default function PostDetail() {

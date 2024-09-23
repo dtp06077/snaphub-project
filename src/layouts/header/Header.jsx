@@ -7,7 +7,7 @@ import { MAIN_PATH, SEARCH_PATH, USER_PATH, POST_WRITE_PATH } from '../../consta
 import { useNavigate, useParams } from 'react-router-dom';
 import { usePostStore } from '../../stores';
 import { useCookies } from 'react-cookie';
-import { fileUploadRequest, postUploadRequest } from '../../apis';
+import { uploadFileRequest, uploadPostRequest } from '../../apis';
 import { EventModalContext } from '../../contexts/EventModalProvider';
 
 
@@ -146,7 +146,7 @@ const Header = () => {
         const data = new FormData();
         data.append('file', file);
 
-        const url = await fileUploadRequest(data);
+        const url = await uploadFileRequest(data);
         if (url) postImageList.push(url);
       }
 
@@ -154,7 +154,7 @@ const Header = () => {
         title, content, postImageList
       }
 
-      postUploadRequest(requestBody, accessToken).then(postUploadResponse);
+      uploadPostRequest(requestBody, accessToken).then(postUploadResponse);
     }
 
     //event handler: 쓰기 버튼 클릭 이벤트 처리 함수
