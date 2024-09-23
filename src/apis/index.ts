@@ -5,7 +5,7 @@ import api from "./api";
 import { UserInfoResponseDto } from "./response/user";
 import { UploadPostRequestDto } from "./request/post";
 import { UploadPostResponseDto } from "./response/post";
-import axios from "axios";
+import GetPostResponseDto from "./response/post/get-post.response.dto";
 
 const DOMAIN = 'http://localhost:4000';
 
@@ -20,8 +20,9 @@ const authorization = (accessToken: string) => {
 const LOGIN_URL = () => `${API_DOMAIN}/auth/login`;
 const JOIN_URL = () => `${API_DOMAIN}/auth/join`;
 const USER_INFO_URL = () => `${API_DOMAIN}/users/info`;
-const FILE_UPLOAD_URL = () => `${FILE_DOMAIN}/upload`;
-const POST_UPLOAD_URL = () => `${API_DOMAIN}/post`;
+const UPLOAD_FILE_URL = () => `${FILE_DOMAIN}/upload`;
+const UPLOAD_POST_URL = () => `${API_DOMAIN}/post`;
+const GET_POST_URL = (postId: number | string) => `${API_DOMAIN}/post/${postId}`;
 
 
 const multipartFormData = { headers: { 'Content-Type': 'multipart/form-data' } };
@@ -100,7 +101,7 @@ export const userInfoRequest = async (accessToken: string) => {
 
 //게시물 업로드 리퀘스트
 export const uploadPostRequest = async (requestBody: UploadPostRequestDto, accessToken: string) => {
-    const result = axios.post(POST_UPLOAD_URL(), requestBody, authorization(accessToken))
+    const result = await api.post(UPLOAD_POST_URL(), requestBody, authorization(accessToken))
         .then(response => {
             const responseBody: UploadPostResponseDto = response.data;
             return responseBody;
@@ -113,9 +114,24 @@ export const uploadPostRequest = async (requestBody: UploadPostRequestDto, acces
     return result;
 }
 
+//게시물 불러오기 리퀘스트
+export const GetPostRequest = async (postId: number | string) => {
+    const result = await api.get(GET_POST_URL(postId))
+        .then(response => {
+            const responseBody: GetPostResponseDto = response.data;
+            return responseBody;
+        })
+        .catch(error => {
+            if (!error.response) return null;
+            const responseBody: ResponseDto = error.response.data;
+            return responseBody
+        })
+    return result;
+}
+
 //파일 업로드 리퀘스트
 export const uploadFileRequest = async (data: FormData) => {
-    const result = await api.post(FILE_UPLOAD_URL(), data, multipartFormData)
+    const result = await api.post(UPLOAD_FILE_URL(), data, multipartFormData)
         .then(response => {
             const responseBody: string = response.data;
             return responseBody;
