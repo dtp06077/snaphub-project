@@ -34,6 +34,10 @@
   cursor: pointer;
 }
 
+.icon-button:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
 .white-button {
   border: 1px solid rgba(0, 0, 0, 0.5);
   border-radius: 46px;
@@ -112,10 +116,6 @@
   background-size: 100% 100%;
 }
 
-.icon-button:hover {
-  background-color: rgba(0, 0, 0, 0.05);
-}
-
 hr {margin-bottom: 50px; }
 
 .image-box-light-icon {
@@ -148,4 +148,16 @@ hr {margin-bottom: 50px; }
 
 .comment-icon {
   background-image: url(assets/image/chat-light.png);
+}
+
+.angry-emotion-icon {
+  background-image: url(assets/image/angry-emotion.png);
+}
+
+.sad-emotion-icon {
+  background-image: url(assets/image/sad-emotion.png);
+}
+
+.happy-emotion-icon {
+  background-image: url(assets/image/happy-emotion.png);
 }

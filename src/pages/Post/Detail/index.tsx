@@ -169,21 +169,38 @@ export default function PostDetail() {
 
         //state: 감정표현 리스트 상태
         const [emotionList, setEmotionList] = useState<EmotionListItem[]>([]);
-        //state: 댓글 리스트 상태
-        const [commentList, setCommentList] = useState<CommentListItem[]>([]);
         //state: 감정표현 상태
         const [isEmotion, setEmotion] = useState<boolean>(false);
-        //state: 댓글 상태
-        const [comment, setComment] = useState<string>('');
         //state: 감정표현 리스트 보기 상태
         const [showEmotion, setShowEmotion] = useState<boolean>(false);
+
+        //state: 선택된 감정표현 상태
+        const [selectedEmotion, setSelectedEmotion] = useState<string | null>(null);
+        //state: 감정표현 고르기 창 상태
+        const [showEmotionPicker, setShowEmotionPicker] = useState<boolean>(false);
+
+        //state: 댓글 상태
+        const [comment, setComment] = useState<string>('');
+        //state: 댓글 리스트 상태
+        const [commentList, setCommentList] = useState<CommentListItem[]>([]);
         //state: 댓글 리스트 보기 상태
         const [showComment, setShowComment] = useState<boolean>(false);
 
 
         //event handler: 감정표현 버튼 클릭 이벤트 처리
         const onEmotionClickHandler = () => {
-            setEmotion(!isEmotion);
+            if (isEmotion) {
+                setEmotion(!isEmotion)
+                return;
+            }
+            setShowEmotionPicker(!showEmotionPicker);
+        }
+
+        //event handler: 감정표현 선택 이벤트 처리
+        const handleEmotionSelect = (emotion: string) => {
+            setSelectedEmotion(emotion);
+            setShowEmotionPicker(false);
+            setEmotion(!isEmotion); // 감정 선택 후 창 닫기
         }
 
         //event handler: 감정표현 리스트 보기 클릭 이벤트 처리
@@ -227,7 +244,16 @@ export default function PostDetail() {
                                 <div className='icon emotion-light-icon'></div>
                             }
                         </div>
-                        <div className='post-detail-bottom-button-text'>{`좋아요 `}<span className='emphasis'>{emotionList.length}</span></div>
+                        {showEmotionPicker && (
+                            <div className='post-detail-bottom-emotion-pick-box'>
+                                <div className='emotion-button'>
+                                    <div onClick={() => handleEmotionSelect('ANGRY')} className='emotion angry-emotion-icon'></div>
+                                    <div onClick={() => handleEmotionSelect('SAD')} className='emotion sad-emotion-icon'></div>
+                                    <div onClick={() => handleEmotionSelect('HAPPY')} className='emotion happy-emotion-icon'></div>
+                                </div>
+                            </div>
+                        )}
+                        <div className='post-detail-bottom-button-text'>{`감정표현 `}<span className='emphasis'>{emotionList.length}</span></div>
                         <div className='icon-button' onClick={onShowEmotionClickHandler}>
                             {showEmotion ?
                                 <div className='icon up-light-icon'></div> :
@@ -251,7 +277,7 @@ export default function PostDetail() {
                 {showEmotion &&
                     <div className='post-detail-bottom-emotion-box'>
                         <div className='post-detail-bottom-emotion-container'>
-                            <div className='post-detail-bottom-emotion-title'>{`좋아요`}<span className='emphasis'>{emotionList.length}</span></div>
+                            <div className='post-detail-bottom-emotion-title'>{`감정표현`}<span className='emphasis'>{emotionList.length}</span></div>
                             <div className='post-detail-bottom-emotion-contents'>
                                 {emotionList.map(item => <EmotionItem emotionListItem={item} />)}
                             </div>
