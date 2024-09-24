@@ -1,7 +1,6 @@
 import React, { ChangeEvent, useContext, useEffect, useRef, useState } from 'react'
 import EmotionItem from '../../../components/EmotionItem';
 import { CommentListItem, EmotionListItem, Post } from '../../../types/interface';
-import { commentListMock } from '../../../mocks';
 import CommentItem from '../../../components/CommentItem';
 import Pagination from '../../../components/Pagination';
 import './style.css';
@@ -9,11 +8,11 @@ import { useLoginUserStore } from '../../../stores';
 import { useNavigate, useParams } from 'react-router-dom';
 import { MAIN_PATH, POST_PATH, POST_UPDATE_PATH, USER_PATH } from '../../../constants';
 import defaultImage from '../../../assets/image/default-profile-image.png';
-import { getEmotionListRequest, GetPostRequest, IncreaseViewCountRequest } from '../../../apis';
+import { getCommentListRequest, getEmotionListRequest, GetPostRequest, IncreaseViewCountRequest } from '../../../apis';
 import GetPostResponseDto from '../../../apis/response/post/get-post.response.dto';
 import { ResponseDto } from '../../../apis/response';
 import { EventModalContext } from '../../../contexts/EventModalProvider';
-import { GetEmotionListResponseDto, IncreaseViewCountResponseDto } from '../../../apis/response/post';
+import { GetCommentListResponseDto, GetEmotionListResponseDto, IncreaseViewCountResponseDto } from '../../../apis/response/post';
 import dayjs from 'dayjs';
 
 //component: 게시물 상세 화면 컴포넌트
@@ -68,7 +67,7 @@ export default function PostDetail() {
         const getPostDateTimeFormat = () => {
             if (!post) return '';
             const date = dayjs(post.postDateTime);
-            return date.format('YYYY. MM. DD. ');
+            return date.format('YYYY. MM. DD. HH:mm');
         }
 
         //function: getPostResponse 처리 함수
@@ -225,6 +224,25 @@ export default function PostDetail() {
             } 
         }
 
+        //function: getCommentListResponse 처리 함수
+        const getCommentListResponse = (responseBody: GetCommentListResponseDto | ResponseDto | null) => {
+            if (!responseBody) return;
+
+            const { code } = responseBody;
+            if (code === 'NP') {
+                showModal('Post Error', '존재하지 않는 게시물입니다.');
+                return;
+            }
+            if (code === 'DE') {
+                showModal('Database Error', '데이터베이스에서 오류가 발생했습니다.');
+                return;
+            }
+            if (code !== 'SU') return;
+
+            const { commentList } = responseBody as GetCommentListResponseDto;
+            setCommentList(commentList);
+        }
+
         //event handler: 감정표현 버튼 클릭 이벤트 처리
         const onEmotionClickHandler = () => {
             if (isEmotion) {
@@ -284,7 +302,7 @@ export default function PostDetail() {
         useEffect(() => {
             if (!postId) return;
             getEmotionListRequest(postId).then(getEmotionListResponse);
-            setCommentList(commentListMock);
+            getCommentListRequest(postId).then(getCommentListResponse);
         }, [postId]);
 
         //render: 게시물 상세 하단 컴포넌트 렌더링
