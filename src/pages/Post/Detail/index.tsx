@@ -245,6 +245,11 @@ export default function PostDetail() {
 
         //event handler: 감정표현 버튼 클릭 이벤트 처리
         const onEmotionClickHandler = () => {
+            if(!loginUser) {
+                // 에러 메시지 출력
+                showModal("Login", "로그인이 필요합니다.");
+                return;
+            }
             if (isEmotion) {
                 setEmotion(!isEmotion)
                 return;

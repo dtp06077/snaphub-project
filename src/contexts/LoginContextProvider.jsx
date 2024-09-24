@@ -4,7 +4,7 @@ import Cookies from 'js-cookie';
 import { useNavigate, useLocation } from 'react-router-dom';
 import defaultImage from '../assets/image/default-profile-image.png';
 import { loginRequest, userInfoRequest } from '../apis'
-import { MAIN_PATH, TOKEN_PREFIX } from '../constants';
+import { MAIN_PATH, POST_DETAIL_PATH, TOKEN_PREFIX } from '../constants';
 import { EventModalContext } from './EventModalProvider';
 
 export const LoginContext = createContext();
@@ -208,8 +208,9 @@ const LoginContextProvider = ({ children }) => {
     }
 
     useEffect(() => {
+        if(!isLogin&&location.pathname===MAIN_PATH()) return;
+        if(!isLogin&&location.pathname.startsWith(POST_DETAIL_PATH(''))) return;
         loginCheck();
-
     }, [location.pathname]); // 경로가 변경될 때마다 실행
 
     return (
