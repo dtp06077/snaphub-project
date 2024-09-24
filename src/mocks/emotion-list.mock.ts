@@ -4,27 +4,32 @@ const emotionListMock: EmotionListItem[] = [
     {
         loginId: "abcd1234",
         name: "huiseong",
-        profileImage: null
+        profileImage: null,
+        status: "HAPPY"
     },
     {
         loginId: "abcd1234",
         name: "huiseong",
-        profileImage: null
+        profileImage: null,
+        status: "HAPPY"
     },
     {
         loginId: "abcd1234",
         name: "huiseong",
-        profileImage: null
+        profileImage: null,
+        status: "HAPPY"
     },
     {
         loginId: "abcd1234",
         name: "huiseong",
-        profileImage: null
+        profileImage: null,
+        status: "HAPPY"
     },
     {
         loginId: "abcd1234",
         name: "huiseong",
-        profileImage: null
+        profileImage: null,
+        status: "HAPPY"
     }
 ]
 

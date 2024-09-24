@@ -1,7 +1,7 @@
 import React, { ChangeEvent, useContext, useEffect, useRef, useState } from 'react'
 import EmotionItem from '../../../components/EmotionItem';
 import { CommentListItem, EmotionListItem, Post } from '../../../types/interface';
-import { commentListMock, emotionListMock } from '../../../mocks';
+import { commentListMock } from '../../../mocks';
 import CommentItem from '../../../components/CommentItem';
 import Pagination from '../../../components/Pagination';
 import './style.css';
@@ -9,11 +9,11 @@ import { useLoginUserStore } from '../../../stores';
 import { useNavigate, useParams } from 'react-router-dom';
 import { MAIN_PATH, POST_PATH, POST_UPDATE_PATH, USER_PATH } from '../../../constants';
 import defaultImage from '../../../assets/image/default-profile-image.png';
-import { GetPostRequest, IncreaseViewCountRequest } from '../../../apis';
+import { getEmotionListRequest, GetPostRequest, IncreaseViewCountRequest } from '../../../apis';
 import GetPostResponseDto from '../../../apis/response/post/get-post.response.dto';
 import { ResponseDto } from '../../../apis/response';
 import { EventModalContext } from '../../../contexts/EventModalProvider';
-import { IncreaseViewCountResponseDto } from '../../../apis/response/post';
+import { GetEmotionListResponseDto, IncreaseViewCountResponseDto } from '../../../apis/response/post';
 import dayjs from 'dayjs';
 
 //component: 게시물 상세 화면 컴포넌트
@@ -194,6 +194,36 @@ export default function PostDetail() {
         //state: 댓글 리스트 보기 상태
         const [showComment, setShowComment] = useState<boolean>(false);
 
+        //function: getEmotionListResponse 처리 함수
+        const getEmotionListResponse = (responseBody: GetEmotionListResponseDto | ResponseDto | null) => {
+            if (!responseBody) return;
+
+            const { code } = responseBody;
+            if (code === 'NP') {
+                showModal('Post Error', '존재하지 않는 게시물입니다.');
+                return;
+            }
+            if (code === 'DE') {
+                showModal('Database Error', '데이터베이스에서 오류가 발생했습니다.');
+                return;
+            }
+            if (code !== 'SU') return;
+
+            const { emotionList } = responseBody as GetEmotionListResponseDto;
+            setEmotionList(emotionList);
+
+            if (!loginUser) {
+                setEmotion(false);
+                return;
+            }
+
+            const checkEmotion = emotionList.find(emotion => emotion.loginId === loginUser.loginId);
+
+            if (checkEmotion) {
+                setEmotion(true); //존재하면 true로 설정
+                setSelectedEmotion(checkEmotion.status); //status를 설정
+            } 
+        }
 
         //event handler: 감정표현 버튼 클릭 이벤트 처리
         const onEmotionClickHandler = () => {
@@ -252,7 +282,8 @@ export default function PostDetail() {
 
         //effect: 게시물 번호 path variable이 바뀔 때 마다 좋아요 및 댓글 리스트 불러오기
         useEffect(() => {
-            setEmotionList(emotionListMock);
+            if (!postId) return;
+            getEmotionListRequest(postId).then(getEmotionListResponse);
             setCommentList(commentListMock);
         }, [postId]);
 
