@@ -218,6 +218,21 @@ export default function PostDetail() {
             if (!comment) return;
         }
 
+        //component: 게시물 상세 하단 컴포넌트
+        const EmotionIcon = () => {
+            if (!selectedEmotion) return null; // 감정이 없으면 null 반환
+        switch (selectedEmotion) {
+            case 'ANGRY':
+                return <div className='icon angry-emotion-icon'></div>;
+            case 'HAPPY':
+                return <div className='icon happy-emotion-icon'></div>;
+            case 'SAD':
+                return <div className='icon sad-emotion-icon'></div>;
+            default:
+                return null; // 기본값
+        }
+    };
+
         //event handler: 댓글 변경 이벤트 처리
         const onCommentChangeHandler = (event: ChangeEvent<HTMLTextAreaElement>) => {
             const { value } = event.target;
@@ -239,10 +254,7 @@ export default function PostDetail() {
                 <div className='post-detail-bottom-button-box'>
                     <div className='post-detail-bottom-button-group'>
                         <div className='icon-button' onClick={onEmotionClickHandler}>
-                            {isEmotion ?
-                                <div className='icon emotion-fill-icon'></div> :
-                                <div className='icon emotion-light-icon'></div>
-                            }
+                            {isEmotion ? <EmotionIcon/> : <div className='icon emotion-light-icon'></div>}
                         </div>
                         {showEmotionPicker && (
                             <div className='post-detail-bottom-emotion-pick-box'>
