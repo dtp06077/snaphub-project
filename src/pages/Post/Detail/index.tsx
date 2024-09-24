@@ -14,6 +14,7 @@ import GetPostResponseDto from '../../../apis/response/post/get-post.response.dt
 import { ResponseDto } from '../../../apis/response';
 import { EventModalContext } from '../../../contexts/EventModalProvider';
 import { IncreaseViewCountResponseDto } from '../../../apis/response/post';
+import dayjs from 'dayjs';
 
 //component: 게시물 상세 화면 컴포넌트
 export default function PostDetail() {
@@ -62,6 +63,13 @@ export default function PostDetail() {
         //state: more 버튼 상태
         const [showMore, setShowMore] = useState<boolean>(false);
 
+
+        //function: 작성일 포맷 변경 처리 함수
+        const getPostDateTimeFormat = () => {
+            if (!post) return '';
+            const date = dayjs(post.postDateTime);
+            return date.format('YYYY. MM. DD. ');
+        }
 
         //function: getPostResponse 처리 함수
         const getPostResponse = (responseBody: GetPostResponseDto | ResponseDto | null) => {
@@ -137,7 +145,7 @@ export default function PostDetail() {
                             <div className='post-detail-writer-profile-image' style={{ backgroundImage: `url(${post.posterProfileImage ? post.posterProfileImage : defaultImage})` }}></div>
                             <div className='post-detail-writer-nickname' onClick={onNicknameClickHandler}>{post.posterName}</div>
                             <div className='post-detail-info-divider'>{`\|`}</div>
-                            <div className='post-detail-write-date'>{post.postDateTime}</div>
+                            <div className='post-detail-write-date'>{getPostDateTimeFormat()}</div>
                         </div>
                         {isWriter &&
                             <div className='icon-button' onClick={onMoreButtonClickHandler}>
