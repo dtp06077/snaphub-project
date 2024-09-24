@@ -4,7 +4,7 @@ import { ResponseDto } from "./response";
 import api from "./api";
 import { UserInfoResponseDto } from "./response/user";
 import { UploadPostRequestDto } from "./request/post";
-import { UploadPostResponseDto, GetPostResponseDto, IncreaseViewCountResponseDto  } from "./response/post";
+import { UploadPostResponseDto, GetPostResponseDto, IncreaseViewCountResponseDto, GetEmotionListResponseDto } from "./response/post";
 
 const DOMAIN = 'http://localhost:4000';
 
@@ -23,7 +23,7 @@ const UPLOAD_FILE_URL = () => `${FILE_DOMAIN}/upload`;
 const UPLOAD_POST_URL = () => `${API_DOMAIN}/post`;
 const GET_POST_URL = (postId: number | string) => `${API_DOMAIN}/post/${postId}`;
 const INCREASE_VIEW_COUNT_URL = (postId: number | string) => `${API_DOMAIN}/post/${postId}/increase-view-count`;
-
+const GET_EMOTION_URL = (postId: number | string) => `${API_DOMAIN}/post/${postId}/emotion-list`;
 
 const multipartFormData = { headers: { 'Content-Type': 'multipart/form-data' } };
 
@@ -130,17 +130,32 @@ export const GetPostRequest = async (postId: number | string) => {
 }
 
 //게시물 조회수 증가 리퀘스트
-export const IncreaseViewCountRequest = async(postId: number | string) => {
+export const IncreaseViewCountRequest = async (postId: number | string) => {
     const result = await api.get(INCREASE_VIEW_COUNT_URL(postId))
-    .then(response => {
-        const responseBody: IncreaseViewCountResponseDto = response.data;
-        return responseBody;
-    })
-    .catch(error => {
-        if (!error.response) return null;
-        const responseBody: ResponseDto = error.response.data;
-        return responseBody
-    })
+        .then(response => {
+            const responseBody: IncreaseViewCountResponseDto = response.data;
+            return responseBody;
+        })
+        .catch(error => {
+            if (!error.response) return null;
+            const responseBody: ResponseDto = error.response.data;
+            return responseBody
+        })
+    return result;
+}
+
+//게시물 감정표현 리스트 불러오기 리퀘스트
+export const getEmotionListRequest = async (postId: number | string) => {
+    const result = await api.get(GET_EMOTION_URL(postId))
+        .then(response => {
+            const responseBody: GetEmotionListResponseDto = response.data;
+            return responseBody;
+        })
+        .catch(error => {
+            if (!error.response) return null;
+            const responseBody: ResponseDto = error.response.data;
+            return responseBody
+        })
     return result;
 }
 
