@@ -8,13 +8,14 @@ import { useLoginUserStore } from '../../../stores';
 import { useNavigate, useParams } from 'react-router-dom';
 import { MAIN_PATH, POST_PATH, POST_UPDATE_PATH, USER_PATH } from '../../../constants';
 import defaultImage from '../../../assets/image/default-profile-image.png';
-import { getCommentListRequest, getEmotionListRequest, GetPostRequest, IncreaseViewCountRequest, putEmotionRequest } from '../../../apis';
+import { getCommentListRequest, getEmotionListRequest, GetPostRequest, IncreaseViewCountRequest, putEmotionRequest, WriteCommentRequest } from '../../../apis';
 import GetPostResponseDto from '../../../apis/response/post/get-post.response.dto';
 import { ResponseDto } from '../../../apis/response';
 import { EventModalContext } from '../../../contexts/EventModalProvider';
-import { GetCommentListResponseDto, GetEmotionListResponseDto, IncreaseViewCountResponseDto, PutEmotionResponseDto } from '../../../apis/response/post';
+import { GetCommentListResponseDto, GetEmotionListResponseDto, IncreaseViewCountResponseDto, PutEmotionResponseDto, WriteCommentResponsetDto } from '../../../apis/response/post';
 import dayjs from 'dayjs';
 import { useCookies } from 'react-cookie';
+import { WriteCommentRequestDto } from '../../../apis/request/post';
 
 //component: 게시물 상세 화면 컴포넌트
 export default function PostDetail() {
@@ -267,6 +268,31 @@ export default function PostDetail() {
             getEmotionListRequest(postId).then(getEmotionListResponse);
         }
 
+        //function: writeCommentResponse 처리 함수
+        const writeCommentResponse = (responseBody: WriteCommentResponsetDto | ResponseDto | null) => {
+            if (!responseBody) return;
+
+            const { code } = responseBody;
+            if (code === 'NU') {
+                showModal('User Error', '존재하지 않는 사용자입니다.');
+                return;
+            }
+            if (code === 'NP') {
+                showModal('Post Error', '존재하지 않는 게시물입니다.');
+                return;
+            }
+            if (code === 'DE') {
+                showModal('Database Error', '데이터베이스에서 오류가 발생했습니다.');
+                return;
+            }
+            if (code !== 'SU') return;
+
+            setComment('');
+
+            if (!postId) return;
+            getCommentListRequest(postId).then(getCommentListResponse);
+        }
+
         //event handler: 감정표현 버튼 클릭 이벤트 처리
         const onEmotionClickHandler = () => {
             if (!postId || !loginUser) {
@@ -310,7 +336,16 @@ export default function PostDetail() {
 
         //event handler: 댓글 작성 버튼 클릭 이벤트 처리
         const onCommentSubmitButtonClickHandler = () => {
-            if (!comment) return;
+            if (!comment) {
+                showModal('comment error', "댓글을 입력해주세요.");
+                return;
+            }
+            if (!postId || !loginUser || !cookies.accessToken) {
+                showModal("login error", "로그인이 필요합니다.");
+                return;
+            }
+            const requestBody: WriteCommentRequestDto = { content: comment };
+            WriteCommentRequest(postId, requestBody, cookies.accessToken).then(writeCommentResponse);
         }
 
         //component: 게시물 상세 하단 컴포넌트
