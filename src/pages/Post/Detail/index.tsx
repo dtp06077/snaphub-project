@@ -8,11 +8,11 @@ import { useLoginUserStore } from '../../../stores';
 import { useNavigate, useParams } from 'react-router-dom';
 import { MAIN_PATH, POST_PATH, POST_UPDATE_PATH, USER_PATH } from '../../../constants';
 import defaultImage from '../../../assets/image/default-profile-image.png';
-import { getCommentListRequest, getEmotionListRequest, GetPostRequest, IncreaseViewCountRequest, putEmotionRequest, WriteCommentRequest } from '../../../apis';
+import { deletePostRequest, getCommentListRequest, getEmotionListRequest, GetPostRequest, IncreaseViewCountRequest, putEmotionRequest, WriteCommentRequest } from '../../../apis';
 import GetPostResponseDto from '../../../apis/response/post/get-post.response.dto';
 import { ResponseDto } from '../../../apis/response';
 import { EventModalContext } from '../../../contexts/EventModalProvider';
-import { GetCommentListResponseDto, GetEmotionListResponseDto, IncreaseViewCountResponseDto, PutEmotionResponseDto, WriteCommentResponsetDto } from '../../../apis/response/post';
+import { DeletePostResponseDto, GetCommentListResponseDto, GetEmotionListResponseDto, IncreaseViewCountResponseDto, PutEmotionResponseDto, WriteCommentResponsetDto } from '../../../apis/response/post';
 import dayjs from 'dayjs';
 import { useCookies } from 'react-cookie';
 import { WriteCommentRequestDto } from '../../../apis/request/post';
@@ -102,6 +102,31 @@ export default function PostDetail() {
             setWriter(isWriter);
         }
 
+        //function: deletePostResponse 처리 함수
+        const deletePostResponse = (responseBody: DeletePostResponseDto | ResponseDto | null) => {
+            if (!responseBody) return;
+            const { code } = responseBody;
+            if (code === 'NP') {
+                showModal('Post Error', '존재하지 않는 게시물입니다.');
+                return;
+            }
+            if (code === 'NU') {
+                showModal('User Error', '존재하지 않는 사용자입니다.');
+                return;
+            }
+            if (code === 'AF') {
+                showModal('Authorization Fail', '인증에 실패했습니다.');
+                return;
+            }
+            if (code === 'DE') {
+                showModal('Database Error', '데이터베이스에서 오류가 발생했습니다.');
+                return;
+            }
+            if (code !== 'SU') return;
+
+            navigator(MAIN_PATH());
+        }
+
         //event handler: 닉네임 클릭 이벤트 처리
         const onNicknameClickHandler = () => {
             if (!post) return;
@@ -122,10 +147,10 @@ export default function PostDetail() {
 
         //event handler: 삭제 버튼 클릭 이벤트 처리
         const onDeleteButtonClickHandler = () => {
-            if (!post || !loginUser) return;
+            if (!post || !postId || !loginUser || cookies.accessToken) return;
             if (loginUser.loginId !== post.posterId) return;
-            //TODO: Delete Request
-            navigator(MAIN_PATH());
+            
+            deletePostRequest(postId, cookies.accessToken).then(deletePostResponse);
         }
 
         //effect: 게시물 번호 path variable 바뀔 때 마다 게시물 불러오기
