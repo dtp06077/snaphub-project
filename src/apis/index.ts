@@ -4,7 +4,7 @@ import { ResponseDto } from "./response";
 import api from "./api";
 import { UserInfoResponseDto } from "./response/user";
 import { UploadPostRequestDto } from "./request/post";
-import { UploadPostResponseDto, GetPostResponseDto, IncreaseViewCountResponseDto, GetEmotionListResponseDto, GetCommentListResponseDto } from "./response/post";
+import { UploadPostResponseDto, GetPostResponseDto, IncreaseViewCountResponseDto, GetEmotionListResponseDto, GetCommentListResponseDto, PutEmotionResponseDto } from "./response/post";
 
 const DOMAIN = 'http://localhost:4000';
 
@@ -25,6 +25,7 @@ const GET_POST_URL = (postId: number | string) => `${API_DOMAIN}/post/${postId}`
 const INCREASE_VIEW_COUNT_URL = (postId: number | string) => `${API_DOMAIN}/post/${postId}/increase-view-count`;
 const GET_EMOTION_LIST_URL = (postId: number | string) => `${API_DOMAIN}/post/${postId}/emotion-list`;
 const GET_COMMENT_LIST_URL = (postId: number | string) => `${API_DOMAIN}/post/${postId}/comment-list`;
+const PUT_EMOTION_URL = (postId: number | string) => `${API_DOMAIN}/post/${postId}/emotion`;
 
 const multipartFormData = { headers: { 'Content-Type': 'multipart/form-data' } };
 
@@ -175,6 +176,20 @@ export const getCommentListRequest = async (postId: number | string) => {
     return result;
 }
 
+//감정표현 등록 리퀘스트
+export const putEmotionRequest = async (postId: number | string, status: string, accessToken: string) => {
+    const result = await api.put(PUT_EMOTION_URL(postId) + `?status=${status}`, {}, authorization(accessToken))
+        .then(response => {
+            const responseBody: PutEmotionResponseDto = response.data;
+            return responseBody;
+        })
+        .catch(error => {
+            if (!error.response) return null;
+            const responseBody: ResponseDto = error.response.data;
+            return responseBody;
+        })
+    return result;
+}
 
 //파일 업로드 리퀘스트
 export const uploadFileRequest = async (data: FormData) => {
