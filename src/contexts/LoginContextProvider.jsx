@@ -208,8 +208,8 @@ const LoginContextProvider = ({ children }) => {
     }
 
     useEffect(() => {
-        if(!isLogin&&location.pathname===MAIN_PATH()) return;
-        if(!isLogin&&location.pathname.startsWith(POST_DETAIL_PATH(''))) return;
+        // if(!isLogin&&location.pathname===MAIN_PATH()) return;
+        // if(!isLogin&&location.pathname.startsWith(POST_DETAIL_PATH(''))) return;
         loginCheck();
     }, [location.pathname]); // 경로가 변경될 때마다 실행
 

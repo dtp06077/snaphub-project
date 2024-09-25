@@ -8,12 +8,13 @@ import { useLoginUserStore } from '../../../stores';
 import { useNavigate, useParams } from 'react-router-dom';
 import { MAIN_PATH, POST_PATH, POST_UPDATE_PATH, USER_PATH } from '../../../constants';
 import defaultImage from '../../../assets/image/default-profile-image.png';
-import { getCommentListRequest, getEmotionListRequest, GetPostRequest, IncreaseViewCountRequest } from '../../../apis';
+import { getCommentListRequest, getEmotionListRequest, GetPostRequest, IncreaseViewCountRequest, putEmotionRequest } from '../../../apis';
 import GetPostResponseDto from '../../../apis/response/post/get-post.response.dto';
 import { ResponseDto } from '../../../apis/response';
 import { EventModalContext } from '../../../contexts/EventModalProvider';
-import { GetCommentListResponseDto, GetEmotionListResponseDto, IncreaseViewCountResponseDto } from '../../../apis/response/post';
+import { GetCommentListResponseDto, GetEmotionListResponseDto, IncreaseViewCountResponseDto, PutEmotionResponseDto } from '../../../apis/response/post';
 import dayjs from 'dayjs';
+import { useCookies } from 'react-cookie';
 
 //component: 게시물 상세 화면 컴포넌트
 export default function PostDetail() {
@@ -22,6 +23,8 @@ export default function PostDetail() {
     const { postId } = useParams();
     //state: 로그인 유저 상태
     const { loginUser } = useLoginUserStore();
+    //state: 쿠키 상태
+    const [cookies, setCookies] = useCookies();
 
     //context: 이벤트 모달 창
     const eventContext = useContext(EventModalContext);
@@ -176,10 +179,9 @@ export default function PostDetail() {
 
         //state: 감정표현 리스트 상태
         const [emotionList, setEmotionList] = useState<EmotionListItem[]>([]);
-        //state: 감정표현 상태
-        const [isEmotion, setEmotion] = useState<boolean>(false);
+
         //state: 감정표현 리스트 보기 상태
-        const [showEmotion, setShowEmotion] = useState<boolean>(false);
+        const [showEmotionList, setShowEmotionList] = useState<boolean>(false);
 
         //state: 선택된 감정표현 상태
         const [selectedEmotion, setSelectedEmotion] = useState<string | null>(null);
@@ -212,16 +214,15 @@ export default function PostDetail() {
             setEmotionList(emotionList);
 
             if (!loginUser) {
-                setEmotion(false);
+                setSelectedEmotion(null);
                 return;
             }
 
             const checkEmotion = emotionList.find(emotion => emotion.loginId === loginUser.loginId);
 
             if (checkEmotion) {
-                setEmotion(true); //존재하면 true로 설정
                 setSelectedEmotion(checkEmotion.status); //status를 설정
-            } 
+            }
         }
 
         //function: getCommentListResponse 처리 함수
@@ -243,30 +244,63 @@ export default function PostDetail() {
             setCommentList(commentList);
         }
 
+        //function: putEmotionResponse 처리 함수
+        const putEmotionResponse = (responseBody: PutEmotionResponseDto | ResponseDto | null) => {
+            if (!responseBody) return;
+
+            const { code } = responseBody;
+            if (code === 'NU') {
+                showModal('User Error', '존재하지 않는 사용자입니다.');
+                return;
+            }
+            if (code === 'NP') {
+                showModal('Post Error', '존재하지 않는 게시물입니다.');
+                return;
+            }
+            if (code === 'DE') {
+                showModal('Database Error', '데이터베이스에서 오류가 발생했습니다.');
+                return;
+            }
+            if (code !== 'SU') return;
+
+            if (!postId) return;
+            getEmotionListRequest(postId).then(getEmotionListResponse);
+        }
+
         //event handler: 감정표현 버튼 클릭 이벤트 처리
         const onEmotionClickHandler = () => {
-            if(!loginUser) {
+            if (!postId || !loginUser) {
                 // 에러 메시지 출력
                 showModal("Login", "로그인이 필요합니다.");
                 return;
             }
-            if (isEmotion) {
-                setEmotion(!isEmotion)
+
+            if (selectedEmotion) {
+                putEmotionRequest(postId, selectedEmotion, cookies.accessToken).then(putEmotionResponse);
+                setSelectedEmotion(null);
                 return;
             }
+
             setShowEmotionPicker(!showEmotionPicker);
         }
 
         //event handler: 감정표현 선택 이벤트 처리
-        const handleEmotionSelect = (emotion: string) => {
-            setSelectedEmotion(emotion);
-            setShowEmotionPicker(false);
-            setEmotion(!isEmotion); // 감정 선택 후 창 닫기
+        const handleEmotionSelect = (emotionStatus: string) => {
+            if (!postId || !cookies.accessToken) {
+                // 에러 메시지 출력
+                showModal("Cookie Error", "엑세스 토큰이 존재하지 않습니다.");
+                return;
+            }
+
+            putEmotionRequest(postId, emotionStatus, cookies.accessToken).then(putEmotionResponse);
+
+            setSelectedEmotion(emotionStatus);
+            setShowEmotionPicker(!showEmotionPicker);
         }
 
         //event handler: 감정표현 리스트 보기 클릭 이벤트 처리
         const onShowEmotionClickHandler = () => {
-            setShowEmotion(!showEmotion);
+            setShowEmotionList(!showEmotionList);
         }
 
         //event handler: 댓글 리스트 보기 클릭 이벤트 처리
@@ -316,7 +350,7 @@ export default function PostDetail() {
                 <div className='post-detail-bottom-button-box'>
                     <div className='post-detail-bottom-button-group'>
                         <div className='icon-button' onClick={onEmotionClickHandler}>
-                            {isEmotion ? <EmotionIcon /> : <div className='icon emotion-light-icon'></div>}
+                            {selectedEmotion ? <EmotionIcon /> : <div className='icon emotion-light-icon'></div>}
                         </div>
                         {showEmotionPicker && (
                             <div className='post-detail-bottom-emotion-pick-box'>
@@ -329,7 +363,7 @@ export default function PostDetail() {
                         )}
                         <div className='post-detail-bottom-button-text'>{`감정표현 `}<span className='emphasis'>{emotionList.length}</span></div>
                         <div className='icon-button' onClick={onShowEmotionClickHandler}>
-                            {showEmotion ?
+                            {showEmotionList ?
                                 <div className='icon up-light-icon'></div> :
                                 <div className='icon down-light-icon'></div>
                             }
@@ -348,7 +382,7 @@ export default function PostDetail() {
                         </div>
                     </div>
                 </div>
-                {showEmotion &&
+                {showEmotionList &&
                     <div className='post-detail-bottom-emotion-box'>
                         <div className='post-detail-bottom-emotion-container'>
                             <div className='post-detail-bottom-emotion-title'>{`감정표현`}<span className='emphasis'>{emotionList.length}</span></div>
