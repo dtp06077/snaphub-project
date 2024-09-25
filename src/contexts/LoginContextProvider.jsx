@@ -7,6 +7,7 @@ import { loginRequest, userInfoRequest } from '../apis'
 import { MAIN_PATH, POST_DETAIL_PATH, TOKEN_PREFIX } from '../constants';
 import { EventModalContext } from './EventModalProvider';
 import { useLoginUserStore } from '../stores';
+import { ClickEventModalContext } from './ClickEventModalContextProvider';
 
 export const LoginContext = createContext();
 LoginContext.displayName = 'LoginContextName';
@@ -40,8 +41,9 @@ const LoginContextProvider = ({ children }) => {
     // 아이디 저장
     const [rememberUserId, setRememberUserId] = useState();
 
+    //이벤트 모달 창 상태
     const { showModal } = useContext(EventModalContext);
-
+    const {} = useContext(ClickEventModalContext);
     // state: 로그인 유저 전역 상태
     const { resetLoginUser } = useLoginUserStore();
 

@@ -10,6 +10,7 @@ import LoginContextProvider from './contexts/LoginContextProvider';
 import Wrapper from './layouts/wrapper/Wrapper';
 import { MAIN_PATH, USER_PATH, SEARCH_PATH, POST_PATH, POST_DETAIL_PATH, POST_WRITE_PATH, POST_UPDATE_PATH } from './constants'
 import EventModalContextProvider from './contexts/EventModalProvider';
+import ClickEventModalContextProvider from './contexts/ClickEventModalContextProvider';
 import { useEffect } from 'react';
 import { useCookies } from 'react-cookie';
 import { useLoginUserStore } from './stores';
@@ -18,16 +19,16 @@ import { userInfoRequest } from './apis';
 //component: Application 컴포넌트
 function App() {
     // state: 로그인 유저 전역 상태
-    const {setLoginUser, resetLoginUser} = useLoginUserStore();
+    const { setLoginUser, resetLoginUser } = useLoginUserStore();
     //state: cookie 상태
     const [cookies, setCookie] = useCookies();
 
     const getUserResponse = ({ response, responseBody }) => {
-        if(!responseBody) return;
-        
-        const {code} = responseBody;
+        if (!responseBody) return;
 
-        if(code==='AF' || code==='NU'||code==='DE') {
+        const { code } = responseBody;
+
+        if (code === 'AF' || code === 'NU' || code === 'DE') {
             resetLoginUser();
             return;
         }
@@ -35,7 +36,7 @@ function App() {
         setLoginUser(loginUser);
     }
     //effect: accessToken cookie 값이 변경 될 때 마다 실행할 함수
-    useEffect(()=> {
+    useEffect(() => {
         if (!cookies.accessToken) {
             resetLoginUser();
             return;
@@ -55,23 +56,25 @@ function App() {
      */
     return (
         <BrowserRouter>
-        <EventModalContextProvider>
-        <LoginContextProvider>
-                <Routes>
-                    <Route element={<Wrapper />}>
-                        <Route path={MAIN_PATH()} element={<Home />}></Route>
-                        <Route path={USER_PATH(':loginId')} element={<User />}></Route>
-                        <Route path={SEARCH_PATH(':searchWord')} element={<Search />}></Route>
-                        <Route path={POST_PATH()}>
-                            <Route path={POST_WRITE_PATH()} element={<PostWrite />}></Route>
-                            <Route path={POST_UPDATE_PATH(':postId')} element={<PostUpdate />}></Route>
-                            <Route path={POST_DETAIL_PATH(':postId')} element={<PostDetail />}></Route>
-                        </Route>
-                        <Route path='*' element={<h1>404 Not Found</h1>}/>
-                    </Route>
-                </Routes>
-            </LoginContextProvider>
-        </EventModalContextProvider>
+            <EventModalContextProvider>
+                <ClickEventModalContextProvider>
+                    <LoginContextProvider>
+                        <Routes>
+                            <Route element={<Wrapper />}>
+                                <Route path={MAIN_PATH()} element={<Home />}></Route>
+                                <Route path={USER_PATH(':loginId')} element={<User />}></Route>
+                                <Route path={SEARCH_PATH(':searchWord')} element={<Search />}></Route>
+                                <Route path={POST_PATH()}>
+                                    <Route path={POST_WRITE_PATH()} element={<PostWrite />}></Route>
+                                    <Route path={POST_UPDATE_PATH(':postId')} element={<PostUpdate />}></Route>
+                                    <Route path={POST_DETAIL_PATH(':postId')} element={<PostDetail />}></Route>
+                                </Route>
+                                <Route path='*' element={<h1>404 Not Found</h1>} />
+                            </Route>
+                        </Routes>
+                    </LoginContextProvider>
+                </ClickEventModalContextProvider>
+            </EventModalContextProvider>
         </BrowserRouter>
     );
 }
