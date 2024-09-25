@@ -6,6 +6,7 @@ import defaultImage from '../assets/image/default-profile-image.png';
 import { loginRequest, userInfoRequest } from '../apis'
 import { MAIN_PATH, POST_DETAIL_PATH, TOKEN_PREFIX } from '../constants';
 import { EventModalContext } from './EventModalProvider';
+import { useLoginUserStore } from '../stores';
 
 export const LoginContext = createContext();
 LoginContext.displayName = 'LoginContextName';
@@ -41,6 +42,9 @@ const LoginContextProvider = ({ children }) => {
 
     const { showModal } = useContext(EventModalContext);
 
+    // state: 로그인 유저 전역 상태
+    const { resetLoginUser } = useLoginUserStore();
+
     /*==============*/
 
     // 페이지 이동
@@ -65,7 +69,7 @@ const LoginContextProvider = ({ children }) => {
                 // 로그인 체크 
                 //TODO
                 try {
-                    loginCheck();
+                    await loginCheck();
 
                     showModal("Login Success", "로그인에 성공하였습니다.");
 
@@ -113,6 +117,12 @@ const LoginContextProvider = ({ children }) => {
 
         // accessToken (jwt) 이 부재
         if (!accessToken) {
+            //메인페이지 경로이거나 상세 게시물 경로이면 로그아웃 세팅 후 redirection X
+            if (location.pathname === MAIN_PATH()||location.pathname.startsWith(POST_DETAIL_PATH(''))){
+                logoutSetting();
+                return;
+            }
+
             console.log(`쿠키에 jwt 부재`)
             // 에러 메시지 출력
             showModal("Login", "로그인이 필요합니다.");
@@ -153,7 +163,7 @@ const LoginContextProvider = ({ children }) => {
 
         //프로필 이미지 업데이트
         //웹 서버 배포 시`http://snaphub.com/.../로 변경
-        if(profile) {
+        if (profile) {
             setProfileImage(profile);
         }
 
@@ -205,13 +215,14 @@ const LoginContextProvider = ({ children }) => {
 
         //권한 정보 초기화
         setRoles(null);
+
+        //LoginUserStore 초기화
+        resetLoginUser();
     }
 
     useEffect(() => {
-        // if(!isLogin&&location.pathname===MAIN_PATH()) return;
-        // if(!isLogin&&location.pathname.startsWith(POST_DETAIL_PATH(''))) return;
         loginCheck();
-    }, [location.pathname]); // 경로가 변경될 때마다 실행
+    }, []);
 
     return (
         <LoginContext.Provider value={{ profileImage, isLogin, userInfo, roles, login, logout }}>
