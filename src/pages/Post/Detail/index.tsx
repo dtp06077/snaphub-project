@@ -16,6 +16,7 @@ import { DeletePostResponseDto, GetCommentListResponseDto, GetEmotionListRespons
 import dayjs from 'dayjs';
 import { useCookies } from 'react-cookie';
 import { WriteCommentRequestDto } from '../../../apis/request/post';
+import { ClickEventModalContext } from '../../../contexts/ClickEventModalContextProvider';
 
 //component: 게시물 상세 화면 컴포넌트
 export default function PostDetail() {
@@ -29,13 +30,15 @@ export default function PostDetail() {
 
     //context: 이벤트 모달 창
     const eventContext = useContext(EventModalContext);
+    const eventClickContext = useContext(ClickEventModalContext);
 
     // eventContext가 undefined일 경우
-    if (!eventContext) {
+    if (!eventContext || !eventClickContext) {
         throw new Error("이벤트 모달 창이 존재하지 않습니다.");
     }
 
     const { showModal } = eventContext;
+    const { showClickModal } = eventClickContext;
 
     //function: 네비게이트 함수
     const navigator = useNavigate();
@@ -147,10 +150,19 @@ export default function PostDetail() {
 
         //event handler: 삭제 버튼 클릭 이벤트 처리
         const onDeleteButtonClickHandler = () => {
-            if (!post || !postId || !loginUser || cookies.accessToken) return;
+            if (!post || !postId || !loginUser || !cookies.accessToken) return;
             if (loginUser.loginId !== post.posterId) return;
             
-            deletePostRequest(postId, cookies.accessToken).then(deletePostResponse);
+            showClickModal(
+                "Delete Check",
+                "게시물을 삭제하시겠습니까?",
+                () => {
+                    deletePostRequest(postId, cookies.accessToken).then(deletePostResponse);
+                },
+                () => {
+                    console.log("삭제 취소"); 
+                }
+            );
         }
 
         //effect: 게시물 번호 path variable 바뀔 때 마다 게시물 불러오기

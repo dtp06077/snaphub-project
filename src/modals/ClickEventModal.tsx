@@ -33,7 +33,7 @@ const ClickEventModal: React.FC<ClickEventModalProps> = ({
         {message}
       </Modal.Body>
       <Modal.Footer>
-        <Button className="modal-button" variant="secondary" onClick={onCancel}>
+        <Button className="modal-button" variant="primary" onClick={onCancel}>
           Cancel
         </Button>
         <Button className="modal-button" variant="primary" onClick={onConfirm}>

@@ -43,7 +43,7 @@ const LoginContextProvider = ({ children }) => {
 
     //이벤트 모달 창 상태
     const { showModal } = useContext(EventModalContext);
-    const {} = useContext(ClickEventModalContext);
+    const { showClickModal } = useContext(ClickEventModalContext);
     // state: 로그인 유저 전역 상태
     const { resetLoginUser } = useLoginUserStore();
 
@@ -187,15 +187,17 @@ const LoginContextProvider = ({ children }) => {
     //로그아웃
     const logout = () => {
 
-        const check = window.confirm('로그아웃 하시겠습니까?');
-
-        if (check) {
-            //로그아웃 세팅
-            logoutSetting();
-
-            //메인 페이지로 이동
-            navigate(MAIN_PATH())
-        }
+        showClickModal(
+            "Logout Check", // 모달 제목
+            "로그아웃 하시겠습니까?", // 모달 메시지
+            () => {
+                logoutSetting(); // 예 버튼 클릭 시 로그아웃 실행
+                navigate(MAIN_PATH()); // 메인 페이지로 이동
+            },
+            () => {
+                console.log("로그아웃 취소"); // 아니오 버튼 클릭 시 처리
+            }
+        );
     }
 
     //로그아웃 세팅
