@@ -4,7 +4,7 @@ import { ResponseDto } from "./response";
 import api from "./api";
 import { UserInfoResponseDto } from "./response/user";
 import { UploadPostRequestDto, WriteCommentRequestDto } from "./request/post";
-import { UploadPostResponseDto, GetPostResponseDto, IncreaseViewCountResponseDto, GetEmotionListResponseDto, GetCommentListResponseDto, PutEmotionResponseDto, WriteCommentResponsetDto } from "./response/post";
+import { UploadPostResponseDto, GetPostResponseDto, IncreaseViewCountResponseDto, GetEmotionListResponseDto, GetCommentListResponseDto, PutEmotionResponseDto, WriteCommentResponsetDto, DeletePostResponseDto } from "./response/post";
 
 const DOMAIN = 'http://localhost:4000';
 
@@ -27,6 +27,7 @@ const GET_EMOTION_LIST_URL = (postId: number | string) => `${API_DOMAIN}/post/${
 const GET_COMMENT_LIST_URL = (postId: number | string) => `${API_DOMAIN}/post/${postId}/comment-list`;
 const PUT_EMOTION_URL = (postId: number | string) => `${API_DOMAIN}/post/${postId}/emotion`;
 const WRITE_COMMENT_URL = (postId: number | string) => `${API_DOMAIN}/post/${postId}/comment`;
+const DELETE_POST_URL = (postId: number | string) => `${API_DOMAIN}/post/${postId}`;
 
 const multipartFormData = { headers: { 'Content-Type': 'multipart/form-data' } };
 
@@ -107,6 +108,21 @@ export const uploadPostRequest = async (requestBody: UploadPostRequestDto, acces
     const result = await api.post(UPLOAD_POST_URL(), requestBody, authorization(accessToken))
         .then(response => {
             const responseBody: UploadPostResponseDto = response.data;
+            return responseBody;
+        })
+        .catch(error => {
+            if (!error.response) return null;
+            const responseBody: ResponseDto = error.response.data;
+            return responseBody
+        })
+    return result;
+}
+
+//게시물 삭제 리퀘스트
+export const deletePostRequest = async (postId: number | string, accessToken: string) => {
+    const result = await api.delete(DELETE_POST_URL(postId), authorization(accessToken))
+        .then(response => {
+            const responseBody: DeletePostResponseDto = response.data;
             return responseBody;
         })
         .catch(error => {
