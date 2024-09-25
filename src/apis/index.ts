@@ -3,8 +3,8 @@ import { JoinResponseDto, LoginResponseDto } from "./response/auth";
 import { ResponseDto } from "./response";
 import api from "./api";
 import { UserInfoResponseDto } from "./response/user";
-import { UploadPostRequestDto } from "./request/post";
-import { UploadPostResponseDto, GetPostResponseDto, IncreaseViewCountResponseDto, GetEmotionListResponseDto, GetCommentListResponseDto, PutEmotionResponseDto } from "./response/post";
+import { UploadPostRequestDto, WriteCommentRequestDto } from "./request/post";
+import { UploadPostResponseDto, GetPostResponseDto, IncreaseViewCountResponseDto, GetEmotionListResponseDto, GetCommentListResponseDto, PutEmotionResponseDto, WriteCommentResponsetDto } from "./response/post";
 
 const DOMAIN = 'http://localhost:4000';
 
@@ -26,6 +26,7 @@ const INCREASE_VIEW_COUNT_URL = (postId: number | string) => `${API_DOMAIN}/post
 const GET_EMOTION_LIST_URL = (postId: number | string) => `${API_DOMAIN}/post/${postId}/emotion-list`;
 const GET_COMMENT_LIST_URL = (postId: number | string) => `${API_DOMAIN}/post/${postId}/comment-list`;
 const PUT_EMOTION_URL = (postId: number | string) => `${API_DOMAIN}/post/${postId}/emotion`;
+const WRITE_COMMENT_URL = (postId: number | string) => `${API_DOMAIN}/post/${postId}/comment`;
 
 const multipartFormData = { headers: { 'Content-Type': 'multipart/form-data' } };
 
@@ -191,6 +192,20 @@ export const putEmotionRequest = async (postId: number | string, status: string,
     return result;
 }
 
+//댓글 등록 리퀘스트
+export const WriteCommentRequest = async (postId: number | string, requestBody: WriteCommentRequestDto, accessToken: string) => {
+    const result = await api.post(WRITE_COMMENT_URL(postId), requestBody, authorization(accessToken))
+        .then(response => {
+            const responseBody: WriteCommentResponsetDto = response.data;
+            return responseBody;
+        })
+        .catch(error => {
+            if (!error.response) return null;
+            const responseBody: ResponseDto = error.response.data;
+            return responseBody;
+        })
+    return result;
+}
 //파일 업로드 리퀘스트
 export const uploadFileRequest = async (data: FormData) => {
     const result = await api.post(UPLOAD_FILE_URL(), data, multipartFormData)

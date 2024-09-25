@@ -118,7 +118,7 @@ const LoginContextProvider = ({ children }) => {
         // accessToken (jwt) 이 부재
         if (!accessToken) {
             //메인페이지 경로이거나 상세 게시물 경로이면 로그아웃 세팅 후 redirection X
-            if (location.pathname === MAIN_PATH()||location.pathname.startsWith(POST_DETAIL_PATH(''))){
+            if (location.pathname === MAIN_PATH() || location.pathname.startsWith(POST_DETAIL_PATH(''))) {
                 logoutSetting();
                 return;
             }
