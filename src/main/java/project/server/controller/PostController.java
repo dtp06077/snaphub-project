@@ -41,10 +41,10 @@ public class PostController {
     @Secured("ROLE_USER")
     public ResponseEntity<? super PutEmotionResponseDto> putEmotion(
             @PathVariable("postId") int postId,
-            @RequestParam String emotionStatus,
+            @RequestParam String status,
             @AuthenticationPrincipal CustomUser customUser
             ) {
-        return postService.putEmotion(postId, emotionStatus, customUser);
+        return postService.putEmotion(postId, status, customUser);
     }
 
     //감정표현리스트 검색

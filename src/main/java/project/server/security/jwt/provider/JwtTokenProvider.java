@@ -49,7 +49,7 @@ public class JwtTokenProvider {
                 .header()                                                   // 헤더 설정
                     .add("type", JwtConstants.TOKEN_TYPE)                // type : JWT
                 .and()
-                .expiration(new Date( System.currentTimeMillis() + 1000*60*60*24*6 )) // 토큰 만료 시간 설정 (6일)
+                .expiration(new Date( System.currentTimeMillis() + 1000*60*60*24 )) // 토큰 만료 시간 설정 (6일)
                 .claim("uid", userId)                 //클레임 설정 : 회원 PK
                 .claim("lid", loginId)                      //클레임 설정 : 회원 로그인 아이디
                 .claim("role", roles)                       //클레임 설정 : 회원 권한
