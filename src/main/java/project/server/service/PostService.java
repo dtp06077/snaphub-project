@@ -28,4 +28,7 @@ public interface PostService {
 
     //게시물 조회수 증가 Response
     ResponseEntity<? super IncreaseViewCountResponseDto> increaseViewCount(int postId);
+
+    //게시물 삭제 Response
+    ResponseEntity<? super DeletePostResponseDto> deletePost(int postId, CustomUser customUser);
 }

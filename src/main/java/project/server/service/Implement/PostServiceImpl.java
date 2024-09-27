@@ -198,4 +198,34 @@ public class PostServiceImpl implements PostService {
 
         return IncreaseViewCountResponseDto.success();
     }
+
+    @Override
+    @Transactional
+    public ResponseEntity<? super DeletePostResponseDto> deletePost(int postId, CustomUser customUser) {
+        try {
+            User user = customUser.getUser();
+
+            if(user == null) {
+                return DeletePostResponseDto.noExistUser();
+            }
+
+            Post post = postRepository.findById(postId);
+
+            if(post==null) {
+                return DeletePostResponseDto.noExistPost();
+            }
+
+            if(user.getLoginId() != post.getAuthorId()) {
+                return DeletePostResponseDto.noPermission();
+            }
+
+            postRepository.delete(postId);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+
+        return DeletePostResponseDto.success();
+    }
 }
