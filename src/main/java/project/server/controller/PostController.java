@@ -36,6 +36,16 @@ public class PostController {
         return postService.uploadPost(request, customUser);
     }
 
+    //게시물 삭제
+    @DeleteMapping("/{postId}")
+    @Secured("ROLE_USER")
+    public ResponseEntity<? super DeletePostResponseDto> deletePost(
+            @PathVariable int postId,
+            @AuthenticationPrincipal CustomUser customUser
+    ) {
+        return postService.deletePost(postId, customUser);
+    }
+
     //감정표현 등록
     @PutMapping("/{postId}/emotion")
     @Secured("ROLE_USER")

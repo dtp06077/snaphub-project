@@ -215,7 +215,7 @@ public class PostServiceImpl implements PostService {
                 return DeletePostResponseDto.noExistPost();
             }
 
-            if(user.getLoginId() != post.getAuthorId()) {
+            if(!user.getLoginId().equals(post.getAuthorId())) {
                 return DeletePostResponseDto.noPermission();
             }
 
