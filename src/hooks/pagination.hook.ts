@@ -38,10 +38,10 @@ const usePagination = <T>(countPerPage: number) => {
         setView();
     }, [currentPage])
 
-    //effect: currentPage가 변경될 때마다 실행할 작업
+    //effect: currentSection이 변경될 때마다 실행할 작업
     useEffect(() => {
         setViewPage();
-    }, [currentPage])
+    }, [currentSection])
 
     // effect: totalList가 변경될 때마다 실행할 작업
     useEffect(() => {
