@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import project.server.domain.*;
+import project.server.dto.request.post.UpdatePostRequestDto;
 import project.server.dto.request.post.UploadPostRequestDto;
 import project.server.dto.request.post.WriteCommentRequestDto;
 import project.server.dto.response.ResponseDto;
@@ -137,7 +138,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     @Transactional
-    public ResponseEntity<? super WriteCommentResponseDto> writeComment(WriteCommentRequestDto requestDto, int postId, CustomUser customUser) {
+    public ResponseEntity<? super WriteCommentResponseDto> writeComment(WriteCommentRequestDto request, int postId, CustomUser customUser) {
         try {
             User user = customUser.getUser();
             if(user == null) {
@@ -148,7 +149,7 @@ public class PostServiceImpl implements PostService {
                 return WriteCommentResponseDto.noExistPost();
             }
 
-            Comment comment = new Comment(requestDto, post, user);
+            Comment comment = new Comment(request, post, user);
             commentRepository.save(comment);
 
         } catch (Exception e) {
@@ -227,5 +228,40 @@ public class PostServiceImpl implements PostService {
         }
 
         return DeletePostResponseDto.success();
+    }
+
+    @Override
+    @Transactional
+    public ResponseEntity<? super UpdatePostResponseDto> updatePost(int postId, UpdatePostRequestDto request, CustomUser customUser) {
+        try {
+
+            User user = customUser.getUser();
+
+            if(user == null) {
+                return DeletePostResponseDto.noExistUser();
+            }
+
+            Post post = postRepository.findById(postId);
+
+            if(post==null) {
+                return DeletePostResponseDto.noExistPost();
+            }
+
+            if(!user.getLoginId().equals(post.getAuthorId())) {
+                return DeletePostResponseDto.noPermission();
+            }
+
+            post.updatePost(request);
+
+
+            List<String> postImageList = request.getPostImageList();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+
+
+        return UpdatePostResponseDto.success();
     }
 }

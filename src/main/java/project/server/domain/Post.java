@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import project.server.dto.request.post.UpdatePostRequestDto;
 import project.server.dto.request.post.UploadPostRequestDto;
 
 import java.time.LocalDateTime;
@@ -103,5 +104,11 @@ public class Post {
     //조회수 증가 메서드
     public void addViewCount() {
         this.viewCnt+=1;
+    }
+
+    //게시물 수정 메서드
+    public void updatePost(UpdatePostRequestDto request) {
+        this.title = request.getTitle();
+        this.content = request.getContent();
     }
 }

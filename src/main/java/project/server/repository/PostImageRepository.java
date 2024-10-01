@@ -22,4 +22,10 @@ public class PostImageRepository {
             save(postImage);
         }
     }
+
+    public void deleteByPostId(int postId) {
+        em.createQuery("delete from PostImage p where p.post.id = :postId")
+                .setParameter("postId", postId)
+                .executeUpdate();
+    }
 }
