@@ -17,6 +17,7 @@ import dayjs from 'dayjs';
 import { useCookies } from 'react-cookie';
 import { WriteCommentRequestDto } from '../../../apis/request/post';
 import { ClickEventModalContext } from '../../../contexts/ClickEventModalContextProvider';
+import { usePagination } from '../../../hooks';
 
 //component: 게시물 상세 화면 컴포넌트
 export default function PostDetail() {
@@ -32,8 +33,16 @@ export default function PostDetail() {
 
     //state: post 상태
     const [post, setPost] = useState<Post | null>(null);
-    //state: 댓글 리스트 상태
-    const [commentList, setCommentList] = useState<CommentListItem[]>([]);
+
+     //state: 전체 댓글 갯수 상태
+     const [totalCommentCount, setTotalCommentCount] = useState<number>(0);
+
+    //state: 페이지네이션 관련 상태
+    const {
+        currentPage, setCurrentPage, currentSection, setCurrentSection,
+         viewList, viewPageList, totalSection, setTotalList
+    } = usePagination<CommentListItem>(3);
+    
     //state: 감정표현 리스트 상태
     const [emotionList, setEmotionList] = useState<EmotionListItem[]>([]);
     //state: 선택된 감정표현 상태
@@ -150,7 +159,8 @@ export default function PostDetail() {
         if (code !== 'SU') return;
 
         const { commentList } = responseBody as GetCommentListResponseDto;
-        setCommentList(commentList);
+        setTotalList(commentList);
+        setTotalCommentCount(commentList.length);
     }
 
     //component: 게시물 상세 상단 컴포넌트
@@ -387,7 +397,7 @@ export default function PostDetail() {
             WriteCommentRequest(postId, requestBody, cookies.accessToken).then(writeCommentResponse);
         }
 
-        //component: 게시물 상세 하단 컴포넌트
+        //component: 감정표현 컴포넌트
         const EmotionIcon = () => {
             if (!selectedEmotion) return null; // 감정이 없으면 null 반환
             switch (selectedEmotion) {
@@ -440,7 +450,7 @@ export default function PostDetail() {
                         <div className='icon-button'>
                             <div className='icon comment-icon'></div>
                         </div>
-                        <div className='post-detail-bottom-button-text'>{`댓글 `}<span className='emphasis'>{commentList.length}</span></div>
+                        <div className='post-detail-bottom-button-text'>{`댓글 `}<span className='emphasis'>{totalCommentCount}</span></div>
                         <div className='icon-button' onClick={onShowCommentClickHandler}>
                             {showComment ?
                                 <div className='icon up-light-icon'></div> :
@@ -462,14 +472,21 @@ export default function PostDetail() {
                 {showComment &&
                     <div className='post-detail-bottom-comment-box'>
                         <div className='post-detail-bottom-comment-container'>
-                            <div className='post-detail-bottom-comment-title'>{`댓글`}<span className='emphasis'>{commentList.length}</span></div>
+                            <div className='post-detail-bottom-comment-title'>{`댓글`}<span className='emphasis'>{totalCommentCount}</span></div>
                             <div className='post-detail-bottom-comment-list-container'>
-                                {commentList.map(item => <CommentItem commentListItem={item} />)}
+                                {viewList.map(item => <CommentItem commentListItem={item} />)}
                             </div>
                         </div>
                         <div className='divider'></div>
                         <div className='post-detail-bottom-comment-pagination-box'>
-                            <Pagination />
+                            <Pagination
+                            currentPage={currentPage}
+                            currentSection={currentSection}
+                            setCurrentPage={setCurrentPage}
+                            setCurrentSection={setCurrentSection}
+                            viewPageList={viewPageList}
+                            totalSection={totalSection}
+                            />
                         </div>
                         {loginUser !== null &&
                             <div className='post-detail-bottom-comment-input-box'>

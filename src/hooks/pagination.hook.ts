@@ -21,37 +21,32 @@ const usePagination = <T>(countPerPage: number) => {
     //function: 보여줄 객체 리스트 추출 함수
     const setView = () => {
         const START_INDEX = countPerPage * (currentPage - 1);
-        const END_INDEX = totalList.length > countPerPage * currentPage ? countPerPage * currentPage : totalList.length;
+        const END_INDEX = totalList.length > (countPerPage * currentPage) ? (countPerPage * currentPage) : totalList.length;
         const viewList = totalList.slice(START_INDEX, END_INDEX);
         setViewList(viewList);
     }
 
     //function: 보여줄 페이지 리스트 추출 함수
     const setViewPage = () => {
-        const START_INDEX = 10 * (currentPage - 1);
-        const END_INDEX = totalPageList.length > 10 * currentPage ? 10 * currentSection : totalPageList.length;
+        const START_INDEX = 10 * (currentSection - 1);
+        const END_INDEX = totalPageList.length > (10 * currentSection) ? (10 * currentSection) : totalPageList.length;
         const viewPageList = totalPageList.slice(START_INDEX, END_INDEX);
         setViewPageList(viewPageList);
     }
     //effect: currentPage가 변경될 때마다 실행할 작업
-    useEffect(() => {
-        setView();
-    }, [currentPage])
+    useEffect(setView, [currentPage])
 
     //effect: currentSection이 변경될 때마다 실행할 작업
-    useEffect(() => {
-        setViewPage();
-    }, [currentSection])
+    useEffect(setViewPage, [currentSection])
 
     // effect: totalList가 변경될 때마다 실행할 작업
     useEffect(() => {
         const totalPage = Math.ceil(totalList.length / countPerPage);
-        const totalSection = Math.ceil(totalList.length / (countPerPage * 10));
-
         const totalPageList: number[] = [];
         for (let page = 1; page <= totalPage; page++) totalPageList.push(page);
-
         setTotalPageList(totalPageList);
+        
+        const totalSection = Math.ceil(totalList.length / (countPerPage * 10));
         setTotalSection(totalSection);
 
         setCurrentPage(1);
