@@ -252,9 +252,16 @@ public class PostServiceImpl implements PostService {
             }
 
             post.updatePost(request);
-
+            postImageRepository.deleteByPostId(postId);
 
             List<String> postImageList = request.getPostImageList();
+            List<PostImage> postImages = new ArrayList<>();
+
+            for(String image : postImageList) {
+                PostImage postImage = new PostImage(post, image);
+                postImages.add(postImage);
+            }
+            postImageRepository.saveAll(postImages);
 
         } catch (Exception e) {
             e.printStackTrace();
