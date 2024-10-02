@@ -28,25 +28,6 @@ export default function PostDetail() {
     const { loginUser } = useLoginUserStore();
     //state: 쿠키 상태
     const [cookies, setCookies] = useCookies();
-    //state: 작성자 여부 상태
-    const [isWriter, setWriter] = useState<boolean>(false);
-
-    //state: post 상태
-    const [post, setPost] = useState<Post | null>(null);
-
-     //state: 전체 댓글 갯수 상태
-     const [totalCommentCount, setTotalCommentCount] = useState<number>(0);
-
-    //state: 페이지네이션 관련 상태
-    const {
-        currentPage, setCurrentPage, currentSection, setCurrentSection,
-         viewList, viewPageList, totalSection, setTotalList
-    } = usePagination<CommentListItem>(3);
-    
-    //state: 감정표현 리스트 상태
-    const [emotionList, setEmotionList] = useState<EmotionListItem[]>([]);
-    //state: 선택된 감정표현 상태
-    const [selectedEmotion, setSelectedEmotion] = useState<string | null>(null);
 
     //context: 이벤트 모달 창
     const eventContext = useContext(EventModalContext);
@@ -79,93 +60,13 @@ export default function PostDetail() {
         }
     }
 
-    //function: getPostResponse 처리 함수
-    const getPostResponse = (responseBody: GetPostResponseDto | ResponseDto | null) => {
-        if (!responseBody) return;
-        const { code } = responseBody;
-        if (code === 'NP') {
-            showModal('Post Error', '존재하지 않는 게시물입니다.');
-            navigate(MAIN_PATH());
-            return;
-        }
-        if (code === 'DE') {
-            showModal('Database Error', '데이터베이스에서 오류가 발생했습니다.');
-            navigate(MAIN_PATH());
-            return;
-        }
-        if (code !== 'SU') {
-            navigate(MAIN_PATH());
-            return;
-        }
-
-        const post: Post = { ...responseBody as GetPostResponseDto };
-        setPost(post);
-
-        if (!loginUser) {
-            setWriter(false);
-            return;
-        }
-        const isWriter = loginUser.loginId === post.posterId;
-        setWriter(isWriter);
-    }
-
-    //function: getEmotionListResponse 처리 함수
-    const getEmotionListResponse = (responseBody: GetEmotionListResponseDto | ResponseDto | null) => {
-        if (!responseBody) return;
-
-        const { code } = responseBody;
-        if (code === 'NP') {
-            showModal('Post Error', '존재하지 않는 게시물입니다.');
-            navigate(MAIN_PATH());
-            return;
-        }
-        if (code === 'DE') {
-            showModal('Database Error', '데이터베이스에서 오류가 발생했습니다.');
-            navigate(MAIN_PATH());
-            return;
-        }
-        if (code !== 'SU') return;
-
-        const { emotionList } = responseBody as GetEmotionListResponseDto;
-        setEmotionList(emotionList);
-
-        if (!loginUser) {
-            setSelectedEmotion(null);
-            return;
-        }
-
-        const checkEmotion = emotionList.find(emotion => emotion.loginId === loginUser.loginId);
-
-        if (checkEmotion) {
-            setSelectedEmotion(checkEmotion.status); //status를 설정
-        }
-    }
-
-    //function: getCommentListResponse 처리 함수
-    const getCommentListResponse = (responseBody: GetCommentListResponseDto | ResponseDto | null) => {
-        if (!responseBody) return;
-
-        const { code } = responseBody;
-        if (code === 'NP') {
-            showModal('Post Error', '존재하지 않는 게시물입니다.');
-            navigate(MAIN_PATH());
-            return;
-        }
-        if (code === 'DE') {
-            showModal('Database Error', '데이터베이스에서 오류가 발생했습니다.');
-            navigate(MAIN_PATH());
-            return;
-        }
-        if (code !== 'SU') return;
-
-        const { commentList } = responseBody as GetCommentListResponseDto;
-        setTotalList(commentList);
-        setTotalCommentCount(commentList.length);
-    }
-
     //component: 게시물 상세 상단 컴포넌트
     const PostDetailTop = () => {
 
+        //state: 작성자 여부 상태
+        const [isWriter, setWriter] = useState<boolean>(false);
+        //state: post 상태
+        const [post, setPost] = useState<Post | null>(null);
         //state: more 버튼 상태
         const [showMore, setShowMore] = useState<boolean>(false);
 
@@ -174,6 +75,37 @@ export default function PostDetail() {
             if (!post) return '';
             const date = dayjs(post.postDateTime);
             return date.format('YYYY. MM. DD. HH:mm');
+        }
+
+        //function: getPostResponse 처리 함수
+        const getPostResponse = (responseBody: GetPostResponseDto | ResponseDto | null) => {
+            if (!responseBody) return;
+            const { code } = responseBody;
+            if (code === 'NP') {
+                showModal('Post Error', '존재하지 않는 게시물입니다.');
+                navigate(MAIN_PATH());
+                return;
+            }
+            if (code === 'DE') {
+                showModal('Database Error', '데이터베이스에서 오류가 발생했습니다.');
+                navigate(MAIN_PATH());
+                return;
+            }
+            if (code !== 'SU') {
+                navigate(MAIN_PATH());
+                return;
+            }
+
+            const post: Post = { ...responseBody as GetPostResponseDto };
+            setPost(post);
+
+            if (!loginUser) {
+                setWriter(false);
+                return;
+            }
+            const isWriter = (loginUser.loginId === post.posterId);
+            console.log(isWriter)
+            setWriter(isWriter);
         }
 
         //function: deletePostResponse 처리 함수
@@ -236,6 +168,16 @@ export default function PostDetail() {
             );
         }
 
+        //effect: 게시물 번호 path variable이 바뀔 때 마다 게시물 불러오기
+        useEffect(() => {
+            if (!postId) {
+                navigate(MAIN_PATH())
+                return;
+            }
+            console.log(postId);
+            getPostRequest(postId).then(getPostResponse);
+        }, [postId])
+
         //render: 게시물 상세 상단 컴포넌트 렌더링
         if (!post) return <></>;
         return (
@@ -288,6 +230,77 @@ export default function PostDetail() {
 
         //state: 댓글 리스트 보기 상태
         const [showComment, setShowComment] = useState<boolean>(true);
+
+        //state: 전체 댓글 갯수 상태
+        const [totalCommentCount, setTotalCommentCount] = useState<number>(0);
+
+        //state: 감정표현 리스트 상태
+        const [emotionList, setEmotionList] = useState<EmotionListItem[]>([]);
+
+        //state: 선택된 감정표현 상태
+        const [selectedEmotion, setSelectedEmotion] = useState<string | null>(null);
+
+        //state: 페이지네이션 관련 상태
+        //부모컴포넌트로 hook을 옮길 경우 무한루프 발생 -> 항상 조심하자
+        const {
+            currentPage, setCurrentPage, currentSection, setCurrentSection,
+            viewList, viewPageList, totalSection, setTotalList
+        } = usePagination<CommentListItem>(3);
+
+        //function: getEmotionListResponse 처리 함수
+        const getEmotionListResponse = (responseBody: GetEmotionListResponseDto | ResponseDto | null) => {
+            if (!responseBody) return;
+
+            const { code } = responseBody;
+            if (code === 'NP') {
+                showModal('Post Error', '존재하지 않는 게시물입니다.');
+                navigate(MAIN_PATH());
+                return;
+            }
+            if (code === 'DE') {
+                showModal('Database Error', '데이터베이스에서 오류가 발생했습니다.');
+                navigate(MAIN_PATH());
+                return;
+            }
+            if (code !== 'SU') return;
+
+            const { emotionList } = responseBody as GetEmotionListResponseDto;
+            setEmotionList(emotionList);
+
+            if (!loginUser) {
+                setSelectedEmotion(null);
+                return;
+            }
+
+            const checkEmotion = emotionList.find(emotion => emotion.loginId === loginUser.loginId);
+
+            if (checkEmotion) {
+                setSelectedEmotion(checkEmotion.status); //status를 설정
+            }
+        }
+
+        //function: getCommentListResponse 처리 함수
+        const getCommentListResponse = (responseBody: GetCommentListResponseDto | ResponseDto | null) => {
+            if (!responseBody) return;
+
+            const { code } = responseBody;
+            if (code === 'NP') {
+                showModal('Post Error', '존재하지 않는 게시물입니다.');
+                navigate(MAIN_PATH());
+                return;
+            }
+            if (code === 'DE') {
+                showModal('Database Error', '데이터베이스에서 오류가 발생했습니다.');
+                navigate(MAIN_PATH());
+                return;
+            }
+            if (code !== 'SU') return;
+
+            const { commentList } = responseBody as GetCommentListResponseDto;
+            setTotalList(commentList);
+            setTotalCommentCount(commentList.length);
+        }
+
 
         //function: putEmotionResponse 처리 함수
         const putEmotionResponse = (responseBody: PutEmotionResponseDto | ResponseDto | null) => {
@@ -421,6 +434,16 @@ export default function PostDetail() {
             commentRef.current.style.height = `${commentRef.current.scrollHeight}px`;
         }
 
+        //effect: 게시물 번호 path variable이 바뀔 때 마다 좋아요 및 댓글 리스트 불러오기
+        useEffect(() => {
+            if (!postId) {
+                navigate(MAIN_PATH());
+                return;
+            }
+            getCommentListRequest(postId).then(getCommentListResponse);
+            getEmotionListRequest(postId).then(getEmotionListResponse);
+        }, [postId])
+
         //render: 게시물 상세 하단 컴포넌트 렌더링
         return (
             <div id='post-detail-bottom'>
@@ -480,12 +503,12 @@ export default function PostDetail() {
                         <div className='divider'></div>
                         <div className='post-detail-bottom-comment-pagination-box'>
                             <Pagination
-                            currentPage={currentPage}
-                            currentSection={currentSection}
-                            setCurrentPage={setCurrentPage}
-                            setCurrentSection={setCurrentSection}
-                            viewPageList={viewPageList}
-                            totalSection={totalSection}
+                                currentPage={currentPage}
+                                currentSection={currentSection}
+                                setCurrentPage={setCurrentPage}
+                                setCurrentSection={setCurrentSection}
+                                viewPageList={viewPageList}
+                                totalSection={totalSection}
                             />
                         </div>
                         {loginUser !== null &&
@@ -511,10 +534,6 @@ export default function PostDetail() {
     useEffect(() => {
 
         if (!postId) return;
-        getPostRequest(postId).then(getPostResponse);
-        getEmotionListRequest(postId).then(getEmotionListResponse);
-        getCommentListRequest(postId).then(getCommentListResponse);
-
         if (effectFlag) {
             effectFlag = false;
             return;
