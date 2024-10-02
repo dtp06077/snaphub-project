@@ -148,7 +148,7 @@ export default function PostDetail() {
         const onUpdateButtonClickHandler = () => {
             if (!post || !loginUser) return;
             if (loginUser.loginId !== post.posterId) return;
-            navigate(POST_PATH() + '/' + POST_UPDATE_PATH(post.postId));
+            navigate(POST_UPDATE_PATH(post.postId));
         }
 
         //event handler: 삭제 버튼 클릭 이벤트 처리
