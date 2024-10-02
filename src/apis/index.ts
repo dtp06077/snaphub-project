@@ -134,7 +134,7 @@ export const deletePostRequest = async (postId: number | string, accessToken: st
 }
 
 //게시물 불러오기 리퀘스트
-export const GetPostRequest = async (postId: number | string) => {
+export const getPostRequest = async (postId: number | string) => {
     const result = await api.get(GET_POST_URL(postId))
         .then(response => {
             const responseBody: GetPostResponseDto = response.data;
@@ -149,7 +149,7 @@ export const GetPostRequest = async (postId: number | string) => {
 }
 
 //게시물 조회수 증가 리퀘스트
-export const IncreaseViewCountRequest = async (postId: number | string) => {
+export const increaseViewCountRequest = async (postId: number | string) => {
     const result = await api.get(INCREASE_VIEW_COUNT_URL(postId))
         .then(response => {
             const responseBody: IncreaseViewCountResponseDto = response.data;

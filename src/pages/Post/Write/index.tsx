@@ -1,6 +1,9 @@
 import React, { ChangeEvent, useEffect, useRef, useState } from 'react'
 import { usePostStore } from '../../../stores';
 import './style.css'
+import { useNavigate } from 'react-router-dom';
+import { useCookies } from 'react-cookie';
+import { MAIN_PATH } from '../../../constants';
 
 //component: 게시물 작성 화면 컴포넌트
 export default function PostWrite() {
@@ -20,6 +23,13 @@ export default function PostWrite() {
 
     //state: 게시물 이미지 미리보기 URL 상태
     const [imageUrls, setImageUrls] = useState<string[]>([]);
+
+    //function: 네비게이트 함수
+    const navigate = useNavigate();
+
+    //state: cookie 상태
+    const [ cookies ] = useCookies();
+
 
     //event handler: 제목 변경 이벤트 처리
     const onTitleChangeHandler = (event: ChangeEvent<HTMLTextAreaElement>) => {
@@ -79,6 +89,11 @@ export default function PostWrite() {
 
     //effect: 마운트 실행 함수
     useEffect(() => {
+        const accessToken = cookies.accessToken;
+        if(!accessToken) {
+            navigate(MAIN_PATH());
+            return;
+        }
         resetPost();
     }, []);
 
