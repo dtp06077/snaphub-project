@@ -3,11 +3,11 @@ import { LoginContext } from '../../contexts/LoginContextProvider'
 import LoginModal from '../../modals/LoginModal'
 import { Container, Nav, Navbar } from 'react-bootstrap'
 import './style.css';
-import { MAIN_PATH, SEARCH_PATH, USER_PATH, POST_WRITE_PATH } from '../../constants';
-import { useNavigate, useParams } from 'react-router-dom';
+import { MAIN_PATH, SEARCH_PATH, USER_PATH, POST_WRITE_PATH, POST_DETAIL_PATH, POST_UPDATE_PATH } from '../../constants';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { usePostStore } from '../../stores';
 import { useCookies } from 'react-cookie';
-import { uploadFileRequest, uploadPostRequest } from '../../apis';
+import { updatePostRequest, uploadFileRequest, uploadPostRequest } from '../../apis';
 import { EventModalContext } from '../../contexts/EventModalProvider';
 
 
@@ -22,6 +22,8 @@ const Header = () => {
   const [uploadOn, setUploadOn] = useState(false);
   //state: 쿠키 상태
   const [cookies] = useCookies();
+  //state: path 상태
+  const { pathname } = useLocation();
 
   //context: 이벤트 모달 창
   const { showModal } = useContext(EventModalContext);
@@ -89,18 +91,18 @@ const Header = () => {
           search
         </div>
       )
-
-
     }
   }
 
   //component: 업로드 버튼 컴포넌트
   const UploadButton = () => {
 
+    //state: 게시물 번호 path variable 상태
+    const { postId } = useParams();
     //state: 게시물 상태
     const { title, content, postImageFileList, resetPost } = usePostStore();
 
-    //function: post upload response 처리 함수
+    //function: uploadPostResponse 처리 함수
     const uploadPostResponse = (responseBody) => {
       if (!responseBody) return;
 
@@ -120,7 +122,7 @@ const Header = () => {
         showModal('Database Error', '데이터베이스에서 오류가 발생했습니다.');
         return;
       }
-
+      if(code !== 'SU') return;
       resetPost();
       if (!isLogin) return;
       const { loginId } = userInfo;
@@ -130,15 +132,42 @@ const Header = () => {
       navigate(USER_PATH(loginId));
     }
 
-    //event handler: 업로드 버튼 클릭 이벤트 처리 함수
+    //function: UpdatePostresponse 처리 함수
+    const updatePostResponse = (responseBody) => {
+      if (!responseBody) return;
+
+      const { code } = responseBody;
+      if (code === 'AF' || code === "NU") {
+        showModal('AUTHORIZATION Fail', '인증되지 않은 사용자 입니다.');
+        navigate(MAIN_PATH());
+        return;
+      }
+
+      if (code === 'VF' || code === 'NP') {
+        showModal('Validation Fail', '검증되지 않은 게시물 입니다.');
+        navigate(MAIN_PATH());
+        return;
+      }
+
+      if (code === 'DE') {
+        showModal('Database Error', '데이터베이스에서 오류가 발생했습니다.');
+        return;
+      }
+      if(code !== 'SU') return;
+      if(!postId) return;
+      navigate(POST_DETAIL_PATH(postId));
+    }
+
+
+    //event handler: 업로드 버튼 클릭 이벤트 처리
     const onUploadButtonClickHandler = async () => {
       const accessToken = cookies.accessToken;
 
       if (!accessToken) return;
-      
+
       if (!title || !content) {
-      showModal('Content Error', '제목과 내용은 필수입니다.');
-      return;
+        showModal('Content Error', '제목과 내용은 필수입니다.');
+        return;
       }
       const postImageList = [];
 
@@ -150,11 +179,18 @@ const Header = () => {
         if (url) postImageList.push(url);
       }
 
+      const isWriterPage = (pathname === POST_WRITE_PATH());
       const requestBody = {
         title, content, postImageList
       }
 
-      uploadPostRequest(requestBody, accessToken).then(uploadPostResponse);
+      if (isWriterPage) {
+        uploadPostRequest(requestBody, accessToken).then(uploadPostResponse);
+      }
+      else {
+        if (!postId) return;
+        updatePostRequest(postId, requestBody, accessToken).then(updatePostResponse);
+      }
     }
 
     //event handler: 쓰기 버튼 클릭 이벤트 처리 함수
@@ -163,15 +199,15 @@ const Header = () => {
       navigate(POST_WRITE_PATH());
     }
 
-    if (uploadOn === false) {
-      return <div className='header-nav-link' onClick={onWriteButtonClickHandler}>
-        write
-      </div>
-    }
-    else {
+    if (uploadOn === true || pathname===POST_UPDATE_PATH(postId)) {
       return <div className='header-nav-link' onClick={onUploadButtonClickHandler}>
         upload
       </div>
+    }
+    else {
+      return <div className='header-nav-link' onClick={onWriteButtonClickHandler}>
+      write
+    </div>
     }
   }
 
