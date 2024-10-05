@@ -179,6 +179,21 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    public ResponseEntity<? super GetLatestPostListResponseDto> getLatestPosts() {
+        List<Post> posts;
+
+        try {
+            posts = new ArrayList<>();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+
+        return GetLatestPostListResponseDto.success();
+    }
+
+    @Override
     @Transactional
     public ResponseEntity<? super IncreaseViewCountResponseDto> increaseViewCount(int postId) {
 

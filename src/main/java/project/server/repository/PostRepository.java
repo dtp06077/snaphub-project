@@ -14,18 +14,18 @@ public class PostRepository {
 
     private final EntityManager em;
 
-    //게시글 저장
+    //게시물 저장
     public int save(Post post) {
         em.persist(post);
         return post.getId();
     }
 
-    //게시글 검색
+    //게시물 검색
     public Post findById(int id) {
         return em.find(Post.class, id);
     }
 
-    //특정 사용자 게시글 검색
+    //특정 사용자 게시물 검색
     public List<Post> findByUserId(int id) {
 //        User user = em.find(User.class, id);
 //        return user.getPosts();
@@ -35,9 +35,16 @@ public class PostRepository {
                 .getResultList();
     }
 
-    //모든 게시글 검색
+    //모든 게시물 검색
     public List<Post> findAll() {
         return em.createQuery("select p from Post p", Post.class)
+                .getResultList();
+    }
+
+    //최신순으로 게시물 검색
+    public List<Post> findRecentPosts(int limit) {
+        return em.createQuery("select p from Post p order by p.postDatetime desc", Post.class)
+                .setMaxResults(limit)
                 .getResultList();
     }
 
