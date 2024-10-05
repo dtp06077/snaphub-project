@@ -3,6 +3,11 @@ package project.server.dto.object;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import project.server.domain.Comment;
+import project.server.domain.Post;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -19,4 +24,30 @@ public class PostListItem {
     private int emotionCount;
     private int commentCount;
     private int viewCount;
+
+    public PostListItem(Post post) {
+        this.postId = post.getId();
+        this.title = post.getTitle();
+        this.content = post.getContent();
+        this.postDateTime = post.getPostDatetime();
+        this.posterName = post.getAuthorName();
+        this.posterProfileImage = post.getAuthorProfile();
+        this.emotionCount = post.getEmotions().size();
+        this.commentCount = post.getComments().size();
+        this.viewCount = post.getViewCnt();
+
+        if(!post.getImageList().isEmpty()) {
+            this.postTitleImage = post.getImageList().get(0);
+        }
+    }
+
+    public static List<PostListItem> copyList(List<Post> posts) {
+        List<PostListItem> postList = new ArrayList<>();
+
+        for(Post post : posts) {
+            PostListItem item = new PostListItem(post);
+            postList.add(item);
+        }
+        return postList;
+    }
 }

@@ -54,7 +54,6 @@ public class Post {
     private int sadEmoCnt;
     private int angryEmoCnt;
 
-    private int commentCnt;
 
     private int viewCnt;
 
@@ -66,7 +65,6 @@ public class Post {
         this.happyEmoCnt = 0;
         this.sadEmoCnt = 0;
         this.angryEmoCnt = 0;
-        this.commentCnt = 0;
         this.viewCnt = 0;
         this.authorId = user.getLoginId();
         this.authorName = user.getName();
