@@ -32,7 +32,7 @@ public class PostListItem {
         this.posterName = post.getAuthorName();
         this.posterProfileImage = post.getAuthorProfile();
         this.emotionCount = post.getEmotions().size();
-        this.commentCount = post.getComments().size();
+        this.commentCount = post.getCommentCnt();
         this.viewCount = post.getViewCnt();
 
         if(!post.getImageList().isEmpty()) {
