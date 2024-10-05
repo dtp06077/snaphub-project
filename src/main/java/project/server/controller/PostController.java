@@ -27,6 +27,12 @@ public class PostController {
         return postService.getPost(postId);
     }
 
+    //최신 게시물 검색
+    @GetMapping("/latest-list")
+    public ResponseEntity<? super GetLatestPostListResponseDto> getLatestPostList() {
+        return postService.getLatestPosts();
+    }
+
     //게시물 작성
     @PostMapping("")
     @Secured("ROLE_USER")

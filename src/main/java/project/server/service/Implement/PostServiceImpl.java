@@ -183,14 +183,14 @@ public class PostServiceImpl implements PostService {
         List<Post> posts;
 
         try {
-            posts = new ArrayList<>();
+            posts = postRepository.findRecentPosts(100);
 
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseDto.databaseError();
         }
 
-        return GetLatestPostListResponseDto.success();
+        return GetLatestPostListResponseDto.success(posts);
     }
 
     @Override
