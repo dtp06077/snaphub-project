@@ -3,7 +3,6 @@ package project.server.dto.object;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import project.server.domain.Comment;
 import project.server.domain.Post;
 
 import java.util.ArrayList;
