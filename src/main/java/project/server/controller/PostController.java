@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import project.server.dto.request.post.UpdatePostRequestDto;
 import project.server.dto.request.post.UploadPostRequestDto;
 import project.server.dto.request.post.WriteCommentRequestDto;
 import project.server.dto.response.post.*;
@@ -36,11 +37,22 @@ public class PostController {
         return postService.uploadPost(request, customUser);
     }
 
+    //게시물 수정
+    @PatchMapping("/{postId}")
+    @Secured("ROLE_USER")
+    public ResponseEntity<? super UpdatePostResponseDto> updatePost(
+            @PathVariable("postId") int postId,
+            @RequestBody @Valid UpdatePostRequestDto request,
+            @AuthenticationPrincipal CustomUser customUser
+    ) {
+        return postService.updatePost(postId, request, customUser);
+    }
+
     //게시물 삭제
     @DeleteMapping("/{postId}")
     @Secured("ROLE_USER")
     public ResponseEntity<? super DeletePostResponseDto> deletePost(
-            @PathVariable int postId,
+            @PathVariable("postId") int postId,
             @AuthenticationPrincipal CustomUser customUser
     ) {
         return postService.deletePost(postId, customUser);
