@@ -3,8 +3,8 @@ import { JoinResponseDto, LoginResponseDto } from "./response/auth";
 import { ResponseDto } from "./response";
 import api from "./api";
 import { UserInfoResponseDto } from "./response/user";
-import { UploadPostRequestDto, WriteCommentRequestDto } from "./request/post";
-import { UploadPostResponseDto, GetPostResponseDto, IncreaseViewCountResponseDto, GetEmotionListResponseDto, GetCommentListResponseDto, PutEmotionResponseDto, WriteCommentResponsetDto, DeletePostResponseDto } from "./response/post";
+import { UpdatePostRequestDto, UploadPostRequestDto, WriteCommentRequestDto } from "./request/post";
+import { UploadPostResponseDto, GetPostResponseDto, IncreaseViewCountResponseDto, GetEmotionListResponseDto, GetCommentListResponseDto, PutEmotionResponseDto, WriteCommentResponsetDto, DeletePostResponseDto, UpdatePostResponseDto } from "./response/post";
 
 const DOMAIN = 'http://localhost:4000';
 
@@ -28,6 +28,7 @@ const GET_COMMENT_LIST_URL = (postId: number | string) => `${API_DOMAIN}/post/${
 const PUT_EMOTION_URL = (postId: number | string) => `${API_DOMAIN}/post/${postId}/emotion`;
 const WRITE_COMMENT_URL = (postId: number | string) => `${API_DOMAIN}/post/${postId}/comment`;
 const DELETE_POST_URL = (postId: number | string) => `${API_DOMAIN}/post/${postId}`;
+const UPDATE_POST_URL = (postId: number | string) => `${API_DOMAIN}/post/${postId}`;
 
 const multipartFormData = { headers: { 'Content-Type': 'multipart/form-data' } };
 
@@ -116,6 +117,21 @@ export const uploadPostRequest = async (requestBody: UploadPostRequestDto, acces
             return responseBody
         })
     return result;
+}
+
+//게시물 수정 리퀘스트
+export const updatePostRequest = async (postId: number | string, requestBody: UpdatePostRequestDto, accessToken: string) => {
+    const result = await api.patch(UPDATE_POST_URL(postId), requestBody, authorization(accessToken))
+    .then(response => {
+        const responseBody: UpdatePostResponseDto = response.data;
+        return responseBody;
+    })
+    .catch(error => {
+        if (!error.response) return null;
+        const responseBody: ResponseDto = error.response.data;
+        return responseBody
+    })
+return result;
 }
 
 //게시물 삭제 리퀘스트
