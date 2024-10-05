@@ -21,7 +21,7 @@ const usePagination = <T>(countPerPage: number) => {
     //function: 보여줄 객체 리스트 추출 함수
     const setView = () => {
         const START_INDEX = countPerPage * (currentPage - 1);
-        const END_INDEX = totalList.length > (countPerPage * currentPage) ? (countPerPage * currentPage) : totalList.length;
+        const END_INDEX = Math.min(totalList.length, countPerPage * currentPage);
         const viewList = totalList.slice(START_INDEX, END_INDEX);
         setViewList(viewList);
     }
@@ -29,24 +29,19 @@ const usePagination = <T>(countPerPage: number) => {
     //function: 보여줄 페이지 리스트 추출 함수
     const setViewPage = () => {
         const START_INDEX = 10 * (currentSection - 1);
-        const END_INDEX = totalPageList.length > (10 * currentSection) ? (10 * currentSection) : totalPageList.length;
+        const END_INDEX = Math.min(totalPageList.length, 10 * currentSection);
         const viewPageList = totalPageList.slice(START_INDEX, END_INDEX);
+
         setViewPageList(viewPageList);
     }
-    //effect: currentPage가 변경될 때마다 실행할 작업
-    useEffect(setView, [currentPage])
-
-    //effect: currentSection이 변경될 때마다 실행할 작업
-    useEffect(setViewPage, [currentSection])
 
     // effect: totalList가 변경될 때마다 실행할 작업
     useEffect(() => {
         const totalPage = Math.ceil(totalList.length / countPerPage);
-        const totalPageList: number[] = [];
-        for (let page = 1; page <= totalPage; page++) totalPageList.push(page);
+        const totalPageList: number[] = Array.from({ length: totalPage }, (_, i) => i + 1);
         setTotalPageList(totalPageList);
-        
-        const totalSection = Math.ceil(totalList.length / (countPerPage * 10));
+
+        const totalSection = Math.ceil(totalPage / 10);
         setTotalSection(totalSection);
 
         setCurrentPage(1);
@@ -54,7 +49,13 @@ const usePagination = <T>(countPerPage: number) => {
 
         setView();
         setViewPage();
-    }, [totalList]);
+    }, [totalList, countPerPage]);
+
+    //effect: currentPage가 변경될 때마다 실행할 작업
+    useEffect(setView, [currentPage])
+
+    //effect: currentSection이 변경될 때마다 실행할 작업
+    useEffect(setViewPage, [currentSection])
 
     return {
         currentPage,

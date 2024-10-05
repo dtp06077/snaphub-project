@@ -8,6 +8,7 @@ import { getPostRequest } from '../../../apis';
 import { GetPostResponseDto } from '../../../apis/response/post';
 import { ResponseDto } from '../../../apis/response';
 import { EventModalContext } from '../../../contexts/EventModalProvider';
+import { convertUrlsToFile } from '../../../utils';
 
 //component: 게시물 수정 화면 컴포넌트
 export default function PostUpdate() {
@@ -72,6 +73,7 @@ export default function PostUpdate() {
         setTitle(title);
         setContent(content);
         setImageUrls(imageList);
+        convertUrlsToFile(imageList).then(postImageFileList => setPostImageFileList(postImageFileList));
         
         if(!loginUser || loginUser.loginId !== posterId) {
             showModal("Authorization Error", "권한이 없습니다.");

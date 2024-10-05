@@ -45,7 +45,7 @@ export default function Pagination(props: Props) {
         <div className='icon-box-small'>
           <div className='icon left-icon'></div>
         </div>
-        <div className='pagination-change-link-text'>{'이전'}</div>
+        <div className='pagination-change-link-text' onClick={onPreviousClickHandler}>{'이전'}</div>
       </div>
       <div className='pagination-divider'>{'\|'}</div>
 
@@ -56,7 +56,7 @@ export default function Pagination(props: Props) {
       )}
       <div className='pagination-divider'>{'\|'}</div>
       <div className='pagination-change-link-box'>
-        <div className='pagination-change-link-text'>{'다음'}</div>
+        <div className='pagination-change-link-text' onClick={onNextClickHandler}>{'다음'}</div>
         <div className='icon-box-small'>
           <div className='icon right-icon'></div>
         </div>

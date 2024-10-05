@@ -104,7 +104,6 @@ export default function PostDetail() {
                 return;
             }
             const isWriter = (loginUser.loginId === post.posterId);
-            console.log(isWriter)
             setWriter(isWriter);
         }
 
@@ -174,7 +173,6 @@ export default function PostDetail() {
                 navigate(MAIN_PATH())
                 return;
             }
-            console.log(postId);
             getPostRequest(postId).then(getPostResponse);
         }, [postId])
 
@@ -245,7 +243,8 @@ export default function PostDetail() {
         const {
             currentPage, setCurrentPage, currentSection, setCurrentSection,
             viewList, viewPageList, totalSection, setTotalList
-        } = usePagination<CommentListItem>(3);
+        } = usePagination<CommentListItem>(5);
+
 
         //function: getEmotionListResponse 처리 함수
         const getEmotionListResponse = (responseBody: GetEmotionListResponseDto | ResponseDto | null) => {
@@ -440,8 +439,9 @@ export default function PostDetail() {
                 navigate(MAIN_PATH());
                 return;
             }
-            getCommentListRequest(postId).then(getCommentListResponse);
             getEmotionListRequest(postId).then(getEmotionListResponse);
+            getCommentListRequest(postId).then(getCommentListResponse);
+            return;
         }, [postId])
 
         //render: 게시물 상세 하단 컴포넌트 렌더링
@@ -539,6 +539,7 @@ export default function PostDetail() {
             return;
         }
         increaseViewCountRequest(postId).then(increaseViewCountResponse);
+        return;
     }, [postId])
 
     //render: 게시물 상세 화면 컴포넌트 렌더링
