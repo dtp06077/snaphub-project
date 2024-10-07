@@ -54,6 +54,7 @@ public class Post {
     private int happyEmoCnt;
     private int sadEmoCnt;
     private int angryEmoCnt;
+    private int totalEmoCnt;
 
     private int commentCnt;
     private int viewCnt;
