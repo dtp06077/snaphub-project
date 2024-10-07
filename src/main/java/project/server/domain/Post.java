@@ -8,6 +8,7 @@ import project.server.dto.request.post.UpdatePostRequestDto;
 import project.server.dto.request.post.UploadPostRequestDto;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,7 +48,7 @@ public class Post {
     @Lob
     private String content;
 
-    private String postDatetime;
+    private String postDateTime;
 
     //감정표현 카운트 파라미터
     private int happyEmoCnt;
@@ -61,7 +62,6 @@ public class Post {
     public Post(UploadPostRequestDto request, User user) {
         this.title = request.getTitle();
         this.content = request.getContent();
-        this.postDatetime = LocalDateTime.now().toString();
         this.happyEmoCnt = 0;
         this.sadEmoCnt = 0;
         this.angryEmoCnt = 0;
@@ -70,6 +70,10 @@ public class Post {
         this.authorId = user.getLoginId();
         this.authorName = user.getName();
         this.authorProfile = user.getProfileImage();
+
+        // DateTimeFormatter를 사용하여 포맷팅
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        this.postDateTime = LocalDateTime.now().format(formatter); // 포맷팅된 문자열 생성
         setAuthor(user);
     }
 
