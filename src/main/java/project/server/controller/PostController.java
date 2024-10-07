@@ -33,6 +33,12 @@ public class PostController {
         return postService.getLatestPosts();
     }
 
+    //top3 게시물 검색
+    @GetMapping("/top-3")
+    public ResponseEntity<? super GetTop3PostListResponseDto> getTop3PostList() {
+        return postService.getTop3Posts();
+    }
+
     //게시물 작성
     @PostMapping("")
     @Secured("ROLE_USER")
@@ -101,6 +107,7 @@ public class PostController {
         return postService.getComments(postId);
     }
 
+    //조회수 증가
     @GetMapping("/{postId}/increase-view-count")
     public ResponseEntity<? super IncreaseViewCountResponseDto> increaseViewCount(
             @PathVariable("postId") int postId
