@@ -17,7 +17,11 @@ import project.server.repository.PostRepository;
 import project.server.security.domain.CustomUser;
 import project.server.service.PostService;
 
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -191,6 +195,25 @@ public class PostServiceImpl implements PostService {
         }
 
         return GetLatestPostListResponseDto.success(posts);
+    }
+
+    @Override
+    public ResponseEntity<? super GetTop3PostListResponseDto> getTop3Posts() {
+        List<Post> posts;
+
+        try {
+            Date beforeWeek = Date.from(Instant.now().minus(7, ChronoUnit.DAYS));
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String sevenDaysAgo = simpleDateFormat.format(beforeWeek);
+
+            posts = postRepository.findTop3Posts(sevenDaysAgo);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+
+        return GetTop3PostListResponseDto.success(posts);
     }
 
     @Override

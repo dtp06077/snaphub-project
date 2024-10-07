@@ -36,6 +36,9 @@ public interface PostService {
     //최신 게시물 리스트 불러오기 Response
     ResponseEntity<? super GetLatestPostListResponseDto> getLatestPosts();
 
+    //top3 게시물 리스트 불러오기 Response
+    ResponseEntity<? super GetTop3PostListResponseDto> getTop3Posts();
+
     //게시물 조회수 증가 Response
     ResponseEntity<? super IncreaseViewCountResponseDto> increaseViewCount(int postId);
 }
