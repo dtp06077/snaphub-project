@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import project.server.domain.Post;
 
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -43,8 +44,17 @@ public class PostRepository {
 
     //최신순으로 게시물 검색
     public List<Post> findRecentPosts(int limit) {
-        return em.createQuery("select p from Post p order by p.postDatetime desc", Post.class)
+        return em.createQuery("select p from Post p order by p.postDateTime desc", Post.class)
                 .setMaxResults(limit)
+                .getResultList();
+    }
+
+    //주간 top3 게시믈 검색
+    public List<Post> findTop3Posts(String since) {
+        return em.createQuery("select p from Post p where p.postDateTime >= :since " +
+                        "order by p.totalEmoCnt desc, p.commentCnt desc, p.viewCnt desc, p.postDateTime desc", Post.class)
+                .setParameter("since", since)
+                .setMaxResults(3)
                 .getResultList();
     }
 
