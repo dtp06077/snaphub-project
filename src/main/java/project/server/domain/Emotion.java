@@ -51,6 +51,7 @@ public class Emotion {
             case HAPPY -> post.setHappyEmoCnt(post.getHappyEmoCnt()+1);
             case SAD -> post.setSadEmoCnt(post.getSadEmoCnt()+1);
         }
+        post.setTotalEmoCnt(post.getTotalEmoCnt()+1);
         post.getEmotions().add(this);
     }
 
