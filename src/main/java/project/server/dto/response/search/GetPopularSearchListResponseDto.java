@@ -14,12 +14,13 @@ public class GetPopularSearchListResponseDto extends ResponseDto {
 
     private List<String> popularSearchList;
 
-    private GetPopularSearchListResponseDto() {
+    private GetPopularSearchListResponseDto(List<String> popularSearchList) {
         super(ResponseCode.SUCCESS, ResponseMessage.SUCCESS);
+        this.popularSearchList = popularSearchList;
     }
 
-    public static ResponseEntity<GetPopularSearchListResponseDto> success() {
-        GetPopularSearchListResponseDto result = new GetPopularSearchListResponseDto();
+    public static ResponseEntity<GetPopularSearchListResponseDto> success(List<String> popularSearchList) {
+        GetPopularSearchListResponseDto result = new GetPopularSearchListResponseDto(popularSearchList);
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 }
