@@ -28,7 +28,7 @@ public class GetPostResponseDto extends ResponseDto {
         this.title = post.getTitle();
         this.content = post.getContent();
         this.imageList = post.getImageList();
-        this.postDateTime = post.getPostDatetime();
+        this.postDateTime = post.getPostDateTime();
         this.posterName = post.getAuthorName();
         this.posterId = post.getAuthorId();
         this.posterProfileImage = post.getAuthorProfile();

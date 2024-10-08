@@ -28,7 +28,7 @@ public class PostListItem {
         this.postId = post.getId();
         this.title = post.getTitle();
         this.content = post.getContent();
-        this.postDateTime = post.getPostDatetime();
+        this.postDateTime = post.getPostDateTime();
         this.posterName = post.getAuthorName();
         this.posterProfileImage = post.getAuthorProfile();
         this.emotionCount = post.getEmotions().size();
