@@ -1,7 +1,7 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './App.css';
-import Home from './pages/Home';
 import User from './pages/User';
+import Main from './pages/Main';
 import Search from './pages/Search';
 import PostDetail from './pages/Post/Detail';
 import PostUpdate from './pages/Post/Update';
@@ -61,7 +61,7 @@ function App() {
                     <LoginContextProvider>
                         <Routes>
                             <Route element={<Wrapper />}>
-                                <Route path={MAIN_PATH()} element={<Home />}></Route>
+                                <Route path={MAIN_PATH()} element={<Main />}></Route>
                                 <Route path={USER_PATH(':loginId')} element={<User />}></Route>
                                 <Route path={SEARCH_PATH(':searchWord')} element={<Search />}></Route>
                                 <Route path={POST_PATH()}>
