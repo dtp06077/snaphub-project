@@ -3,6 +3,7 @@ import './style.css';
 import { PostListItem } from '../../types/interface';
 import { useNavigate } from 'react-router-dom';
 import defaultProfileImage from "../../assets/image/default-profile-image.png";
+import { POST_DETAIL_PATH } from '../../constants';
 
 interface Props {
     postListItem: PostListItem
@@ -12,11 +13,11 @@ interface Props {
 export default function PostItem({ postListItem }: Props) {
 
     //function: 네비게이트 함수
-    const navigater = useNavigate();
+    const navigate = useNavigate();
 
     //event handler: 게시물 아이템 클릭 이벤트 처리 함수
     const onClickHandler = () => {
-        navigater(postId);
+        navigate(POST_DETAIL_PATH(postId));
     }
 
     //properties
