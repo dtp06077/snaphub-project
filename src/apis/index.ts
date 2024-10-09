@@ -298,7 +298,7 @@ export const uploadFileRequest = async (data: FormData) => {
 }
 
 //인기 검색어 리스트 불러오기 리퀘스트
-export const GetPopularSearchListRequest = async () => {
+export const getPopularSearchListRequest = async () => {
     const result = await api.post(GET_POPULAR_SEARCH_LIST_URL())
         .then(response => {
             const responseBody: GetPopularSearchListResponseDto = response.data;

@@ -6,11 +6,12 @@ import Pagination from '../../components/Pagination';
 import './style.css';
 import { useNavigate } from 'react-router-dom';
 import { SEARCH_PATH } from '../../constants';
-import { getLatestPostListRequest, getTop3PostListRequest } from '../../apis';
+import { getLatestPostListRequest, getPopularSearchListRequest, getTop3PostListRequest } from '../../apis';
 import { GetLatestPostListResponseDto, GetTop3PostListResponseDto } from '../../apis/response/post';
 import { ResponseDto } from '../../apis/response';
 import { EventModalContext } from '../../contexts/EventModalProvider';
 import { usePagination } from '../../hooks';
+import { GetPopularSearchListResponseDto } from '../../apis/response/search';
 
 //component: 메인 화면 컴포넌트
 export default function Main() {
@@ -105,10 +106,27 @@ export default function Main() {
             setTotalList(latestList);
         }
 
+        //function: getPopularSearchListResponse 처리 함수
+        const getPopularSearchListResponse = (responseBody: GetPopularSearchListResponseDto | ResponseDto | null) => {
+
+            if (!responseBody) return;
+            const { code } = responseBody;
+
+            if (code === 'DE') {
+                showModal('Database Error', '데이터베이스에서 오류가 발생했습니다.');
+                return;
+            }
+
+            if (code !== 'SU') return;
+
+            const { popularSearchList } = responseBody as GetPopularSearchListResponseDto;
+            setPopularWordList(popularSearchList);
+        }
+
         //effect: 첫 마운트 시 실행될 함수
         useEffect(() => {
             getLatestPostListRequest().then(getLatestPostListResponse)
-            setPopularWordList(['하이', '하이요', '방가']);
+            getPopularSearchListRequest().then(getPopularSearchListResponse)
         }, []);
 
         //render: 메인 화면 하단 컴포넌트 렌더링
