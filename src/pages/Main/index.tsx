@@ -4,6 +4,7 @@ import { PostListItem } from '../../types/interface'
 import { latestPostListMock, top3PostListMock } from '../../mocks';
 import PostItem from '../../components/PostItem';
 import Pagination from '../../components/Pagination';
+import './style.css';
 
 //component: 메인 화면 컴포넌트
 export default function Main() {
@@ -23,7 +24,7 @@ export default function Main() {
         return (
             <div id='main-top-wrapper'>
                 <div className='main-top-container'>
-                    <div className='main-top-title'>{'SnapHub에 방문하신걸 환영합니다.'}</div>
+                    <div className='main-top-title'>{'SnapHub 입니다. \n 방문하신 것을 환영합니다.'}</div>
                     <div className='main-top-contents-box'>
                         <div className='main-top-contents-title'>{'주간 TOP 3 게시글'}</div>
                         <div className='main-top-contents'>

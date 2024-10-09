@@ -6,7 +6,7 @@ import Pagination from '../../../components/Pagination';
 import './style.css';
 import { useLoginUserStore } from '../../../stores';
 import { useNavigate, useParams } from 'react-router-dom';
-import { MAIN_PATH, POST_PATH, POST_UPDATE_PATH, USER_PATH } from '../../../constants';
+import { MAIN_PATH, POST_UPDATE_PATH, USER_PATH } from '../../../constants';
 import defaultImage from '../../../assets/image/default-profile-image.png';
 import { deletePostRequest, getCommentListRequest, getEmotionListRequest, getPostRequest, increaseViewCountRequest, putEmotionRequest, WriteCommentRequest } from '../../../apis';
 import GetPostResponseDto from '../../../apis/response/post/get-post.response.dto';
