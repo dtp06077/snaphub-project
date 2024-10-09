@@ -195,7 +195,7 @@ export const getLatestPostListRequest = async () => {
 }
 
 //top-3 게시물 리스트 불러오기 리퀘스트
-export const getTop3PostListRequset = async () => {
+export const getTop3PostListRequest = async () => {
     const result = await api.get(GET_TOP_3_POST_LIST_URL())
         .then(response => {
             const responseBody: GetTop3PostListResponseDto = response.data;
