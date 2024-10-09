@@ -5,6 +5,7 @@ import api from "./api";
 import { UserInfoResponseDto } from "./response/user";
 import { UpdatePostRequestDto, UploadPostRequestDto, WriteCommentRequestDto } from "./request/post";
 import { UploadPostResponseDto, GetPostResponseDto, IncreaseViewCountResponseDto, GetEmotionListResponseDto, GetCommentListResponseDto, PutEmotionResponseDto, WriteCommentResponsetDto, DeletePostResponseDto, UpdatePostResponseDto, GetLatestPostListResponseDto, GetTop3PostListResponseDto } from "./response/post";
+import { GetPopularSearchListResponseDto } from "./response/search";
 
 const DOMAIN = 'http://localhost:4000';
 
@@ -40,6 +41,9 @@ const GET_COMMENT_LIST_URL = (postId: number | string) => `${API_DOMAIN}/post/${
 
 //file url
 const UPLOAD_FILE_URL = () => `${FILE_DOMAIN}/upload`;
+
+//search url
+const GET_POPULAR_SEARCH_LIST_URL = () => `${API_DOMAIN}/search/popular-list`; 
 
 const multipartFormData = { headers: { 'Content-Type': 'multipart/form-data' } };
 
@@ -279,6 +283,7 @@ export const WriteCommentRequest = async (postId: number | string, requestBody: 
         })
     return result;
 }
+
 //파일 업로드 리퀘스트
 export const uploadFileRequest = async (data: FormData) => {
     const result = await api.post(UPLOAD_FILE_URL(), data, multipartFormData)
@@ -288,6 +293,21 @@ export const uploadFileRequest = async (data: FormData) => {
         })
         .catch(error => {
             return null;
+        })
+    return result;
+}
+
+//인기 검색어 리스트 불러오기 리퀘스트
+export const GetPopularSearchListRequest = async () => {
+    const result = await api.post(GET_POPULAR_SEARCH_LIST_URL())
+        .then(response => {
+            const responseBody: GetPopularSearchListResponseDto = response.data;
+            return responseBody;
+        })
+        .catch(error => {
+            if (!error.response) return null;
+            const responseBody: ResponseDto = error.response.data;
+            return responseBody;
         })
     return result;
 }
