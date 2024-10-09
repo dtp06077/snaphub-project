@@ -18,6 +18,7 @@ export default function PostItem({ postListItem }: Props) {
     //event handler: 게시물 아이템 클릭 이벤트 처리 함수
     const onClickHandler = () => {
         navigate(POST_DETAIL_PATH(postId));
+        return;
     }
 
     //properties

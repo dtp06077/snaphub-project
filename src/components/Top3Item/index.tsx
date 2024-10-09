@@ -23,6 +23,7 @@ export default function Top3Item({top3ListItem}: Props) {
   //event handler: 게시물 아이템 클릭 이벤트 처리 함수
   const onClickHandler = () => {
     navigate(POST_DETAIL_PATH(postId));
+    return;
   }
 
   //render: Top 3 List Item 컴포넌트 렌더링

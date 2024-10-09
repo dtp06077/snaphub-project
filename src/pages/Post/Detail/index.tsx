@@ -79,7 +79,11 @@ export default function PostDetail() {
 
         //function: getPostResponse 처리 함수
         const getPostResponse = (responseBody: GetPostResponseDto | ResponseDto | null) => {
-            if (!responseBody) return;
+            if (!responseBody) {
+                showModal('Server Error', '서버에서 오류가 발생했습니다.')
+                navigate(MAIN_PATH());
+                return;
+            }
             const { code } = responseBody;
             if (code === 'NP') {
                 showModal('Post Error', '존재하지 않는 게시물입니다.');
