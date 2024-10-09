@@ -4,7 +4,7 @@ import { ResponseDto } from "./response";
 import api from "./api";
 import { UserInfoResponseDto } from "./response/user";
 import { UpdatePostRequestDto, UploadPostRequestDto, WriteCommentRequestDto } from "./request/post";
-import { UploadPostResponseDto, GetPostResponseDto, IncreaseViewCountResponseDto, GetEmotionListResponseDto, GetCommentListResponseDto, PutEmotionResponseDto, WriteCommentResponsetDto, DeletePostResponseDto, UpdatePostResponseDto } from "./response/post";
+import { UploadPostResponseDto, GetPostResponseDto, IncreaseViewCountResponseDto, GetEmotionListResponseDto, GetCommentListResponseDto, PutEmotionResponseDto, WriteCommentResponsetDto, DeletePostResponseDto, UpdatePostResponseDto, GetLatestPostListResponseDto, GetTop3PostListResponseDto } from "./response/post";
 
 const DOMAIN = 'http://localhost:4000';
 
@@ -16,19 +16,30 @@ const authorization = (accessToken: string) => {
     return { headers: { Authorization: `Bearer ${accessToken}` } };
 };
 
+//user 및 auth url
 const LOGIN_URL = () => `${API_DOMAIN}/auth/login`;
 const JOIN_URL = () => `${API_DOMAIN}/auth/join`;
 const USER_INFO_URL = () => `${API_DOMAIN}/users/info`;
-const UPLOAD_FILE_URL = () => `${FILE_DOMAIN}/upload`;
-const UPLOAD_POST_URL = () => `${API_DOMAIN}/post`;
+
+//post url
 const GET_POST_URL = (postId: number | string) => `${API_DOMAIN}/post/${postId}`;
-const INCREASE_VIEW_COUNT_URL = (postId: number | string) => `${API_DOMAIN}/post/${postId}/increase-view-count`;
-const GET_EMOTION_LIST_URL = (postId: number | string) => `${API_DOMAIN}/post/${postId}/emotion-list`;
-const GET_COMMENT_LIST_URL = (postId: number | string) => `${API_DOMAIN}/post/${postId}/comment-list`;
-const PUT_EMOTION_URL = (postId: number | string) => `${API_DOMAIN}/post/${postId}/emotion`;
-const WRITE_COMMENT_URL = (postId: number | string) => `${API_DOMAIN}/post/${postId}/comment`;
+const GET_LATEST_POST_LIST_URL = () => `${API_DOMAIN}/post/latest-list`;
+const GET_TOP_3_POST_LIST_URL = () => `${API_DOMAIN}/post/top-3`;
+const UPLOAD_POST_URL = () => `${API_DOMAIN}/post`;
 const DELETE_POST_URL = (postId: number | string) => `${API_DOMAIN}/post/${postId}`;
 const UPDATE_POST_URL = (postId: number | string) => `${API_DOMAIN}/post/${postId}`;
+const INCREASE_VIEW_COUNT_URL = (postId: number | string) => `${API_DOMAIN}/post/${postId}/increase-view-count`;
+
+//emotion url
+const GET_EMOTION_LIST_URL = (postId: number | string) => `${API_DOMAIN}/post/${postId}/emotion-list`;
+const PUT_EMOTION_URL = (postId: number | string) => `${API_DOMAIN}/post/${postId}/emotion`;
+
+//comment url
+const WRITE_COMMENT_URL = (postId: number | string) => `${API_DOMAIN}/post/${postId}/comment`;
+const GET_COMMENT_LIST_URL = (postId: number | string) => `${API_DOMAIN}/post/${postId}/comment-list`;
+
+//file url
+const UPLOAD_FILE_URL = () => `${FILE_DOMAIN}/upload`;
 
 const multipartFormData = { headers: { 'Content-Type': 'multipart/form-data' } };
 
@@ -154,6 +165,36 @@ export const getPostRequest = async (postId: number | string) => {
     const result = await api.get(GET_POST_URL(postId))
         .then(response => {
             const responseBody: GetPostResponseDto = response.data;
+            return responseBody;
+        })
+        .catch(error => {
+            if (!error.response) return null;
+            const responseBody: ResponseDto = error.response.data;
+            return responseBody
+        })
+    return result;
+}
+
+//최신 게시물 리스트 불러오기 리퀘스트
+export const getLatestPostListRequest = async () => {
+    const result = await api.get(GET_LATEST_POST_LIST_URL())
+        .then(response => {
+            const responseBody: GetLatestPostListResponseDto = response.data;
+            return responseBody;
+        })
+        .catch(error => {
+            if (!error.response) return null;
+            const responseBody: ResponseDto = error.response.data;
+            return responseBody
+        })
+    return result;
+}
+
+//top-3 게시물 리스트 불러오기 리퀘스트
+export const getTop3PostListRequset = async () => {
+    const result = await api.get(GET_TOP_3_POST_LIST_URL())
+        .then(response => {
+            const responseBody: GetTop3PostListResponseDto = response.data;
             return responseBody;
         })
         .catch(error => {
