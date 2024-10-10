@@ -39,6 +39,9 @@ public interface PostService {
     //top3 게시물 리스트 불러오기 Response
     ResponseEntity<? super GetTop3PostListResponseDto> getTop3Posts();
 
+    //검색 게시물 리스트 불러오기 Response
+    ResponseEntity<? super GetSearchPostListResponseDto> getSearchPosts(String searchWord, String preSearchWord);
+
     //게시물 조회수 증가 Response
     ResponseEntity<? super IncreaseViewCountResponseDto> increaseViewCount(int postId);
 }

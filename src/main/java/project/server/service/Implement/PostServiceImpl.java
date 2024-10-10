@@ -10,10 +10,7 @@ import project.server.dto.request.post.UploadPostRequestDto;
 import project.server.dto.request.post.WriteCommentRequestDto;
 import project.server.dto.response.ResponseDto;
 import project.server.dto.response.post.*;
-import project.server.repository.CommentRepository;
-import project.server.repository.EmotionRepository;
-import project.server.repository.PostImageRepository;
-import project.server.repository.PostRepository;
+import project.server.repository.*;
 import project.server.security.domain.CustomUser;
 import project.server.service.PostService;
 
@@ -33,7 +30,11 @@ public class PostServiceImpl implements PostService {
     private final PostImageRepository postImageRepository;
     private final EmotionRepository emotionRepository;
     private final CommentRepository commentRepository;
+    private final SearchLogRepository searchLogRepository;
 
+    /**
+     * 특정 게시물 가져오기
+     */
     @Override
     @Transactional
     public ResponseEntity<? super GetPostResponseDto> getPost(int postId) {
@@ -57,6 +58,9 @@ public class PostServiceImpl implements PostService {
         return GetPostResponseDto.success(post);
     }
 
+    /**
+     * 게시물 업로드
+     */
     @Override
     @Transactional
     public ResponseEntity<? super UploadPostResponseDto> uploadPost(UploadPostRequestDto request, CustomUser customUser) {
@@ -86,6 +90,9 @@ public class PostServiceImpl implements PostService {
         return UploadPostResponseDto.success();
     }
 
+    /**
+     * 감정표현 등록하기
+     */
     @Override
     @Transactional
     public ResponseEntity<? super PutEmotionResponseDto> putEmotion(int postId, String emotionStatus, CustomUser customUser) {
@@ -121,6 +128,9 @@ public class PostServiceImpl implements PostService {
         return PutEmotionResponseDto.success();
     }
 
+    /**
+     * 감정표현 리스트 가져오기
+     */
     @Override
     public ResponseEntity<? super GetEmotionsResponseDto> getEmotions(int postId) {
 
@@ -140,6 +150,9 @@ public class PostServiceImpl implements PostService {
         return GetEmotionsResponseDto.success(post);
     }
 
+    /**
+     * 댓글 등록하기
+     */
     @Override
     @Transactional
     public ResponseEntity<? super WriteCommentResponseDto> writeComment(WriteCommentRequestDto request, int postId, CustomUser customUser) {
@@ -164,6 +177,9 @@ public class PostServiceImpl implements PostService {
         return WriteCommentResponseDto.success();
     }
 
+    /**
+     * 댓글 리스트 가져오기
+     */
     @Override
     public ResponseEntity<? super GetCommentsResponseDto> getComments(int postId) {
         Post post;
@@ -182,6 +198,9 @@ public class PostServiceImpl implements PostService {
         return GetCommentsResponseDto.success(post);
     }
 
+    /**
+     * 최신 게시물 리스트 가져오기
+     */
     @Override
     public ResponseEntity<? super GetLatestPostListResponseDto> getLatestPosts() {
         List<Post> posts;
@@ -197,6 +216,9 @@ public class PostServiceImpl implements PostService {
         return GetLatestPostListResponseDto.success(posts);
     }
 
+    /**
+     * 상위 3 게시물 리스트 가져오기
+     */
     @Override
     public ResponseEntity<? super GetTop3PostListResponseDto> getTop3Posts() {
         List<Post> posts;
@@ -216,6 +238,38 @@ public class PostServiceImpl implements PostService {
         return GetTop3PostListResponseDto.success(posts);
     }
 
+    /**
+     * 검색 게시물 리스트 가져오기
+     */
+    @Override
+    public ResponseEntity<? super GetSearchPostListResponseDto> getSearchPosts(String searchWord, String preSearchWord) {
+
+        List<Post> posts;
+
+        try {
+            posts = postRepository.findBySearchWord(searchWord);
+
+            //검색어 기록 엔티티 생성
+            SearchLog searchLog = new SearchLog(searchWord, preSearchWord, false);
+            searchLogRepository.save(searchLog);
+
+            boolean relation = preSearchWord != null;
+            if(relation) {
+                searchLog = new SearchLog(preSearchWord, searchWord, relation);
+                searchLogRepository.save(searchLog);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+
+        return GetSearchPostListResponseDto.success(posts);
+    }
+
+    /**
+     * 조회수 증가
+     */
     @Override
     @Transactional
     public ResponseEntity<? super IncreaseViewCountResponseDto> increaseViewCount(int postId) {
@@ -238,6 +292,9 @@ public class PostServiceImpl implements PostService {
         return IncreaseViewCountResponseDto.success();
     }
 
+    /**
+     * 게시물 삭제하기
+     */
     @Override
     @Transactional
     public ResponseEntity<? super DeletePostResponseDto> deletePost(int postId, CustomUser customUser) {
@@ -268,6 +325,9 @@ public class PostServiceImpl implements PostService {
         return DeletePostResponseDto.success();
     }
 
+    /**
+     * 게시물 수정하기
+     */
     @Override
     @Transactional
     public ResponseEntity<? super UpdatePostResponseDto> updatePost(int postId, UpdatePostRequestDto request, CustomUser customUser) {
