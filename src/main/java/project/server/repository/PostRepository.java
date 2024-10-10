@@ -58,6 +58,15 @@ public class PostRepository {
                 .getResultList();
     }
 
+    //검색어로 게시물 검색
+    public List<Post> findBySearchWord(String searchWord) {
+        // '%' 기호를 사용하여 searchWord가 포함된 게시물 검색
+        return em.createQuery("select p from Post p where p.title like :searchWord or p.content like :searchWord "+
+                        "order by p.postDateTime desc", Post.class)
+                .setParameter("searchWord", "%" + searchWord + "%") // searchWord 앞뒤에 % 추가
+                .getResultList();
+    }
+
     //게시글 삭제 메서드
     public void delete(int id) {
         Post post = em.find(Post.class, id);
