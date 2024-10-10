@@ -27,16 +27,25 @@ public class PostController {
         return postService.getPost(postId);
     }
 
-    //최신 게시물 검색
+    //최신 게시물 리스트 검색
     @GetMapping("/latest-list")
     public ResponseEntity<? super GetLatestPostListResponseDto> getLatestPostList() {
         return postService.getLatestPosts();
     }
 
-    //top3 게시물 검색
+    //top3 게시물 리스트 검색
     @GetMapping("/top-3")
     public ResponseEntity<? super GetTop3PostListResponseDto> getTop3PostList() {
         return postService.getTop3Posts();
+    }
+
+    //검색어 게시물 리스트 검색
+    @GetMapping(value = {"/search-list/{searchWord}", "/search-list/{searchWord}/{preSearchWord}"})
+    public ResponseEntity<? super GetSearchPostListResponseDto> getSearchPostList(
+            @PathVariable("searchWord") String searchWord,
+            @PathVariable(value = "preSearchWord", required = false) String preSearchWord
+    ) {
+        return postService.getSearchPosts(searchWord, preSearchWord);
     }
 
     //게시물 작성
