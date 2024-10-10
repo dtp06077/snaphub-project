@@ -2,11 +2,12 @@ package project.server.domain;
 
 import jakarta.persistence.*;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 
 @Entity
-@Getter @Setter
+@Getter
 @Table(name = "search_log")
+@NoArgsConstructor
 public class SearchLog {
 
     @Id @GeneratedValue
@@ -21,4 +22,11 @@ public class SearchLog {
 
     @Column(nullable = false)
     private boolean relation;
+
+    //생성자
+    public SearchLog (String searchWord, String relationWord, boolean relation) {
+        this.searchWord = searchWord;
+        this.relationWord = relationWord;
+        this.relation = relation;
+    }
 }
