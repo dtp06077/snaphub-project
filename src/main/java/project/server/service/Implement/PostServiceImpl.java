@@ -242,6 +242,7 @@ public class PostServiceImpl implements PostService {
      * 검색 게시물 리스트 가져오기
      */
     @Override
+    @Transactional
     public ResponseEntity<? super GetSearchPostListResponseDto> getSearchPosts(String searchWord, String preSearchWord) {
 
         List<Post> posts;
