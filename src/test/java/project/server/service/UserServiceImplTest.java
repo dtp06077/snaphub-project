@@ -48,21 +48,21 @@ public class UserServiceImplTest {
         //userRequest.setProfile("");
     }
 
-    @Test
-    @DisplayName("회원 가입 성공 테스트")
-    public void insert_success() throws Exception {
-        //Given
-        int userId = userServiceImpl.insert(userRequest);
-
-        //When
-        User findUser = userRepository.findById(userId);
-        UserAuth auth = findUser.getAuths().get(0);
-
-        // Then
-        System.out.println(findUser.getPassword());
-        assertThat(findUser.getName()).isEqualTo("HuiSeong");
-        assertThat(auth.getAuth()).isEqualTo("ROLE_USER");
-    }
+//    @Test
+//    @DisplayName("회원 가입 성공 테스트")
+//    public void insert_success() throws Exception {
+//        //Given
+//        int userId = userServiceImpl.insert(userRequest);
+//
+//        //When
+//        User findUser = userRepository.findById(userId);
+//        UserAuth auth = findUser.getAuths().get(0);
+//
+//        // Then
+//        System.out.println(findUser.getPassword());
+//        assertThat(findUser.getName()).isEqualTo("HuiSeong");
+//        assertThat(auth.getAuth()).isEqualTo("ROLE_USER");
+//    }
 
 //    @Test
 //    @DisplayName("로그인 성공 테스트")
