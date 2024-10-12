@@ -29,11 +29,10 @@ public class SearchLogRepository {
 
     //연관 검색어 리스트 검색
     public List<String> findRelationSearch(String searchWord) {
-        return em.createQuery("select sl.relationWord, count (sl.relationWord) as count " +
-                "from SearchLog sl " +
+        return em.createQuery("select sl.relationWord from SearchLog sl " +
                 "where sl.searchWord = :searchWord " +
                 "group by sl.relationWord " +
-                "order by count desc", String.class)
+                "order by count(sl.searchWord) desc", String.class)
                 .setParameter("searchWord", searchWord)
                 .setMaxResults(15)
                 .getResultList();
