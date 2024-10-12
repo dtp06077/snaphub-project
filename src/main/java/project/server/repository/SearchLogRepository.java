@@ -31,6 +31,7 @@ public class SearchLogRepository {
     public List<String> findRelationSearch(String searchWord) {
         return em.createQuery("select sl.relationWord from SearchLog sl " +
                 "where sl.searchWord = :searchWord " +
+                "and sl.relationWord is not null " +
                 "group by sl.relationWord " +
                 "order by count(sl.searchWord) desc", String.class)
                 .setParameter("searchWord", searchWord)
