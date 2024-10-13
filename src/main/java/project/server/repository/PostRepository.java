@@ -27,14 +27,14 @@ public class PostRepository {
     }
 
     //특정 사용자 게시물 검색
-    public List<Post> findByUserId(int userId) {
+    public List<Post> findByUserId(String loginId) {
         /**
          User user = em.find(User.class, id);
          return user.getPosts();
          직관적이지만 성능에 영향을 줄 수 있기에 JPQL로 대체
          */
-        return em.createQuery("select p from Post p where p.author.id = :authorId", Post.class)
-                .setParameter("authorId", userId)
+        return em.createQuery("select p from Post p where p.authorId = :authorId", Post.class)
+                .setParameter("authorId", loginId)
                 .getResultList();
     }
 

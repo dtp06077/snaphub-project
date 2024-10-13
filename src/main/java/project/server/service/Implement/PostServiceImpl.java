@@ -31,6 +31,7 @@ public class PostServiceImpl implements PostService {
     private final EmotionRepository emotionRepository;
     private final CommentRepository commentRepository;
     private final SearchLogRepository searchLogRepository;
+    private final UserRepository userRepository;
 
     /**
      * 특정 게시물 가져오기
@@ -285,18 +286,18 @@ public class PostServiceImpl implements PostService {
      * 특정 사용자 게시물 리스트 가져오기
      */
     @Override
-    public ResponseEntity<? super GetUserPostListResponseDto> getUserPosts(CustomUser customUser) {
+    public ResponseEntity<? super GetUserPostListResponseDto> getUserPosts(String loginId) {
 
         List<Post> posts;
 
         try {
-            User user = customUser.getUser();
+            User user = userRepository.findByLoginId(loginId);
 
             if(user == null) {
                 return GetUserPostListResponseDto.noExistUser();
             }
 
-            posts = postRepository.findByUserId(user.getId());
+            posts = postRepository.findByUserId(loginId);
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseDto.databaseError();
