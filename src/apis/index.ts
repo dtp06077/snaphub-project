@@ -5,7 +5,7 @@ import api from "./api";
 import { UserInfoResponseDto } from "./response/user";
 import { UpdatePostRequestDto, UploadPostRequestDto, WriteCommentRequestDto } from "./request/post";
 import { UploadPostResponseDto, GetPostResponseDto, IncreaseViewCountResponseDto, GetEmotionListResponseDto, GetCommentListResponseDto, PutEmotionResponseDto, WriteCommentResponsetDto, DeletePostResponseDto, UpdatePostResponseDto, GetLatestPostListResponseDto, GetTop3PostListResponseDto, GetSearchPostListResponseDto } from "./response/post";
-import { GetPopularSearchListResponseDto } from "./response/search";
+import { GetPopularSearchListResponseDto, GetRelatableSearchListResponseDto } from "./response/search";
 
 const DOMAIN = 'http://localhost:4000';
 
@@ -45,6 +45,7 @@ const UPLOAD_FILE_URL = () => `${FILE_DOMAIN}/upload`;
 
 //search url
 const GET_POPULAR_SEARCH_LIST_URL = () => `${API_DOMAIN}/search/popular-list`; 
+const GET_RELATABLE_SEARCH_LIST_URL = (searchWord: string) => `${API_DOMAIN}/search/${searchWord}/relation-list`;
 
 const multipartFormData = { headers: { 'Content-Type': 'multipart/form-data' } };
 
@@ -104,7 +105,7 @@ export const checkNameRequest = async (name: string) => {
     return result;
 }
 
-//사용자 정보 리퀘스트
+//사용자 정보 불러오기 리퀘스트
 export const userInfoRequest = async (accessToken: string) => {
 
     const result = await api.get(USER_INFO_URL(), authorization(accessToken))
@@ -315,9 +316,24 @@ export const uploadFileRequest = async (data: FormData) => {
 
 //인기 검색어 리스트 불러오기 리퀘스트
 export const getPopularSearchListRequest = async () => {
-    const result = await api.post(GET_POPULAR_SEARCH_LIST_URL())
+    const result = await api.get(GET_POPULAR_SEARCH_LIST_URL())
         .then(response => {
             const responseBody: GetPopularSearchListResponseDto = response.data;
+            return responseBody;
+        })
+        .catch(error => {
+            if (!error.response) return null;
+            const responseBody: ResponseDto = error.response.data;
+            return responseBody;
+        })
+    return result;
+}
+
+//연관 검색어 리스트 불러오기 리퀘스트
+export const getRelatableSearchListRequest = async (searchWord: string) => {
+    const result = await api.post(GET_RELATABLE_SEARCH_LIST_URL(searchWord))
+        .then(response => {
+            const responseBody: GetRelatableSearchListResponseDto = response.data;
             return responseBody;
         })
         .catch(error => {
