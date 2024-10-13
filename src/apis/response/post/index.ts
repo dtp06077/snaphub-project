@@ -9,6 +9,7 @@ import DeletePostResponseDto from "./delete-post-response.dto"
 import UpdatePostResponseDto from "./update-post.response.dto"
 import GetTop3PostListResponseDto from "./get-top-3-post-list-response.dto"
 import GetLatestPostListResponseDto from "./get-latest-post-list-respose.dto"
+import GetSearchPostListResponseDto from "./get-search-post-list.response.dto"
 
 export type {
     UploadPostResponseDto,
@@ -21,5 +22,6 @@ export type {
     DeletePostResponseDto,
     UpdatePostResponseDto,
     GetTop3PostListResponseDto,
-    GetLatestPostListResponseDto
+    GetLatestPostListResponseDto,
+    GetSearchPostListResponseDto
 }
