@@ -48,6 +48,14 @@ public class PostController {
         return postService.getSearchPosts(searchWord, preSearchWord);
     }
 
+    //특정 사용자 게시물 리스트 검색
+    @GetMapping("/user-post-list/{loginId}")
+    public ResponseEntity<? super GetUserPostListResponseDto> getUserPostList(
+            @PathVariable("loginId") String loginId
+    ) {
+        return postService.getUserPosts(loginId);
+    }
+
     //게시물 작성
     @PostMapping("")
     @Secured("ROLE_USER")
