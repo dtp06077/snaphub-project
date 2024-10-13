@@ -27,12 +27,14 @@ public class PostRepository {
     }
 
     //특정 사용자 게시물 검색
-    public List<Post> findByUserId(int id) {
-//        User user = em.find(User.class, id);
-//        return user.getPosts();
-//        직관적이지만 성능에 영향을 줄 수 있기에 JPQL로 대체
+    public List<Post> findByUserId(int userId) {
+        /**
+         User user = em.find(User.class, id);
+         return user.getPosts();
+         직관적이지만 성능에 영향을 줄 수 있기에 JPQL로 대체
+         */
         return em.createQuery("select p from Post p where p.author.id = :authorId", Post.class)
-                .setParameter("authorId", id)
+                .setParameter("authorId", userId)
                 .getResultList();
     }
 
@@ -67,7 +69,7 @@ public class PostRepository {
                 .getResultList();
     }
 
-    //게시글 삭제 메서드
+    //게시물 삭제 메서드
     public void delete(int id) {
         Post post = em.find(Post.class, id);
         if (post != null) {

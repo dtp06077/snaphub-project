@@ -25,13 +25,13 @@ public interface PostService {
     ResponseEntity<? super PutEmotionResponseDto> putEmotion(int postId, String emotionStatus, CustomUser customUser);
 
     //감정표현 리스트 불러오기 Response
-    ResponseEntity<? super GetEmotionsResponseDto> getEmotions(int postId);
+    ResponseEntity<? super GetEmotionListResponseDto> getEmotions(int postId);
 
     //댓글 등록하기 Response
     ResponseEntity<? super WriteCommentResponseDto> writeComment(WriteCommentRequestDto request, int postId, CustomUser customUser);
 
     //댓글 리스트 불러오기 Response
-    ResponseEntity<? super GetCommentsResponseDto> getComments(int postId);
+    ResponseEntity<? super GetCommentListResponseDto> getComments(int postId);
 
     //최신 게시물 리스트 불러오기 Response
     ResponseEntity<? super GetLatestPostListResponseDto> getLatestPosts();
@@ -42,6 +42,8 @@ public interface PostService {
     //검색 게시물 리스트 불러오기 Response
     ResponseEntity<? super GetSearchPostListResponseDto> getSearchPosts(String searchWord, String preSearchWord);
 
+    //특정 사용자 게시물 리스트 불러오기 Response
+    ResponseEntity<? super GetUserPostListResponseDto> getUserPosts(CustomUser customUser);
     //게시물 조회수 증가 Response
     ResponseEntity<? super IncreaseViewCountResponseDto> increaseViewCount(int postId);
 }

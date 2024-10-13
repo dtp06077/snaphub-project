@@ -64,8 +64,10 @@ public class PostServiceImpl implements PostService {
     @Override
     @Transactional
     public ResponseEntity<? super UploadPostResponseDto> uploadPost(UploadPostRequestDto request, CustomUser customUser) {
+
         try {
             User user = customUser.getUser();
+
             if(user == null) {
                 return UploadPostResponseDto.noExistUser();
             }
@@ -96,7 +98,9 @@ public class PostServiceImpl implements PostService {
     @Override
     @Transactional
     public ResponseEntity<? super PutEmotionResponseDto> putEmotion(int postId, String emotionStatus, CustomUser customUser) {
+
         try{
+
             User user = customUser.getUser();
 
             if(user == null) {
@@ -132,14 +136,15 @@ public class PostServiceImpl implements PostService {
      * 감정표현 리스트 가져오기
      */
     @Override
-    public ResponseEntity<? super GetEmotionsResponseDto> getEmotions(int postId) {
+    public ResponseEntity<? super GetEmotionListResponseDto> getEmotions(int postId) {
 
         Post post;
 
         try {
             post = postRepository.findById(postId);
+
             if (post == null) {
-                return GetEmotionsResponseDto.noExistPost();
+                return GetEmotionListResponseDto.noExistPost();
             }
 
         } catch (Exception e) {
@@ -147,7 +152,7 @@ public class PostServiceImpl implements PostService {
             return ResponseDto.databaseError();
         }
 
-        return GetEmotionsResponseDto.success(post);
+        return GetEmotionListResponseDto.success(post);
     }
 
     /**
@@ -156,12 +161,16 @@ public class PostServiceImpl implements PostService {
     @Override
     @Transactional
     public ResponseEntity<? super WriteCommentResponseDto> writeComment(WriteCommentRequestDto request, int postId, CustomUser customUser) {
+
         try {
             User user = customUser.getUser();
+
             if(user == null) {
                 return WriteCommentResponseDto.noExistUser();
             }
+
             Post post = postRepository.findById(postId);
+
             if(post==null) {
                 return WriteCommentResponseDto.noExistPost();
             }
@@ -181,13 +190,15 @@ public class PostServiceImpl implements PostService {
      * 댓글 리스트 가져오기
      */
     @Override
-    public ResponseEntity<? super GetCommentsResponseDto> getComments(int postId) {
+    public ResponseEntity<? super GetCommentListResponseDto> getComments(int postId) {
+
         Post post;
 
         try {
             post = postRepository.findById(postId);
+
             if (post == null) {
-                return GetCommentsResponseDto.noExistPost();
+                return GetCommentListResponseDto.noExistPost();
             }
 
         } catch (Exception e) {
@@ -195,7 +206,7 @@ public class PostServiceImpl implements PostService {
             return ResponseDto.databaseError();
         }
 
-        return GetCommentsResponseDto.success(post);
+        return GetCommentListResponseDto.success(post);
     }
 
     /**
@@ -203,6 +214,7 @@ public class PostServiceImpl implements PostService {
      */
     @Override
     public ResponseEntity<? super GetLatestPostListResponseDto> getLatestPosts() {
+
         List<Post> posts;
 
         try {
@@ -221,6 +233,7 @@ public class PostServiceImpl implements PostService {
      */
     @Override
     public ResponseEntity<? super GetTop3PostListResponseDto> getTop3Posts() {
+
         List<Post> posts;
 
         try {
@@ -269,6 +282,30 @@ public class PostServiceImpl implements PostService {
     }
 
     /**
+     * 특정 사용자 게시물 리스트 가져오기
+     */
+    @Override
+    public ResponseEntity<? super GetUserPostListResponseDto> getUserPosts(CustomUser customUser) {
+
+        List<Post> posts;
+
+        try {
+            User user = customUser.getUser();
+
+            if(user == null) {
+                return GetUserPostListResponseDto.noExistUser();
+            }
+
+            posts = postRepository.findByUserId(user.getId());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+
+        return GetUserPostListResponseDto.success(posts);
+    }
+
+    /**
      * 조회수 증가
      */
     @Override
@@ -299,6 +336,7 @@ public class PostServiceImpl implements PostService {
     @Override
     @Transactional
     public ResponseEntity<? super DeletePostResponseDto> deletePost(int postId, CustomUser customUser) {
+
         try {
             User user = customUser.getUser();
 
@@ -332,6 +370,7 @@ public class PostServiceImpl implements PostService {
     @Override
     @Transactional
     public ResponseEntity<? super UpdatePostResponseDto> updatePost(int postId, UpdatePostRequestDto request, CustomUser customUser) {
+
         try {
 
             User user = customUser.getUser();
