@@ -62,7 +62,7 @@ export default function Main() {
         return (
             <div id='main-top-wrapper'>
                 <div className='main-top-container'>
-                    <div className='main-top-title'>{'SnapHub 입니다. \n 방문하신 것을 환영합니다.'}</div>
+                    <div className='main-top-title'>{'인생의 순간을 snapHub에 저장하세요!'}</div>
                     <div className='main-top-contents-box'>
                         <div className='main-top-contents-title'>{'주간 TOP 3 게시글'}</div>
                         <div className='main-top-contents'>

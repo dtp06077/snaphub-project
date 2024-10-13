@@ -74,7 +74,7 @@ const Header = () => {
           <input
             className='header-search-input'
             type='text'
-            placeholder='Please enter a search term.'
+            placeholder='검색어를 입력하세요.'
             value={word}
             onChange={(e) => setWord(e.target.value)}
             onKeyDown={onwordKeyDownHandler}

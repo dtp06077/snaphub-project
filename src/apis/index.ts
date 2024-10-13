@@ -26,7 +26,7 @@ const USER_INFO_URL = () => `${API_DOMAIN}/users/info`;
 const GET_POST_URL = (postId: number | string) => `${API_DOMAIN}/post/${postId}`;
 const GET_LATEST_POST_LIST_URL = () => `${API_DOMAIN}/post/latest-list`;
 const GET_TOP_3_POST_LIST_URL = () => `${API_DOMAIN}/post/top-3`;
-const GET_SEARCH_POST_LIST_URL = (searchWord: string, preSearchWord: string | null) => `${API_DOMAIN}/post/search-list${preSearchWord ? '/' + preSearchWord : ''}`;
+const GET_SEARCH_POST_LIST_URL = (searchWord: string, preSearchWord: string | null) => `${API_DOMAIN}/post/search-list/${searchWord}${preSearchWord ? '/' + preSearchWord : ''}`;
 const UPLOAD_POST_URL = () => `${API_DOMAIN}/post`;
 const DELETE_POST_URL = (postId: number | string) => `${API_DOMAIN}/post/${postId}`;
 const UPDATE_POST_URL = (postId: number | string) => `${API_DOMAIN}/post/${postId}`;
@@ -331,7 +331,7 @@ export const getPopularSearchListRequest = async () => {
 
 //연관 검색어 리스트 불러오기 리퀘스트
 export const getRelatableSearchListRequest = async (searchWord: string) => {
-    const result = await api.post(GET_RELATABLE_SEARCH_LIST_URL(searchWord))
+    const result = await api.get(GET_RELATABLE_SEARCH_LIST_URL(searchWord))
         .then(response => {
             const responseBody: GetRelatableSearchListResponseDto = response.data;
             return responseBody;
