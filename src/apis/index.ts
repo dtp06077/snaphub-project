@@ -4,7 +4,7 @@ import { ResponseDto } from "./response";
 import api from "./api";
 import { UserInfoResponseDto } from "./response/user";
 import { UpdatePostRequestDto, UploadPostRequestDto, WriteCommentRequestDto } from "./request/post";
-import { UploadPostResponseDto, GetPostResponseDto, IncreaseViewCountResponseDto, GetEmotionListResponseDto, GetCommentListResponseDto, PutEmotionResponseDto, WriteCommentResponsetDto, DeletePostResponseDto, UpdatePostResponseDto, GetLatestPostListResponseDto, GetTop3PostListResponseDto } from "./response/post";
+import { UploadPostResponseDto, GetPostResponseDto, IncreaseViewCountResponseDto, GetEmotionListResponseDto, GetCommentListResponseDto, PutEmotionResponseDto, WriteCommentResponsetDto, DeletePostResponseDto, UpdatePostResponseDto, GetLatestPostListResponseDto, GetTop3PostListResponseDto, GetSearchPostListResponseDto } from "./response/post";
 import { GetPopularSearchListResponseDto } from "./response/search";
 
 const DOMAIN = 'http://localhost:4000';
@@ -26,6 +26,7 @@ const USER_INFO_URL = () => `${API_DOMAIN}/users/info`;
 const GET_POST_URL = (postId: number | string) => `${API_DOMAIN}/post/${postId}`;
 const GET_LATEST_POST_LIST_URL = () => `${API_DOMAIN}/post/latest-list`;
 const GET_TOP_3_POST_LIST_URL = () => `${API_DOMAIN}/post/top-3`;
+const GET_SEARCH_POST_LIST_URL = (searchWord: string, preSearchWord: string | null) => `${API_DOMAIN}/post/search-list${preSearchWord ? '/' + preSearchWord : ''}`;
 const UPLOAD_POST_URL = () => `${API_DOMAIN}/post`;
 const DELETE_POST_URL = (postId: number | string) => `${API_DOMAIN}/post/${postId}`;
 const UPDATE_POST_URL = (postId: number | string) => `${API_DOMAIN}/post/${postId}`;
@@ -199,6 +200,21 @@ export const getTop3PostListRequest = async () => {
     const result = await api.get(GET_TOP_3_POST_LIST_URL())
         .then(response => {
             const responseBody: GetTop3PostListResponseDto = response.data;
+            return responseBody;
+        })
+        .catch(error => {
+            if (!error.response) return null;
+            const responseBody: ResponseDto = error.response.data;
+            return responseBody
+        })
+    return result;
+}
+
+//검색 게시물 리스트 불러오기 리퀘스트
+export const getSearchPostListRequest = async (searchWord: string, preSearchWord: string | null) => {
+    const result = await api.get(GET_SEARCH_POST_LIST_URL(searchWord, preSearchWord))
+        .then(response => {
+            const responseBody: GetSearchPostListResponseDto = response.data;
             return responseBody;
         })
         .catch(error => {
