@@ -12,11 +12,11 @@ import java.util.List;
 @Getter
 public class GetRelatableSearchListResponseDto extends ResponseDto {
 
-    private List<String> relatedSearchList;
+    private List<String> relatableSearchList;
 
     private GetRelatableSearchListResponseDto(List<String> relatedSearchList) {
         super(ResponseCode.SUCCESS, ResponseMessage.SUCCESS);
-        this.relatedSearchList = relatedSearchList;
+        this.relatableSearchList = relatedSearchList;
     }
 
     public static ResponseEntity<GetRelatableSearchListResponseDto> success(List<String> relatedSearchList) {
