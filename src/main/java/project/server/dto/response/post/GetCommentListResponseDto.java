@@ -12,17 +12,17 @@ import project.server.dto.response.ResponseDto;
 import java.util.List;
 
 @Getter
-public class GetCommentsResponseDto extends ResponseDto {
+public class GetCommentListResponseDto extends ResponseDto {
 
     private List<CommentListItem> commentList;
 
-    private GetCommentsResponseDto(Post post) {
+    private GetCommentListResponseDto(Post post) {
         super(ResponseCode.SUCCESS, ResponseMessage.SUCCESS);
         this.commentList = CommentListItem.copyList(post);
     }
 
-    public static ResponseEntity<GetCommentsResponseDto> success(Post post) {
-        GetCommentsResponseDto result = new GetCommentsResponseDto(post);
+    public static ResponseEntity<GetCommentListResponseDto> success(Post post) {
+        GetCommentListResponseDto result = new GetCommentListResponseDto(post);
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 

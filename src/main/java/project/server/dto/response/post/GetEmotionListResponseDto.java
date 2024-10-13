@@ -12,17 +12,17 @@ import project.server.dto.response.ResponseDto;
 import java.util.List;
 
 @Getter
-public class GetEmotionsResponseDto extends ResponseDto {
+public class GetEmotionListResponseDto extends ResponseDto {
 
     private List<EmotionListItem> emotionList;
 
-    private GetEmotionsResponseDto(Post post) {
+    private GetEmotionListResponseDto(Post post) {
         super(ResponseCode.SUCCESS, ResponseMessage.SUCCESS);
         this.emotionList = EmotionListItem.copyList(post);
     }
 
-    public static ResponseEntity<GetEmotionsResponseDto> success(Post post) {
-        GetEmotionsResponseDto result = new GetEmotionsResponseDto(post);
+    public static ResponseEntity<GetEmotionListResponseDto> success(Post post) {
+        GetEmotionListResponseDto result = new GetEmotionListResponseDto(post);
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 

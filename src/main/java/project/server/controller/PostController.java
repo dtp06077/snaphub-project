@@ -92,7 +92,7 @@ public class PostController {
 
     //감정표현리스트 검색
     @GetMapping("/{postId}/emotion-list")
-    public ResponseEntity<? super GetEmotionsResponseDto> getEmotions(
+    public ResponseEntity<? super GetEmotionListResponseDto> getEmotions(
             @PathVariable("postId") int postId
     ) {
         return postService.getEmotions(postId);
@@ -110,7 +110,7 @@ public class PostController {
 
     //댓글리스트 검색
     @GetMapping("/{postId}/comment-list")
-    public ResponseEntity<? super GetCommentsResponseDto> getComments(
+    public ResponseEntity<? super GetCommentListResponseDto> getComments(
             @PathVariable("postId") int postId
     ) {
         return postService.getComments(postId);
