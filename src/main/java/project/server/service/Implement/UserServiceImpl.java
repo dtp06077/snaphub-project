@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import project.server.domain.User;
 
 import project.server.dto.response.ResponseDto;
-import project.server.dto.response.user.UserInfoResponseDto;
+import project.server.dto.response.user.GetUserInfoResponseDto;
 import project.server.repository.UserRepository;
 import project.server.security.domain.CustomUser;
 import project.server.service.UserService;
@@ -27,19 +27,19 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
     @Override
-    public ResponseEntity<? super UserInfoResponseDto> getUserInfo(CustomUser customUser) {
+    public ResponseEntity<? super GetUserInfoResponseDto> getUserInfo(CustomUser customUser) {
 
         User user = customUser.getUser();
 
         try {
             if (user == null) {
-                return UserInfoResponseDto.noExistUser();
+                return GetUserInfoResponseDto.noExistUser();
             }
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseDto.databaseError();
         }
-        return UserInfoResponseDto.success(user);
+        return GetUserInfoResponseDto.success(user);
     }
 
 

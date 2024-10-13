@@ -11,7 +11,7 @@ import project.server.dto.response.ResponseDto;
 import java.util.List;
 
 @Getter
-public class UserInfoResponseDto extends ResponseDto {
+public class GetUserInfoResponseDto extends ResponseDto {
 
     private int userId;
     private String loginId;
@@ -22,7 +22,7 @@ public class UserInfoResponseDto extends ResponseDto {
     private String address;
     private List<String> roles;
 
-    private UserInfoResponseDto(User user) {
+    private GetUserInfoResponseDto(User user) {
         super(ResponseCode.SUCCESS, ResponseMessage.SUCCESS);
         this.userId = user.getId();
         this.loginId = user.getLoginId();
@@ -35,8 +35,8 @@ public class UserInfoResponseDto extends ResponseDto {
     }
 
     //HTTP Status 200
-    public static ResponseEntity<UserInfoResponseDto> success(User user) {
-        UserInfoResponseDto result = new UserInfoResponseDto(user);
+    public static ResponseEntity<GetUserInfoResponseDto> success(User user) {
+        GetUserInfoResponseDto result = new GetUserInfoResponseDto(user);
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 

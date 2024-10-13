@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import project.server.dto.response.user.UserInfoResponseDto;
+import project.server.dto.response.user.GetUserInfoResponseDto;
 import project.server.security.domain.CustomUser;
 import project.server.service.UserService;
 
@@ -23,7 +23,7 @@ public class UserController {
      */
     @Secured("ROLE_USER") //USER 권한 설정
     @GetMapping("/info")
-    public ResponseEntity<? super UserInfoResponseDto> userInfo(@AuthenticationPrincipal CustomUser customUser) {
+    public ResponseEntity<? super GetUserInfoResponseDto> userInfo(@AuthenticationPrincipal CustomUser customUser) {
 
         return userService.getUserInfo(customUser);
     }
