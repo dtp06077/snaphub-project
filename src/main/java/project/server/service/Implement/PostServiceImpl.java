@@ -67,7 +67,8 @@ public class PostServiceImpl implements PostService {
     public ResponseEntity<? super UploadPostResponseDto> uploadPost(UploadPostRequestDto request, CustomUser customUser) {
 
         try {
-            User user = customUser.getUser();
+            User authUser = customUser.getUser();
+            User user = userRepository.findById(authUser.getId());
 
             if(user == null) {
                 return UploadPostResponseDto.noExistUser();
@@ -102,10 +103,11 @@ public class PostServiceImpl implements PostService {
 
         try{
 
-            User user = customUser.getUser();
+            User authUser = customUser.getUser();
+            User user = userRepository.findById(authUser.getId());
 
             if(user == null) {
-                return PutEmotionResponseDto.noExistUser();
+                return UploadPostResponseDto.noExistUser();
             }
 
             Post post = postRepository.findById(postId);
@@ -164,10 +166,11 @@ public class PostServiceImpl implements PostService {
     public ResponseEntity<? super WriteCommentResponseDto> writeComment(WriteCommentRequestDto request, int postId, CustomUser customUser) {
 
         try {
-            User user = customUser.getUser();
+            User authUser = customUser.getUser();
+            User user = userRepository.findById(authUser.getId());
 
             if(user == null) {
-                return WriteCommentResponseDto.noExistUser();
+                return UploadPostResponseDto.noExistUser();
             }
 
             Post post = postRepository.findById(postId);
@@ -339,10 +342,11 @@ public class PostServiceImpl implements PostService {
     public ResponseEntity<? super DeletePostResponseDto> deletePost(int postId, CustomUser customUser) {
 
         try {
-            User user = customUser.getUser();
+            User authUser = customUser.getUser();
+            User user = userRepository.findById(authUser.getId());
 
             if(user == null) {
-                return DeletePostResponseDto.noExistUser();
+                return UploadPostResponseDto.noExistUser();
             }
 
             Post post = postRepository.findById(postId);
@@ -374,10 +378,11 @@ public class PostServiceImpl implements PostService {
 
         try {
 
-            User user = customUser.getUser();
+            User authUser = customUser.getUser();
+            User user = userRepository.findById(authUser.getId());
 
             if(user == null) {
-                return DeletePostResponseDto.noExistUser();
+                return UploadPostResponseDto.noExistUser();
             }
 
             Post post = postRepository.findById(postId);
