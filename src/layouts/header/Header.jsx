@@ -216,8 +216,8 @@ const Header = () => {
 
     const onMyPageButtonClickHandler = () => {
       if (isLogin) {
-        const { loginId } = userInfo;
-        navigate(USER_PATH(loginId));
+        const { userId } = userInfo;
+        navigate(USER_PATH(userId));
         return;
       }
       return;

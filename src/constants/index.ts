@@ -1,6 +1,6 @@
 export const MAIN_PATH = () => `/`;
 export const SEARCH_PATH = (searchWord: string) => `/search/${searchWord}`;
-export const USER_PATH = (loginId: string) => `/users/${loginId}`;
+export const USER_PATH = (userId: string | number) => `/users/${userId}`;
 export const POST_PATH = () => `/post`;
 export const POST_DETAIL_PATH = (postId: string | number) => `${POST_PATH()}/detail/${postId}`;
 export const POST_WRITE_PATH = () => `${POST_PATH()}/write`;

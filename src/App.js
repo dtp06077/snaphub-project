@@ -52,7 +52,7 @@ function App() {
      * 게시물 상세보기(PostDetail): '/post/detail/:postId'
      * 게시물 작성하기(PostWrite): '/post/write'
      * 게시물 수정하기(PostUpdate): '/post/update/:postId'
-     * 사용자 페이지(User): '/users/:loginId'
+     * 사용자 페이지(User): '/users/:userId'
      */
     return (
         <BrowserRouter>
@@ -62,7 +62,7 @@ function App() {
                         <Routes>
                             <Route element={<Wrapper />}>
                                 <Route path={MAIN_PATH()} element={<Main />}></Route>
-                                <Route path={USER_PATH(':loginId')} element={<User />}></Route>
+                                <Route path={USER_PATH(':userId')} element={<User />}></Route>
                                 <Route path={SEARCH_PATH(':searchWord')} element={<Search />}></Route>
                                 <Route path={POST_PATH()}>
                                     <Route path={POST_WRITE_PATH()} element={<PostWrite />}></Route>
