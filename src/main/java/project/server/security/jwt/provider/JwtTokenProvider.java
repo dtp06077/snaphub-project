@@ -109,15 +109,8 @@ public class JwtTokenProvider {
 
             //토큰 유효하면 사용자 정보 담아주기
             try {
-                User userInfo = userRepository.findById(userId);
-                user.setPassword(userInfo.getPassword());
-                user.setName(userInfo.getName());
-                user.setEmail(userInfo.getEmail());
-                user.setProfileImage(userInfo.getProfileImage());
-                user.setAddress(userInfo.getAddress());
-                user.setTelNumber(userInfo.getTelNumber());
-                user.setAuths(userInfo.getAuths());
-
+                //CustomUser 객체에 모든 정보를 담으면 보안에 좋지 않으므로 패스
+                //User userInfo = userRepository.findById(userId);
             } catch (Exception e) {
                 log.error(e.getMessage());
                 log.error("Token validated -> DB Error");
