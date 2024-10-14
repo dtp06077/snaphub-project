@@ -286,18 +286,18 @@ public class PostServiceImpl implements PostService {
      * 특정 사용자 게시물 리스트 가져오기
      */
     @Override
-    public ResponseEntity<? super GetUserPostListResponseDto> getUserPosts(String loginId) {
+    public ResponseEntity<? super GetUserPostListResponseDto> getUserPosts(String name) {
 
         List<Post> posts;
 
         try {
-            User user = userRepository.findByLoginId(loginId);
+            User user = userRepository.findByName(name);
 
             if(user == null) {
                 return GetUserPostListResponseDto.noExistUser();
             }
 
-            posts = postRepository.findByUserId(loginId);
+            posts = postRepository.findByUserName(name);
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseDto.databaseError();

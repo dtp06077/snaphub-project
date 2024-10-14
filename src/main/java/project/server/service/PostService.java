@@ -43,7 +43,7 @@ public interface PostService {
     ResponseEntity<? super GetSearchPostListResponseDto> getSearchPosts(String searchWord, String preSearchWord);
 
     //특정 사용자 게시물 리스트 불러오기 Response
-    ResponseEntity<? super GetUserPostListResponseDto> getUserPosts(String loginId);
+    ResponseEntity<? super GetUserPostListResponseDto> getUserPosts(String name);
 
     //게시물 조회수 증가 Response
     ResponseEntity<? super IncreaseViewCountResponseDto> increaseViewCount(int postId);
