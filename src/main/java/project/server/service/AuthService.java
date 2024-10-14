@@ -7,16 +7,16 @@ import project.server.dto.response.auth.LoginResponseDto;
 
 public interface AuthService {
 
-    //회원 등록
+    //회원 등록하기
     ResponseEntity<? super JoinResponseDto> join(JoinRequestDto request);
 
-    //중복 아이디 조회
+    //중복 아이디 조회하기
     ResponseEntity<? super JoinResponseDto> checkDuplicateId(String loginId);
 
-    //중복 닉네임 조회
+    //중복 닉네임 조회하기
     ResponseEntity<? super JoinResponseDto> checkDuplicateName(String name);
 
-    //회원 로그인
+    //회원 로그인하기
     ResponseEntity<? super LoginResponseDto> login(String loginId, String password);
 
 }
