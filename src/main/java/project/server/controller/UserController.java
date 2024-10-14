@@ -28,7 +28,8 @@ public class UserController {
      */
     @Secured("ROLE_USER") //USER 권한 설정
     @GetMapping("/info")
-    public ResponseEntity<? super GetUserInfoResponseDto> getUserInfo(@AuthenticationPrincipal CustomUser customUser) {
+    public ResponseEntity<? super GetUserInfoResponseDto> getUserInfo(
+            @AuthenticationPrincipal CustomUser customUser) {
         return userService.getUserInfo(customUser);
     }
 
@@ -38,7 +39,9 @@ public class UserController {
     @Secured("ROLE_USER")
     @PatchMapping("/name")
     public ResponseEntity<? super UpdateNameResponseDto> updateName(
-            @RequestBody @Valid UpdateNameRequestDto request, @AuthenticationPrincipal CustomUser customUser) {
+            @RequestBody @Valid UpdateNameRequestDto request,
+            @AuthenticationPrincipal CustomUser customUser
+    ) {
         return userService.updateName(request, customUser);
     }
 
@@ -46,9 +49,11 @@ public class UserController {
      * 프로필 이미지 수정
      */
     @Secured("ROLE_USER")
-    @PatchMapping("/name")
+    @PatchMapping("/profile-image")
     public ResponseEntity<? super UpdateProfileImageResponseDto> updateProfileImage(
-            @RequestBody @Valid UpdateProfileImageRequestDto request, @AuthenticationPrincipal CustomUser customUser) {
+            @RequestBody @Valid UpdateProfileImageRequestDto request,
+            @AuthenticationPrincipal CustomUser customUser
+    ) {
         return userService.updateProfileImage(request, customUser);
     }
 }

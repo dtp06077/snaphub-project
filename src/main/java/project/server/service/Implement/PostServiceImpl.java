@@ -355,7 +355,7 @@ public class PostServiceImpl implements PostService {
                 return DeletePostResponseDto.noExistPost();
             }
 
-            if(!user.getLoginId().equals(post.getAuthorId())) {
+            if(!user.getLoginId().equals(post.getAuthor().getLoginId())) {
                 return DeletePostResponseDto.noPermission();
             }
 
@@ -391,7 +391,7 @@ public class PostServiceImpl implements PostService {
                 return DeletePostResponseDto.noExistPost();
             }
 
-            if(!user.getLoginId().equals(post.getAuthorId())) {
+            if(!user.getLoginId().equals(post.getAuthor().getLoginId())) {
                 return DeletePostResponseDto.noPermission();
             }
 

@@ -29,9 +29,9 @@ public class GetPostResponseDto extends ResponseDto {
         this.content = post.getContent();
         this.imageList = post.getImageList();
         this.postDateTime = post.getPostDateTime();
-        this.posterName = post.getAuthorName();
-        this.posterId = post.getAuthorId();
-        this.posterProfileImage = post.getAuthorProfile();
+        this.posterName = post.getAuthor().getName();
+        this.posterId = post.getAuthor().getLoginId();
+        this.posterProfileImage = post.getAuthor().getProfileImage();
     }
 
     //Http Status 200

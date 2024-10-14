@@ -26,14 +26,6 @@ public class Post {
     @JoinColumn(name = "user_id")
     private User author;
 
-    @Column(nullable = false)
-    private String authorId;
-
-    @Column(nullable = false)
-    private String authorName;
-
-    private String authorProfile;
-
     //자식 엔티티 영속화
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PostImage> images = new ArrayList<>();
@@ -69,9 +61,6 @@ public class Post {
         this.totalEmoCnt = 0;
         this.commentCnt = 0;
         this.viewCnt = 0;
-        this.authorId = user.getLoginId();
-        this.authorName = user.getName();
-        this.authorProfile = user.getProfileImage();
 
         // DateTimeFormatter를 사용하여 포맷팅
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
