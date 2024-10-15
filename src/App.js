@@ -42,7 +42,7 @@ function App() {
             return;
         }
         userInfoRequest(cookies.accessToken).then(getUserResponse);
-    }, []);
+    }, [cookies.accessToken]);
 
     //render: Application 렌더링
     /**
