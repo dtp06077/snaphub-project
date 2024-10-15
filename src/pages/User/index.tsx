@@ -8,14 +8,14 @@ export default function User() {
 
     //state: 닉네임 파라미터 상태
     const { userId } = useParams();
+    //state: 마이페이지 여부 상태
+    const [isMyPage, setMyPage] = useState<boolean>(true);
 
     //component: 사용자 화면 상단 컴포넌트
     const UserTop = () => {
 
         //state: 이미지 파일 인풋 참조 상태
         const imageInputRef = useRef<HTMLInputElement | null>(null);
-        //state: 마이페이지 여부 상태
-        const [isMyPage, setMyPage] = useState<boolean>(true);
         //state: 닉네임 변경 여부 상태
         const [isNameChanged, setIsNameChanged] = useState<boolean>(false);
         //state: 닉네임 상태
@@ -83,7 +83,7 @@ export default function User() {
                             {isMyPage ?
                                 <>
                                     {isNameChanged ?
-                                        <input className='user-top-info-name-input' type='text' size={changeName.length + 1} value={changeName} onChange={onNameChangeHandler}/> :
+                                        <input className='user-top-info-name-input' type='text' size={changeName.length + 1} value={changeName} onChange={onNameChangeHandler} /> :
                                         <div className='user-top-info-name'>{name}</div>
                                     }
                                     <div className='icon-button' onClick={onNameEditButtonClickHandler}>
@@ -103,9 +103,45 @@ export default function User() {
     //component: 사용자 화면 하단 컴포넌트
     const UserBottom = () => {
 
+        //state: 게시물 개수 상태
+        const [count, setCount] = useState<number>(0);
+
         //render: 사용자 화면 하단 컴포넌트 렌더링
         return (
-            <div></div>
+            <div id='user-bottom-wrapper'>
+                <div className='user-bottom-container'>
+                    <div className='user-bottom-title'>{isMyPage ? '내 게시물' : '게시물'}<span className='emphasis'>{0}</span></div>
+                    <div className='user-bottom-contents-box'>
+                        {count === 0 ?
+                            <div className='user-bottom-contents-nothing'>{'게시물이 없습니다.'}</div> :
+                            <div className='user-bottom-contents'>
+
+                            </div>
+                        }
+                        <div className='user-bottom-side-box'>
+                            <div className='user-bottom-side-card'>
+                                <div className='user-bottom-side-container'>
+                                    {isMyPage ?
+                                    <>
+                                    <div className='icon-box'>
+                                        <div className='icon edit-icon'></div>
+                                    </div>
+                                    <div className='user-bottom-side-text'>{'글쓰기'}</div>
+                                    </> :
+                                    <>
+                                    <div className='user-bottom-side-text'>{'내 게시물로 가기'}</div>
+                                    <div className='icon-box'>
+                                        <div className='icon arrow-right-icon'></div>
+                                    </div>
+                                    </>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className='user-bottom-pagination-box'></div>
+                </div>
+            </div>
         );
     };
 
