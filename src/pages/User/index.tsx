@@ -1,15 +1,24 @@
 import React, { ChangeEvent, useEffect, useRef, useState } from 'react'
 import defaultProfileImage from "../../assets/image/default-profile-image.png";
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import './style.css';
+import { PostListItem } from '../../types/interface';
+import PostItem from '../../components/PostItem';
+import { POST_WRITE_PATH, USER_PATH } from '../../constants';
+import { useLoginUserStore } from '../../stores';
 
 //component: 사용자 화면 컴포넌트
 export default function User() {
 
     //state: 닉네임 파라미터 상태
     const { userId } = useParams();
+    //state: 로그인 유저 상태
+    const { loginUser } = useLoginUserStore();
     //state: 마이페이지 여부 상태
     const [isMyPage, setMyPage] = useState<boolean>(true);
+
+    //function: 네비게이트 함수
+    const navigate = useNavigate();
 
     //component: 사용자 화면 상단 컴포넌트
     const UserTop = () => {
@@ -105,35 +114,47 @@ export default function User() {
 
         //state: 게시물 개수 상태
         const [count, setCount] = useState<number>(0);
+        //state: 게시물 리스트 상태
+        const [userPostList, setUserPostList] = useState<PostListItem[]>([]);
 
+        //event handler: 사이드 카드 클릭 이벤트 처리
+        const onSideCardClickHandler = () => {
+            if (isMyPage) navigate(POST_WRITE_PATH());
+            else if(loginUser) navigate(USER_PATH(loginUser.userId));
+        }
+
+        //effect: useId path variable이 변경될 때 마다 실행될 함수
+        useEffect(() => {
+
+        }, [userId]);
         //render: 사용자 화면 하단 컴포넌트 렌더링
         return (
             <div id='user-bottom-wrapper'>
                 <div className='user-bottom-container'>
-                    <div className='user-bottom-title'>{isMyPage ? '내 게시물' : '게시물'}<span className='emphasis'>{0}</span></div>
+                    <div className='user-bottom-title'>{isMyPage ? '내 게시물' : '게시물'}<span className='emphasis'>{count}</span></div>
                     <div className='user-bottom-contents-box'>
                         {count === 0 ?
                             <div className='user-bottom-contents-nothing'>{'게시물이 없습니다.'}</div> :
                             <div className='user-bottom-contents'>
-
+                                {userPostList.map(postListItem => <PostItem postListItem={postListItem} />)}
                             </div>
                         }
                         <div className='user-bottom-side-box'>
-                            <div className='user-bottom-side-card'>
+                            <div className='user-bottom-side-card' onClick={onSideCardClickHandler}>
                                 <div className='user-bottom-side-container'>
                                     {isMyPage ?
-                                    <>
-                                    <div className='icon-box'>
-                                        <div className='icon edit-icon'></div>
-                                    </div>
-                                    <div className='user-bottom-side-text'>{'글쓰기'}</div>
-                                    </> :
-                                    <>
-                                    <div className='user-bottom-side-text'>{'내 게시물로 가기'}</div>
-                                    <div className='icon-box'>
-                                        <div className='icon arrow-right-icon'></div>
-                                    </div>
-                                    </>
+                                        <>
+                                            <div className='icon-box'>
+                                                <div className='icon edit-icon'></div>
+                                            </div>
+                                            <div className='user-bottom-side-text'>{'글쓰기'}</div>
+                                        </> :
+                                        <>
+                                            <div className='user-bottom-side-text'>{'내 게시물로 가기'}</div>
+                                            <div className='icon-box'>
+                                                <div className='icon arrow-right-icon'></div>
+                                            </div>
+                                        </>
                                     }
                                 </div>
                             </div>
