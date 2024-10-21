@@ -14,7 +14,7 @@ import ClickEventModalContextProvider from './contexts/ClickEventModalContextPro
 import { useEffect } from 'react';
 import { useCookies } from 'react-cookie';
 import { useLoginUserStore } from './stores';
-import { userInfoRequest } from './apis';
+import { getUserInfoRequest } from './apis';
 
 //component: Application 컴포넌트
 function App() {
@@ -41,7 +41,7 @@ function App() {
             resetLoginUser();
             return;
         }
-        userInfoRequest(cookies.accessToken).then(getUserResponse);
+        getUserInfoRequest(cookies.accessToken).then(getUserResponse);
     }, [cookies.accessToken]);
 
     //render: Application 렌더링

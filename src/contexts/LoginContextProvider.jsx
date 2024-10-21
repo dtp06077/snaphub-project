@@ -3,7 +3,7 @@ import api from '../apis/api';
 import Cookies from 'js-cookie';
 import { useNavigate, useLocation } from 'react-router-dom';
 import defaultImage from '../assets/image/default-profile-image.png';
-import { loginRequest, userInfoRequest } from '../apis'
+import { loginRequest, getUserInfoRequest } from '../apis'
 import { MAIN_PATH, POST_DETAIL_PATH, TOKEN_PREFIX } from '../constants';
 import { EventModalContext } from './EventModalProvider';
 import { useLoginUserStore } from '../stores';
@@ -134,7 +134,7 @@ const LoginContextProvider = ({ children }) => {
         }
 
         // accessToken (jwt) 이 존재
-        const result = await userInfoRequest(accessToken);
+        const result = await getUserInfoRequest(accessToken);
 
         if (result) {
             const { response, responseBody } = result;
