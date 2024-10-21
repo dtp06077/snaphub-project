@@ -78,11 +78,11 @@ export default function User() {
                 return;
             }
 
-            const { loginId, email, name, profile } = responseBody as GetUserResponseDto;
+            const { email, name, profile } = responseBody as GetUserResponseDto;
             setName(name);
             setProfileImage(profile);
             setEmail(email);
-            const isMyPage = (loginId === loginUser?.loginId);
+            const isMyPage = (name === loginUser?.name);
             setMyPage(isMyPage);
         };
 
@@ -194,7 +194,6 @@ export default function User() {
 
         // useEffect: name path variable 변경 시 실행 할 함수
         useEffect(() => {
-            console.log(id);
             if (!id) return;
             getUserRequest(id).then(getUserResponse);
         }, [id]);
