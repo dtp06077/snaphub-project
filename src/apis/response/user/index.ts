@@ -1,5 +1,5 @@
-import UserInfoResponseDto from "./user.info.response.dto"
+import GetUserInfoResponseDto from "./get-user-info.response.dto"
 
 export type {
-    UserInfoResponseDto
+    GetUserInfoResponseDto
 }

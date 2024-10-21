@@ -1,6 +1,6 @@
 import ResponseDto from "../response.dto";
 
-export default interface UserInfoResponseDto extends ResponseDto {
+export default interface GetUserInfoResponseDto extends ResponseDto {
     userId: number;
     loginId: string;
     email: string | null;

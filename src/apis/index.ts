@@ -2,7 +2,7 @@ import { JoinRequestDto } from "./request/auth";
 import { JoinResponseDto, LoginResponseDto } from "./response/auth";
 import { ResponseDto } from "./response";
 import api from "./api";
-import { UserInfoResponseDto } from "./response/user";
+import { GetUserInfoResponseDto } from "./response/user";
 import { UpdatePostRequestDto, UploadPostRequestDto, WriteCommentRequestDto } from "./request/post";
 import { UploadPostResponseDto, GetPostResponseDto, IncreaseViewCountResponseDto, GetEmotionListResponseDto, GetCommentListResponseDto, PutEmotionResponseDto, WriteCommentResponsetDto, DeletePostResponseDto, UpdatePostResponseDto, GetLatestPostListResponseDto, GetTop3PostListResponseDto, GetSearchPostListResponseDto } from "./response/post";
 import { GetPopularSearchListResponseDto, GetRelatableSearchListResponseDto } from "./response/search";
@@ -110,7 +110,7 @@ export const userInfoRequest = async (accessToken: string) => {
 
     const result = await api.get(USER_INFO_URL(), authorization(accessToken))
         .then(response => {
-            const responseBody: UserInfoResponseDto = response.data;
+            const responseBody: GetUserInfoResponseDto = response.data;
             return { response, responseBody };
         })
         .catch(error => {
