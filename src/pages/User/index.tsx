@@ -6,11 +6,11 @@ import { PostListItem } from '../../types/interface';
 import PostItem from '../../components/PostItem';
 import { MAIN_PATH, POST_WRITE_PATH, USER_PATH } from '../../constants';
 import { useLoginUserStore } from '../../stores';
-import { getUserRequest, updateProfileImageRequest, uploadFileRequest } from '../../apis';
-import { GetUserResponseDto, UpdateProfileImageResponseDto } from '../../apis/response/user';
+import { getUserRequest, updateNameRequest, updateProfileImageRequest, uploadFileRequest } from '../../apis';
+import { GetUserResponseDto, UpdateNameResponseDto, UpdateProfileImageResponseDto } from '../../apis/response/user';
 import { ResponseDto } from '../../apis/response';
 import { EventModalContext } from '../../contexts/EventModalProvider';
-import { UpdateProfileImageRequestDto } from '../../apis/request/user';
+import { UpdateNameRequestDto, UpdateProfileImageRequestDto } from '../../apis/request/user';
 import { useCookies } from 'react-cookie';
 
 //component: 사용자 화면 컴포넌트
@@ -102,7 +102,6 @@ export default function User() {
                 showModal('Authorization Fail', '인증에 실패했습니다.');
                 return;
             }
-            
             if (code === 'NU') {
                 showModal('User Error', '존재하지 않는 사용자입니다.');
                 return;
@@ -119,6 +118,38 @@ export default function User() {
             getUserRequest(id).then(getUserResponse);
         }
 
+        //function: updateNameResponse 처리 함수
+        const updateNameResponse = (responseBody: UpdateNameResponseDto | ResponseDto | null) => {
+            
+            if(!responseBody) return;
+            
+            const { code } = responseBody;
+
+            if (code === 'AF') {
+                showModal('Authorization Fail', '인증에 실패했습니다.');
+                return;
+            }
+            if (code === 'DN') {
+                showModal('Dupliated Name', '중복되는 닉네임입니다.');
+                return;
+            }
+            if (code === 'NU') {
+                showModal('User Error', '존재하지 않는 사용자입니다.');
+                return;
+            }
+            if (code === 'DE') {
+                showModal('Database Error', '데이터베이스에서 오류가 발생했습니다.');
+                return;
+            }
+            if (code !== 'SU') {
+                return;
+            }
+            if(!id) return;
+
+            getUserRequest(id).then(getUserResponse);
+            setIsNameChanged(false);
+        }
+
         //event handler: 프로필 박스 클릭 이벤트 처리
         const onProfileBoxClickHandler = () => {
             if (!isMyPage) return;
@@ -128,8 +159,17 @@ export default function User() {
 
         //event handler: 닉네임 수정 버튼 클릭 이벤트 처리
         const onNameEditButtonClickHandler = () => {
-            setChangeName(name);
-            setIsNameChanged(!isNameChanged);
+            if(!isNameChanged) {
+                setChangeName(name);
+                setIsNameChanged(!isNameChanged);
+                return;
+            }
+
+            if(!cookies.accessToken) return;
+            const requestBody: UpdateNameRequestDto = {
+                name: changeName
+            };
+            updateNameRequest(requestBody, cookies.accessToken).then(updateNameResponse);           
         };
 
         //event handler: 프로필 이미지 변경 이벤트 처리
