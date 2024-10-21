@@ -14,6 +14,7 @@ import project.server.dto.request.user.UpdateProfileImageRequestDto;
 import project.server.dto.response.ResponseDto;
 import project.server.dto.response.post.UploadPostResponseDto;
 import project.server.dto.response.user.GetUserInfoResponseDto;
+import project.server.dto.response.user.GetUserResponseDto;
 import project.server.dto.response.user.UpdateNameResponseDto;
 import project.server.dto.response.user.UpdateProfileImageResponseDto;
 import project.server.repository.UserRepository;
@@ -103,5 +104,26 @@ public class UserServiceImpl implements UserService {
             return ResponseDto.databaseError();
         }
         return UpdateProfileImageResponseDto.success();
+    }
+
+    /**
+     * 특정 회원 정보 조회하기
+     */
+    @Override
+    public ResponseEntity<? super GetUserResponseDto> getUser(int id) {
+
+        User user;
+
+        try {
+            user = userRepository.findById(id);
+
+            if(user == null) {
+                return GetUserResponseDto.noExistUser();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+        return GetUserResponseDto.success(user);
     }
 }
