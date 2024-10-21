@@ -6,12 +6,14 @@ import { PostListItem } from '../../types/interface';
 import PostItem from '../../components/PostItem';
 import { MAIN_PATH, POST_WRITE_PATH, USER_PATH } from '../../constants';
 import { useLoginUserStore } from '../../stores';
-import { getUserRequest, updateNameRequest, updateProfileImageRequest, uploadFileRequest } from '../../apis';
+import { getUserPostListRequest, getUserRequest, updateNameRequest, updateProfileImageRequest, uploadFileRequest } from '../../apis';
 import { GetUserResponseDto, UpdateNameResponseDto, UpdateProfileImageResponseDto } from '../../apis/response/user';
 import { ResponseDto } from '../../apis/response';
 import { EventModalContext } from '../../contexts/EventModalProvider';
 import { UpdateNameRequestDto, UpdateProfileImageRequestDto } from '../../apis/request/user';
 import { useCookies } from 'react-cookie';
+import { usePagination } from '../../hooks';
+import { GetUserPostListResponseDto } from '../../apis/response/post';
 
 //component: 사용자 화면 컴포넌트
 export default function User() {
@@ -57,11 +59,11 @@ export default function User() {
 
         // function: getUserResponse 처리 함수
         const getUserResponse = (responseBody: GetUserResponseDto | ResponseDto | null) => {
-            
-            if(!responseBody) return;
+
+            if (!responseBody) return;
 
             const { code } = responseBody;
-            
+
             if (code === 'NU') {
                 showModal('User Error', '존재하지 않는 사용자입니다.');
                 return;
@@ -75,7 +77,7 @@ export default function User() {
                 return;
             }
 
-            const {loginId, email, name, profile} = responseBody as GetUserResponseDto;
+            const { loginId, email, name, profile } = responseBody as GetUserResponseDto;
             setName(name);
             setProfileImage(profile);
             setEmail(email);
@@ -85,17 +87,17 @@ export default function User() {
 
         // function: uploadFileResponse 처리 함수
         const uploadFileResponse = (profileImage: string | null) => {
-            if(!profileImage) return;
-            if(!cookies.accessToken) return;
+            if (!profileImage) return;
+            if (!cookies.accessToken) return;
             const requestBody: UpdateProfileImageRequestDto = { profileImage };
-                updateProfileImageRequest(requestBody, cookies.accessToken).then(updateProfileImageResponse);
+            updateProfileImageRequest(requestBody, cookies.accessToken).then(updateProfileImageResponse);
         };
 
         //function: updateProfileImageResponse 처리 함수
         const updateProfileImageResponse = (responseBody: UpdateProfileImageResponseDto | ResponseDto | null) => {
-            
-            if(!responseBody) return;
-            
+
+            if (!responseBody) return;
+
             const { code } = responseBody;
 
             if (code === 'AF') {
@@ -113,16 +115,16 @@ export default function User() {
             if (code !== 'SU') {
                 return;
             }
-            if(!id) return;
+            if (!id) return;
 
             getUserRequest(id).then(getUserResponse);
         }
 
         //function: updateNameResponse 처리 함수
         const updateNameResponse = (responseBody: UpdateNameResponseDto | ResponseDto | null) => {
-            
-            if(!responseBody) return;
-            
+
+            if (!responseBody) return;
+
             const { code } = responseBody;
 
             if (code === 'AF') {
@@ -144,7 +146,7 @@ export default function User() {
             if (code !== 'SU') {
                 return;
             }
-            if(!id) return;
+            if (!id) return;
 
             getUserRequest(id).then(getUserResponse);
             setIsNameChanged(false);
@@ -159,17 +161,17 @@ export default function User() {
 
         //event handler: 닉네임 수정 버튼 클릭 이벤트 처리
         const onNameEditButtonClickHandler = () => {
-            if(!isNameChanged) {
+            if (!isNameChanged) {
                 setChangeName(name);
                 setIsNameChanged(!isNameChanged);
                 return;
             }
 
-            if(!cookies.accessToken) return;
+            if (!cookies.accessToken) return;
             const requestBody: UpdateNameRequestDto = {
                 name: changeName
             };
-            updateNameRequest(requestBody, cookies.accessToken).then(updateNameResponse);           
+            updateNameRequest(requestBody, cookies.accessToken).then(updateNameResponse);
         };
 
         //event handler: 프로필 이미지 변경 이벤트 처리
@@ -238,21 +240,46 @@ export default function User() {
     //component: 사용자 화면 하단 컴포넌트
     const UserBottom = () => {
 
+        //state: 페이지네이션 관련 상태 
+        const { currentPage, setCurrentPage, currentSection, setCurrentSection, viewList,
+            viewPageList, totalSection, setTotalList } = usePagination<PostListItem>(7);
         //state: 게시물 개수 상태
         const [count, setCount] = useState<number>(0);
-        //state: 게시물 리스트 상태
-        const [userPostList, setUserPostList] = useState<PostListItem[]>([]);
+
+        //function: getUserPostListResponse 처리 함수
+        const getUserPostListResponse = (responseBody: GetUserPostListResponseDto | ResponseDto | null) => {
+
+            if (!responseBody) return;
+
+            const { code } = responseBody;
+
+            if (code === 'NU') {
+                showModal('User Error', '존재하지 않는 사용자입니다.');
+                navigate(MAIN_PATH());
+                return;
+            }
+            if (code === 'DE') {
+                showModal('Database Error', '데이터베이스에서 오류가 발생했습니다.');
+                return;
+            }
+            if (code !== 'SU') return;
+
+            const { userPostList } = responseBody as GetUserPostListResponseDto;
+            setTotalList(userPostList);
+            setCount(userPostList.length);
+        }
 
         //event handler: 사이드 카드 클릭 이벤트 처리
         const onSideCardClickHandler = () => {
             if (isMyPage) navigate(POST_WRITE_PATH());
-            else if(loginUser) navigate(USER_PATH(loginUser.userId));
+            else if (loginUser) navigate(USER_PATH(loginUser.userId));
         }
 
         //effect: useId path variable이 변경될 때 마다 실행될 함수
         useEffect(() => {
-
-        }, [userId]);
+            if (!id) return;
+            getUserPostListRequest(id).then(getUserPostListResponse);
+        }, [id]);
         //render: 사용자 화면 하단 컴포넌트 렌더링
         return (
             <div id='user-bottom-wrapper'>

@@ -28,7 +28,7 @@ const UPDATE_PROFILE_IMAGE_URL = () => `${API_DOMAIN}/users/profile-image`;
 
 //post url
 const GET_POST_URL = (postId: number | string) => `${API_DOMAIN}/post/${postId}`;
-const GET_USER_POST_LIST_URL = (id: number) => `${API_DOMAIN}/post/user-post-list/${id}`;
+const GET_USER_POST_LIST_URL = (id: number | string) => `${API_DOMAIN}/post/user-post-list/${id}`;
 const GET_LATEST_POST_LIST_URL = () => `${API_DOMAIN}/post/latest-list`;
 const GET_TOP_3_POST_LIST_URL = () => `${API_DOMAIN}/post/top-3`;
 const GET_SEARCH_POST_LIST_URL = (searchWord: string, preSearchWord: string | null) => `${API_DOMAIN}/post/search-list/${searchWord}${preSearchWord ? '/' + preSearchWord : ''}`;
@@ -231,7 +231,7 @@ export const getPostRequest = async (postId: number | string) => {
 }
 
 //특정 회원 게시물 리스트 불러오기 리퀘스트
-export const getUserPostListRequest = async (id: number) => {
+export const getUserPostListRequest = async (id: number | string) => {
     const result = await api.get(GET_USER_POST_LIST_URL(id))
         .then(response => {
             const responseBody: GetUserPostListResponseDto = response.data;
