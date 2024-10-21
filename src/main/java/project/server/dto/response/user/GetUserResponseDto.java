@@ -13,13 +13,13 @@ public class GetUserResponseDto extends ResponseDto {
 
     private String email;
     private String name;
-    private String profileImage;
+    private String profile;
 
     private GetUserResponseDto(User user) {
         super(ResponseCode.SUCCESS, ResponseMessage.SUCCESS);
         this.email = user.getEmail();
         this.name = user.getName();
-        this.profileImage = user.getProfileImage();
+        this.profile = user.getProfileImage();
     }
 
     public static ResponseEntity<GetUserResponseDto> success(User user) {
