@@ -14,6 +14,7 @@ import { UpdateNameRequestDto, UpdateProfileImageRequestDto } from '../../apis/r
 import { useCookies } from 'react-cookie';
 import { usePagination } from '../../hooks';
 import { GetUserPostListResponseDto } from '../../apis/response/post';
+import Pagination from '../../components/Pagination';
 
 //component: 사용자 화면 컴포넌트
 export default function User() {
@@ -289,7 +290,7 @@ export default function User() {
                         {count === 0 ?
                             <div className='user-bottom-contents-nothing'>{'게시물이 없습니다.'}</div> :
                             <div className='user-bottom-contents'>
-                                {userPostList.map(postListItem => <PostItem postListItem={postListItem} />)}
+                                {viewList.map(postListItem => <PostItem postListItem={postListItem} />)}
                             </div>
                         }
                         <div className='user-bottom-side-box'>
@@ -313,7 +314,18 @@ export default function User() {
                             </div>
                         </div>
                     </div>
-                    <div className='user-bottom-pagination-box'></div>
+                    <div className='user-bottom-pagination-box'>
+                        {count !== 0 &&
+                            <Pagination
+                                currentPage={currentPage}
+                                currentSection={currentSection}
+                                setCurrentPage={setCurrentPage}
+                                setCurrentSection={setCurrentSection}
+                                viewPageList={viewPageList}
+                                totalSection={totalSection}
+                            />
+                        }
+                    </div>
                 </div>
             </div>
         );

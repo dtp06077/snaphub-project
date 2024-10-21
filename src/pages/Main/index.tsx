@@ -150,6 +150,9 @@ export default function Main() {
                         </div>
                     </div>
                     <div className='main-bottom-pagination-box'>
+                        {
+
+                        }
                         <Pagination
                             currentPage={currentPage}
                             currentSection={currentSection}

@@ -116,14 +116,16 @@ export default function Search() {
                     </div>
                 </div>
                 <div className='search-pagination-box'>
-                    <Pagination
-                        currentPage={currentPage}
-                        currentSection={currentSection}
-                        setCurrentPage={setCurrentPage}
-                        setCurrentSection={setCurrentSection}
-                        viewPageList={viewPageList}
-                        totalSection={totalSection}
-                    />
+                    {count !== 0 &&
+                        <Pagination
+                            currentPage={currentPage}
+                            currentSection={currentSection}
+                            setCurrentPage={setCurrentPage}
+                            setCurrentSection={setCurrentSection}
+                            viewPageList={viewPageList}
+                            totalSection={totalSection}
+                        />
+                    }
                 </div>
             </div>
         </div>
