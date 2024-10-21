@@ -2,10 +2,11 @@ import { JoinRequestDto } from "./request/auth";
 import { JoinResponseDto, LoginResponseDto } from "./response/auth";
 import { ResponseDto } from "./response";
 import api from "./api";
-import { GetUserInfoResponseDto } from "./response/user";
+import { GetUserInfoResponseDto, GetUserResponseDto, UpdateNameResponseDto, UpdateProfileImageResponseDto } from "./response/user";
 import { UpdatePostRequestDto, UploadPostRequestDto, WriteCommentRequestDto } from "./request/post";
 import { UploadPostResponseDto, GetPostResponseDto, IncreaseViewCountResponseDto, GetEmotionListResponseDto, GetCommentListResponseDto, PutEmotionResponseDto, WriteCommentResponsetDto, DeletePostResponseDto, UpdatePostResponseDto, GetLatestPostListResponseDto, GetTop3PostListResponseDto, GetSearchPostListResponseDto, GetUserPostListResponseDto } from "./response/post";
 import { GetPopularSearchListResponseDto, GetRelatableSearchListResponseDto } from "./response/search";
+import { UpdateNameRequestDto, UpdateProfileImageRequestDto } from "./request/user";
 
 const DOMAIN = 'http://localhost:4000';
 
@@ -22,6 +23,8 @@ const LOGIN_URL = () => `${API_DOMAIN}/auth/login`;
 const JOIN_URL = () => `${API_DOMAIN}/auth/join`;
 const GET_USER_INFO_URL = () => `${API_DOMAIN}/users/info`;
 const GET_USER_URL = (id: number) => `${API_DOMAIN}/users/${id}`;
+const UPDATE_NAME_URL = () => `${API_DOMAIN}/users/name`;
+const UPDATE_PROFILE_IMAGE_URL = () => `${API_DOMAIN}/users/profile-image`;
 
 //post url
 const GET_POST_URL = (postId: number | string) => `${API_DOMAIN}/post/${postId}`;
@@ -46,7 +49,7 @@ const GET_COMMENT_LIST_URL = (postId: number | string) => `${API_DOMAIN}/post/${
 const UPLOAD_FILE_URL = () => `${FILE_DOMAIN}/upload`;
 
 //search url
-const GET_POPULAR_SEARCH_LIST_URL = () => `${API_DOMAIN}/search/popular-list`; 
+const GET_POPULAR_SEARCH_LIST_URL = () => `${API_DOMAIN}/search/popular-list`;
 const GET_RELATABLE_SEARCH_LIST_URL = (searchWord: string) => `${API_DOMAIN}/search/${searchWord}/relation-list`;
 
 const multipartFormData = { headers: { 'Content-Type': 'multipart/form-data' } };
@@ -109,7 +112,6 @@ export const checkNameRequest = async (name: string) => {
 
 //사용자 정보 불러오기 리퀘스트
 export const getUserInfoRequest = async (accessToken: string) => {
-
     const result = await api.get(GET_USER_INFO_URL(), authorization(accessToken))
         .then(response => {
             const responseBody: GetUserInfoResponseDto = response.data;
@@ -123,8 +125,50 @@ export const getUserInfoRequest = async (accessToken: string) => {
     return result;
 }
 
-//특정 회원 정보 불러오기 리퀘스트
+//닉네임 수정 리퀘스트
+export const updateNameRequest = async (requestBody: UpdateNameRequestDto, accessToken: string) => {
+    const result = await api.patch(UPDATE_NAME_URL(), requestBody, authorization(accessToken))
+        .then(response => {
+            const responseBody: UpdateNameResponseDto = response.data;
+            return responseBody;
+        })
+        .catch(error => {
+            if (!error.response) return null;
+            const responseBody: ResponseDto = error.response.data;
+            return responseBody
+        })
+    return result;
+}
 
+//프로필 이미지 수정 리퀘스트
+export const updateProfileImageRequest = async (requestBody: UpdateProfileImageRequestDto, accessToken: string) => {
+    const result = await api.patch(UPDATE_PROFILE_IMAGE_URL(), requestBody, authorization(accessToken))
+        .then(response => {
+            const responseBody: UpdateProfileImageResponseDto = response.data;
+            return responseBody;
+        })
+        .catch(error => {
+            if (!error.response) return null;
+            const responseBody: ResponseDto = error.response.data;
+            return responseBody
+        })
+    return result;
+}
+
+//특정 회원 정보 불러오기 리퀘스트
+export const getUserRequest = async (id: number) => {
+    const result = await api.get(GET_USER_URL(id))
+        .then(response => {
+            const responseBody: GetUserResponseDto = response.data;
+            return responseBody;
+        })
+        .catch(error => {
+            if (!error.response) return null;
+            const responseBody: ResponseDto = error.response.data;
+            return responseBody
+        })
+    return result;
+}
 
 //게시물 업로드 리퀘스트
 export const uploadPostRequest = async (requestBody: UploadPostRequestDto, accessToken: string) => {
@@ -144,16 +188,16 @@ export const uploadPostRequest = async (requestBody: UploadPostRequestDto, acces
 //게시물 수정 리퀘스트
 export const updatePostRequest = async (postId: number | string, requestBody: UpdatePostRequestDto, accessToken: string) => {
     const result = await api.patch(UPDATE_POST_URL(postId), requestBody, authorization(accessToken))
-    .then(response => {
-        const responseBody: UpdatePostResponseDto = response.data;
-        return responseBody;
-    })
-    .catch(error => {
-        if (!error.response) return null;
-        const responseBody: ResponseDto = error.response.data;
-        return responseBody
-    })
-return result;
+        .then(response => {
+            const responseBody: UpdatePostResponseDto = response.data;
+            return responseBody;
+        })
+        .catch(error => {
+            if (!error.response) return null;
+            const responseBody: ResponseDto = error.response.data;
+            return responseBody
+        })
+    return result;
 }
 
 //게시물 삭제 리퀘스트
@@ -187,7 +231,7 @@ export const getPostRequest = async (postId: number | string) => {
 }
 
 //특정 회원 게시물 리스트 불러오기 리퀘스트
-export const getUserPostListRequest = async(id: number) => {
+export const getUserPostListRequest = async (id: number) => {
     const result = await api.get(GET_USER_POST_LIST_URL(id))
         .then(response => {
             const responseBody: GetUserPostListResponseDto = response.data;
