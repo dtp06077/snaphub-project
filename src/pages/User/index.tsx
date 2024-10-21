@@ -99,7 +99,7 @@ export default function User() {
             const { code } = responseBody;
 
             if (code === 'AF') {
-                showModal('User Error', '존재하지 않는 사용자입니다.');
+                showModal('Authorization Fail', '인증에 실패했습니다.');
                 return;
             }
             
@@ -112,9 +112,11 @@ export default function User() {
                 return;
             }
             if (code !== 'SU') {
-                navigate(MAIN_PATH());
                 return;
             }
+            if(!id) return;
+
+            getUserRequest(id).then(getUserResponse);
         }
 
         //event handler: 프로필 박스 클릭 이벤트 처리
