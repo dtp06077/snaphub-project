@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import project.server.dto.request.user.UpdateNameRequestDto;
 import project.server.dto.request.user.UpdateProfileImageRequestDto;
 import project.server.dto.response.user.GetUserInfoResponseDto;
+import project.server.dto.response.user.GetUserResponseDto;
 import project.server.dto.response.user.UpdateNameResponseDto;
 import project.server.dto.response.user.UpdateProfileImageResponseDto;
 import project.server.security.domain.CustomUser;
@@ -31,6 +32,16 @@ public class UserController {
     public ResponseEntity<? super GetUserInfoResponseDto> getUserInfo(
             @AuthenticationPrincipal CustomUser customUser) {
         return userService.getUserInfo(customUser);
+    }
+
+    /**
+     * 특정 회원 정보 조회
+     */
+    @GetMapping("{id}")
+    public ResponseEntity<? super GetUserResponseDto> getUser(
+            @PathVariable("id") int id
+    ) {
+        return userService.getUser(id);
     }
 
     /**
