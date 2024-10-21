@@ -160,6 +160,7 @@ export const getUserRequest = async (userId: number | string) => {
     const result = await api.get(GET_USER_URL(userId))
         .then(response => {
             const responseBody: GetUserResponseDto = response.data;
+            console.log(response.data);
             return responseBody;
         })
         .catch(error => {

@@ -2,7 +2,6 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 import api from '../apis/api';
 import Cookies from 'js-cookie';
 import { useNavigate, useLocation } from 'react-router-dom';
-import defaultImage from '../assets/image/default-profile-image.png';
 import { loginRequest, getUserInfoRequest } from '../apis'
 import { MAIN_PATH, POST_DETAIL_PATH, TOKEN_PREFIX } from '../constants';
 import { EventModalContext } from './EventModalProvider';
@@ -36,7 +35,7 @@ const LoginContextProvider = ({ children }) => {
     const [roles, setRoles] = useState({ isUser: false, isAdmin: false });
 
     //유저 프로필 이미지
-    const [profileImage, setProfileImage] = useState(defaultImage);
+    const [profileImage, setProfileImage] = useState('');
 
     // 아이디 저장
     const [rememberUserId, setRememberUserId] = useState();
@@ -215,7 +214,7 @@ const LoginContextProvider = ({ children }) => {
         setUserInfo(null);
 
         //프로필 사진 초기화
-        setProfileImage(defaultImage);
+        setProfileImage(null);
 
         //권한 정보 초기화
         setRoles(null);
@@ -229,7 +228,7 @@ const LoginContextProvider = ({ children }) => {
     }, []);
 
     return (
-        <LoginContext.Provider value={{ profileImage, isLogin, userInfo, roles, login, logout }}>
+        <LoginContext.Provider value={{ isLogin, userInfo, roles, login, logout }}>
             {children}
         </LoginContext.Provider>
     )

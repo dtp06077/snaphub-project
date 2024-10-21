@@ -9,15 +9,22 @@ import { usePostStore } from '../../stores';
 import { useCookies } from 'react-cookie';
 import { updatePostRequest, uploadFileRequest, uploadPostRequest } from '../../apis';
 import { EventModalContext } from '../../contexts/EventModalProvider';
+import defaultProfileImage from '../../assets/image/default-profile-image.png';
 
 
 //component: 헤더 레이아웃
 const Header = () => {
 
   //isLogin : 로그인 여부 - 로그인(true), 비로그인(false)
-  const { isLogin, logout, profileImage, userInfo } = useContext(LoginContext);
+  const { isLogin, logout, userInfo } = useContext(LoginContext);
   //logout() : 로그아웃 함수 -> setLogin(false)
   const [loginModalOn, setLoginModalOn] = useState(false);
+  // 사용자 이름 상태
+  const [userName, setUserName] = useState('');
+  // 사용자 프로필 이미지 상태
+  const [profileImage, setProfileImage] = useState('');
+  // 사용자 번호 상태
+  const [id, setId] = useState(null);
   //state: 게시물 작성 창 상태
   const [uploadOn, setUploadOn] = useState(false);
   //state: 쿠키 상태
@@ -122,7 +129,7 @@ const Header = () => {
         showModal('Database Error', '데이터베이스에서 오류가 발생했습니다.');
         return;
       }
-      if(code !== 'SU') return;
+      if (code !== 'SU') return;
       resetPost();
       if (!isLogin) return;
       const { loginId } = userInfo;
@@ -153,8 +160,8 @@ const Header = () => {
         showModal('Database Error', '데이터베이스에서 오류가 발생했습니다.');
         return;
       }
-      if(code !== 'SU') return;
-      if(!postId) return;
+      if (code !== 'SU') return;
+      if (!postId) return;
       navigate(POST_DETAIL_PATH(postId));
     }
 
@@ -199,15 +206,15 @@ const Header = () => {
       navigate(POST_WRITE_PATH());
     }
 
-    if (uploadOn === true || pathname===POST_UPDATE_PATH(postId)) {
+    if (uploadOn === true || pathname === POST_UPDATE_PATH(postId)) {
       return <div className='header-nav-link' onClick={onUploadButtonClickHandler}>
         upload
       </div>
     }
     else {
       return <div className='header-nav-link' onClick={onWriteButtonClickHandler}>
-      write
-    </div>
+        write
+      </div>
     }
   }
 
@@ -215,16 +222,15 @@ const Header = () => {
   const ProfileButton = () => {
 
     const onMyPageButtonClickHandler = () => {
-      if (isLogin) {
-        const { userId } = userInfo;
-        navigate(USER_PATH(userId));
+      if (!isLogin) {
         return;
       }
+      navigate(USER_PATH(id));
       return;
     };
 
     return <img
-      src={profileImage}
+      src={profileImage ? profileImage : defaultProfileImage}
       alt="Profile"
       className="header-profile-image"
       onClick={() => { onMyPageButtonClickHandler() }}
@@ -245,6 +251,21 @@ const Header = () => {
       logout
     </div>
   }
+
+  //effect: isLogin이 변경될 때 마다 실행될 함수
+  useEffect(() => {
+    if (isLogin) {
+      const { userId, profile, name } = userInfo;
+      setProfileImage(profile);
+      setUserName(name);
+      setId(userId);
+    }
+    else {
+      setProfileImage(null);
+      setUserName('');
+      setId(null);
+    }
+  }, [isLogin]);
 
   //render: 헤더 레이아웃 렌더링
   return (

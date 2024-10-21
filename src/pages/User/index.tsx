@@ -205,7 +205,7 @@ export default function User() {
                     {isMyPage ?
                         <div className='user-top-my-profile-image-box' onClick={onProfileBoxClickHandler}>
                             {profileImage !== null ?
-                                <div className='user-top-my-profile-image' style={{ backgroundImage: `url(${profileImage})` }}></div> :
+                                <div className='user-top-my-profile-image' style={{ backgroundImage: `url(${profileImage ? profileImage : defaultProfileImage})` }}></div> :
 
                                 <div className='icon-box-large'>
                                     <div className='icon image-box-white-icon'></div>
