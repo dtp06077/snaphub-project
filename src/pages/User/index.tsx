@@ -119,6 +119,8 @@ export default function User() {
             if (!id) return;
 
             getUserRequest(id).then(getUserResponse);
+            //새로 고침으로 저장된 프로필 이미지 상태 변경
+            window.location.reload();
         }
 
         //function: updateNameResponse 처리 함수
@@ -150,6 +152,8 @@ export default function User() {
             if (!id) return;
 
             getUserRequest(id).then(getUserResponse);
+            //새로 고침으로 저장된 프로필 이미지 상태 변경
+            window.location.reload();
             setIsNameChanged(false);
         }
 

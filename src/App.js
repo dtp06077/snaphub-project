@@ -23,7 +23,7 @@ function App() {
     //state: cookie 상태
     const [cookies, setCookies] = useCookies();
 
-    const getUserResponse = ({ response, responseBody }) => {
+    const getUserInfoResponse = ({ responseBody }) => {
         if (!responseBody) return;
 
         const { code } = responseBody;
@@ -41,7 +41,7 @@ function App() {
             resetLoginUser();
             return;
         }
-        getUserInfoRequest(cookies.accessToken).then(getUserResponse);
+        getUserInfoRequest(cookies.accessToken).then(getUserInfoResponse);
     }, [cookies.accessToken]);
 
     //render: Application 렌더링
