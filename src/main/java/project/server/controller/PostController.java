@@ -49,11 +49,11 @@ public class PostController {
     }
 
     //특정 사용자 게시물 리스트 검색
-    @GetMapping("/user-post-list/{name}")
+    @GetMapping("/user-post-list/{id}")
     public ResponseEntity<? super GetUserPostListResponseDto> getUserPostList(
-            @PathVariable("name") String name
+            @PathVariable("id") int id
     ) {
-        return postService.getUserPosts(name);
+        return postService.getUserPosts(id);
     }
 
     //게시물 작성
