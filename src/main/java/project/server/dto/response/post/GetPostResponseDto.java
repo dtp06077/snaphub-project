@@ -19,7 +19,8 @@ public class GetPostResponseDto extends ResponseDto {
     private List<String> imageList;
     private String postDateTime;
     private String posterName;
-    private String posterId;
+    private int posterId;
+    private String posterLoginId;
     private String posterProfileImage;
 
     private GetPostResponseDto(Post post) {
@@ -30,7 +31,8 @@ public class GetPostResponseDto extends ResponseDto {
         this.imageList = post.getImageList();
         this.postDateTime = post.getPostDateTime();
         this.posterName = post.getAuthor().getName();
-        this.posterId = post.getAuthor().getLoginId();
+        this.posterId = post.getAuthor().getId();
+        this.posterLoginId = post.getAuthor().getLoginId();
         this.posterProfileImage = post.getAuthor().getProfileImage();
     }
 
