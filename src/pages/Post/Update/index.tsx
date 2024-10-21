@@ -69,13 +69,13 @@ export default function PostUpdate() {
             return;
         }
 
-        const {title, content, imageList, posterId} = responseBody as GetPostResponseDto; 
+        const {title, content, imageList, posterLoginId} = responseBody as GetPostResponseDto; 
         setTitle(title);
         setContent(content);
         setImageUrls(imageList);
         convertUrlsToFile(imageList).then(postImageFileList => setPostImageFileList(postImageFileList));
         
-        if(!loginUser || loginUser.loginId !== posterId) {
+        if(!loginUser || loginUser.loginId !== posterLoginId) {
             showModal("Authorization Error", "권한이 없습니다.");
             navigate(MAIN_PATH());
             return;

@@ -62,7 +62,7 @@ function App() {
                         <Routes>
                             <Route element={<Wrapper />}>
                                 <Route path={MAIN_PATH()} element={<Main />}></Route>
-                                <Route path={USER_PATH(':userId')} element={<User />}></Route>
+                                <Route path={USER_PATH(':id')} element={<User />}></Route>
                                 <Route path={SEARCH_PATH(':searchWord')} element={<Search />}></Route>
                                 <Route path={POST_PATH()}>
                                     <Route path={POST_WRITE_PATH()} element={<PostWrite />}></Route>

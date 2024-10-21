@@ -194,6 +194,7 @@ export default function User() {
 
         // useEffect: name path variable 변경 시 실행 할 함수
         useEffect(() => {
+            console.log(id);
             if (!id) return;
             getUserRequest(id).then(getUserResponse);
         }, [id]);

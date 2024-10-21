@@ -5,6 +5,7 @@ export default interface Post {
     imageList: string[];
     postDateTime: string;
     posterName: string;
-    posterId: string;
+    posterId: number;
+    posterLoginId: string;
     posterProfileImage: string|null;
 }

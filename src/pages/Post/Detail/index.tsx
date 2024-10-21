@@ -107,7 +107,7 @@ export default function PostDetail() {
                 setWriter(false);
                 return;
             }
-            const isWriter = (loginUser.loginId === post.posterId);
+            const isWriter = (loginUser.loginId === post.posterLoginId);
             setWriter(isWriter);
         }
 
@@ -150,14 +150,14 @@ export default function PostDetail() {
         //event handler: 수정 버튼 클릭 이벤트 처리
         const onUpdateButtonClickHandler = () => {
             if (!post || !loginUser) return;
-            if (loginUser.loginId !== post.posterId) return;
+            if (loginUser.loginId !== post.posterLoginId) return;
             navigate(POST_UPDATE_PATH(post.postId));
         }
 
         //event handler: 삭제 버튼 클릭 이벤트 처리
         const onDeleteButtonClickHandler = () => {
             if (!post || !postId || !loginUser || !cookies.accessToken) return;
-            if (loginUser.loginId !== post.posterId) return;
+            if (loginUser.loginId !== post.posterLoginId) return;
 
             showClickModal(
                 "Delete Check",
