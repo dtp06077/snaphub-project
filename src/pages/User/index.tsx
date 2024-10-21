@@ -1,21 +1,40 @@
-import React, { ChangeEvent, useEffect, useRef, useState } from 'react'
+import React, { ChangeEvent, useContext, useEffect, useRef, useState } from 'react'
 import defaultProfileImage from "../../assets/image/default-profile-image.png";
 import { useNavigate, useParams } from 'react-router-dom';
 import './style.css';
 import { PostListItem } from '../../types/interface';
 import PostItem from '../../components/PostItem';
-import { POST_WRITE_PATH, USER_PATH } from '../../constants';
+import { MAIN_PATH, POST_WRITE_PATH, USER_PATH } from '../../constants';
 import { useLoginUserStore } from '../../stores';
+import { getUserRequest, updateProfileImageRequest, uploadFileRequest } from '../../apis';
+import { GetUserResponseDto, UpdateProfileImageResponseDto } from '../../apis/response/user';
+import { ResponseDto } from '../../apis/response';
+import { EventModalContext } from '../../contexts/EventModalProvider';
+import { UpdateProfileImageRequestDto } from '../../apis/request/user';
+import { useCookies } from 'react-cookie';
 
 //component: 사용자 화면 컴포넌트
 export default function User() {
 
-    //state: 닉네임 파라미터 상태
-    const { userId } = useParams();
+    //state: 회원번호 파라미터 상태
+    const { id } = useParams();
+
     //state: 로그인 유저 상태
     const { loginUser } = useLoginUserStore();
     //state: 마이페이지 여부 상태
     const [isMyPage, setMyPage] = useState<boolean>(true);
+    //state: cookie 상태
+    const [cookies, setCookies] = useCookies();
+
+    //context: 이벤트 모달 창
+    const eventContext = useContext(EventModalContext);
+
+    // eventContext가 undefined일 경우
+    if (!eventContext) {
+        throw new Error("이벤트 모달 창이 존재하지 않습니다.");
+    }
+
+    const { showModal } = eventContext;
 
     //function: 네비게이트 함수
     const navigate = useNavigate();
@@ -29,10 +48,74 @@ export default function User() {
         const [isNameChanged, setIsNameChanged] = useState<boolean>(false);
         //state: 닉네임 상태
         const [name, setName] = useState<string>('');
+        //state: 이메일 상태
+        const [email, setEmail] = useState<string | null>('');
         //state: 변경 닉네임 상태
         const [changeName, setChangeName] = useState<string>('');
         //state: 프로필 이미지 상태
         const [profileImage, setProfileImage] = useState<string | null>(null);
+
+        // function: getUserResponse 처리 함수
+        const getUserResponse = (responseBody: GetUserResponseDto | ResponseDto | null) => {
+            
+            if(!responseBody) return;
+
+            const { code } = responseBody;
+            
+            if (code === 'NU') {
+                showModal('User Error', '존재하지 않는 사용자입니다.');
+                return;
+            }
+            if (code === 'DE') {
+                showModal('Database Error', '데이터베이스에서 오류가 발생했습니다.');
+                return;
+            }
+            if (code !== 'SU') {
+                navigate(MAIN_PATH());
+                return;
+            }
+
+            const {loginId, email, name, profile} = responseBody as GetUserResponseDto;
+            setName(name);
+            setProfileImage(profile);
+            setEmail(email);
+            const isMyPage = (loginId === loginUser?.loginId);
+            setMyPage(isMyPage);
+        };
+
+        // function: uploadFileResponse 처리 함수
+        const uploadFileResponse = (profileImage: string | null) => {
+            if(!profileImage) return;
+            if(!cookies.accessToken) return;
+            const requestBody: UpdateProfileImageRequestDto = { profileImage };
+                updateProfileImageRequest(requestBody, cookies.accessToken).then(updateProfileImageResponse);
+        };
+
+        //function: updateProfileImageResponse 처리 함수
+        const updateProfileImageResponse = (responseBody: UpdateProfileImageResponseDto | ResponseDto | null) => {
+            
+            if(!responseBody) return;
+            
+            const { code } = responseBody;
+
+            if (code === 'AF') {
+                showModal('User Error', '존재하지 않는 사용자입니다.');
+                return;
+            }
+            
+            if (code === 'NU') {
+                showModal('User Error', '존재하지 않는 사용자입니다.');
+                return;
+            }
+            if (code === 'DE') {
+                showModal('Database Error', '데이터베이스에서 오류가 발생했습니다.');
+                return;
+            }
+            if (code !== 'SU') {
+                navigate(MAIN_PATH());
+                return;
+            }
+        }
 
         //event handler: 프로필 박스 클릭 이벤트 처리
         const onProfileBoxClickHandler = () => {
@@ -54,6 +137,8 @@ export default function User() {
             const file = event.target.files[0];
             const data = new FormData();
             data.append('file', file);
+
+            uploadFileRequest(data).then(uploadFileResponse);
         };
 
         //event handler: 닉네임 변경 이벤트 처리
@@ -64,10 +149,9 @@ export default function User() {
 
         // useEffect: name path variable 변경 시 실행 할 함수
         useEffect(() => {
-            if (!userId) return;
-            setName("huiseong")
-            setProfileImage(null);
-        }, [userId]);
+            if (!id) return;
+            getUserRequest(id).then(getUserResponse);
+        }, [id]);
 
         //render: 사용자 화면 상단 컴포넌트 렌더링
         return (
@@ -102,7 +186,7 @@ export default function User() {
                                 <div className='user-top-info-name'>{name}</div>
                             }
                         </div>
-                        <div className='user-top-info-email'>{name}</div>
+                        <div className='user-top-info-email'>{email}</div>
                     </div>
                 </div>
             </div>

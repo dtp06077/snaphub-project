@@ -22,7 +22,7 @@ const authorization = (accessToken: string) => {
 const LOGIN_URL = () => `${API_DOMAIN}/auth/login`;
 const JOIN_URL = () => `${API_DOMAIN}/auth/join`;
 const GET_USER_INFO_URL = () => `${API_DOMAIN}/users/info`;
-const GET_USER_URL = (id: number) => `${API_DOMAIN}/users/${id}`;
+const GET_USER_URL = (userId: number | string) => `${API_DOMAIN}/users/${userId}`;
 const UPDATE_NAME_URL = () => `${API_DOMAIN}/users/name`;
 const UPDATE_PROFILE_IMAGE_URL = () => `${API_DOMAIN}/users/profile-image`;
 
@@ -156,8 +156,8 @@ export const updateProfileImageRequest = async (requestBody: UpdateProfileImageR
 }
 
 //특정 회원 정보 불러오기 리퀘스트
-export const getUserRequest = async (id: number) => {
-    const result = await api.get(GET_USER_URL(id))
+export const getUserRequest = async (userId: number | string) => {
+    const result = await api.get(GET_USER_URL(userId))
         .then(response => {
             const responseBody: GetUserResponseDto = response.data;
             return responseBody;
