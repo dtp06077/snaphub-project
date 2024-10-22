@@ -23,6 +23,8 @@ public class JoinRequestDto {
     private String profileImage;
 
     private String address;
+
+    private String addressDetail;
     @NotNull
     private Boolean agreedPersonal;
 
