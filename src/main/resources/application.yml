@@ -11,7 +11,7 @@ spring:
 
   jpa:
     hibernate:
-      # 테스트 완료 시 create로 변경
+      # 테스트 완료 시 update로 변경
       ddl-auto: update
     properties:
       hibernate:
